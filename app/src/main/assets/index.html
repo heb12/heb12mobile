@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Heb12</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<center id='loadingMessage'>
+		<p>
+			Loading...
+		</p>
+	</center>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- Load Translations -->
+	<script type="text/javascript" src="bibles/kjv.js"></script>
+	<script type="text/javascript" src="bibles/bbe.js"></script>
+	<script type="text/javascript" src="bibles/kjv2000.js"></script>
+
+</head>
+<body onmousedown="session.mouseDown = true" onmouseup="session.mouseDown = false">
+
+<div id="top">
+	<center>
+		<select id="book" onchange="update()"></select>
+		<select id="chapter" onchange="update()"></select>
+		<div id="hamburger" class="button" onclick="settingsAnimation('hehe')">
+			<img src="images/menu.svg" width="45" >
+		</div>
+	</center>
+</div>
+
+<div id="main" onclick="settingsAnimation('close')">
+	<p id="page">
+		
+	</p>
+	<iframe id="kjvOnline" onmouseover="settingsAnimation('close')">
+		
+	</iframe>
+</div>
+
+<div id="bottom">
+	<div class="button left" onclick="update('previous')">
+		<span>Previous</span>
+	</div>
+	<div class="button right" onclick="update('next')">
+		<span>Next</span>
+	</div>
+</div>
+
+<div id="settings">
+	<center>
+		<p class="large"><span id="hehe" onclick="notify('hehe')">Heb12</span> Mobile</p>
+		<span>Version 1.3</span>
+		<br><br>
+		<input id="search" placeholder="John 3:16">
+		<div class="button bg" onclick="random()">
+			Random
+		</div>
+		<br><hr>
+		<span>Current Translation:</span>
+		<select id="translation" onchange="update()">
+			<option selected="selected">
+				BBE (Bible in Basic English) (Offline)
+			</option>
+			<option>
+				KJV (King James Version) (Offline)
+			</option>
+			<option>
+				KJV 2000 (King James Version 2000) (Offline)
+			</option>
+			<option>
+				KJV (King James Version) (Online)
+			</option>
+		</select>
+		<br><hr>
+		<div id="iconToolbar">
+			<div class="icon">
+				<img src="images/info.svg" width="45" onclick='notify("info")'>
+			</div>
+			<div class="icon">
+				<img src="images/settings.svg" width="45" onclick="notify('settings')">
+			</div>
+			<div class="icon">
+				<img src="images/close.svg" width="45" onclick='interface.exec("other","close")'>
+			</div>
+		</div>
+		<hr><br>
+		<div id="favorite">
+			<p class="text big">Psalms 5:3</p>
+			<br><br>
+			<p class="text">My voice will come to you in the morning, O Lord; in the morning will I send my prayer to you, and keep watch.</p>
+		</div>
+	</center>
+</div>
+
+<div class="popup">
+	<div id="popupContent">
+		
+	</div>
+	<div class="close" onclick="popupAnimation('close')">
+		<p><b>Okay</b></p>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="javascript.js"></script>
+</html>
