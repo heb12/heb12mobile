@@ -1,6 +1,6 @@
 # Heb12 Mobile
-A testing repo for Heb12 Mobile
+Heb12 Mobile is a free mobile open-sourced app for reading the bible. It currently features 4 translations (soon to be more) and a clean, simple, and efficient GUI.
 # Installation
 1. Extract the latest file from `releases`
 2. Send the .apk file to your device
-3. Install it (you may need to enable installation from unknown sources)
+3. Install it (you will have to turn on storage permissions)
