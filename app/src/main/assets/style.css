@@ -139,8 +139,6 @@ select:active {
 #favorite {
 	width: 90%;
 	height: auto;
-	border-bottom: 1px solid black;
-	align-content: left;
 	display: inline-block;
 	margin-bottom: 5px;
 }
@@ -214,6 +212,16 @@ select:active {
 
 #hehe {
 	user-select: none;
+}
+
+.textBesideSelect {
+	font-size: 18px;
+	height: 40px;
+	width: 100px;
+	text-align: center;
+	text-align-last: center;
+	margin-top: 5px;
+	background: transparent;
 }
 
 @keyframes slideIn {

@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
                 String shareBody = data;
                 myIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
                 startActivity(Intent.createChooser(myIntent, "Share using"));
+            } else if (type.equals("toast")) {
+                Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
             }
         }
     }

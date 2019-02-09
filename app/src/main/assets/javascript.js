@@ -63,7 +63,10 @@ window.onload = function() {
 			configuration = configuration.split(";");
 			document.getElementById('book').value = configuration[1].split("=")[1];
 			document.getElementById('chapter').value = configuration[2].split("=")[1];
+
+			session.currentTheme = configuration[3].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
+
 		}
 	}
 
@@ -206,13 +209,19 @@ function notify(text) {
 	} else if (text == "settings") {
 		popup.innerHTML = `
 		<h2>Settings</h2>
-		<span>Theme:</span>
-		<select onchange="setTheme(this.value)">
-			<option selected="selected">Default</option>
+		<span class='textBesideSelect'>Theme:</span>
+		<select id='themeSelect' onchange="setTheme(this.value)">
+			<option>Default</option>
 			<option>Dark</option>
 			<option>Dark Blue</option>
 		</select>
+		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>
+		<br>
+		<div class='button bg'>
+			Reset
+		</div>
 		`;
+		document.getElementById('themeSelect').value = session.currentTheme;
 	} else if (text == "info") {
 		popup.innerHTML = `
 		<img style="display:inline; float:left; margin-right:10px;" src="images/logo.png" width="150">
@@ -220,7 +229,7 @@ function notify(text) {
 		   <h2>Heb12 Mobile v1.0</h2>
 		   <p>
 		   Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the 
-		   <a target="_blank" href="https://github.com/heb12/heb12-android">Github repository</a>.
+		   <a target="_blank" href="https://github.com/heb12/heb12-mobile">Github repository</a>.
 		   </p>
 		</div>
 		<br>
@@ -350,6 +359,7 @@ function popupAnimation(action) {
 	}
 }
 
+// Update the configuration file or return the default
 function updateConfigFile(def) {
 	var config = "/* Heb12 Configuration File - Edit at your own risk! */";
 
@@ -374,6 +384,7 @@ function updateConfigFile(def) {
 	interface.exec("write",config);
 }
 
+// Set current theme
 function setTheme(theme) {
 	if (theme == "Dark") {
 		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/dark.css">';
@@ -383,6 +394,8 @@ function setTheme(theme) {
 		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/darkblue.css">';
 	}
 
-	popupAnimation("close");
+	session.currentTheme = theme;
 	sidebarAnimation("close");
+	popupAnimation("close");
+	update();
 }
