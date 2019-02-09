@@ -1,7 +1,3 @@
-var books = [ "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth", "1st Samuel", "2nd Samuel", "1st Kings", "2nd Kings", "1st Chronicles", "2nd Chronicles", "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah", "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1st Corinthians", "2nd Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1st Thessalonians", "2nd Thessalonians", "1st Timothy", "2nd Timothy", "Titus", "Philemon", "Hebrews", "James", "1st Peter", "2nd Peter", "1st John", "2nd John", "3rd John", "Jude", "Revelation" ];
-var currentBookNumber = 1;
-var data;
-
 // Session Variables
 var session = {
 	version:"1.3",
@@ -12,8 +8,12 @@ var session = {
 	currentTranslation:"",
 	currentTranslationString:"",
 	theme:"",
-	devmode:false
+	devmode:false,
+	currentBookNumber:57,
+	currentTheme:"Default"
 }
+
+var data;
 
 // When the page loads
 window.onload = function() {
@@ -53,7 +53,7 @@ window.onload = function() {
 			notify("firsttime");
 
 			// Load the default config file
-			interface.exec("write",`/* Heb12 Configuration File - Edit at your own risk! */\ncurrentTranslation=BBE;\nlastBook=Hebrews;\nlastChapter=12;`);
+			updateConfigFile("def");
 		}	
 
 		// Parse config file into JS
@@ -63,12 +63,17 @@ window.onload = function() {
 			configuration = configuration.split(";");
 			document.getElementById('book').value = configuration[1].split("=")[1];
 			document.getElementById('chapter').value = configuration[2].split("=")[1];
+			setTheme(configuration[3].split("=")[1]);
 		}
 	}
 
 	// load Hebrews 12
 	updateTranslation();
-	document.getElementById('page').innerHTML = load("Hebrews",12);
+	if (session.devmode) {
+		document.getElementById('page').innerHTML = load("Hebrews",12);
+	} else {
+		document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
+	}
 	update();
 }
 
@@ -77,6 +82,7 @@ function load(book,chapter,verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
 	document.getElementById('chapter').innerHTML = "";
 
+	// Openbibles parser and the other json files
 	if (session.currentTranslationString == "KJV2000") {
 
 		for (var i = 0; i < books.length; i++) {
@@ -122,7 +128,7 @@ function load(book,chapter,verse) {
 			if (books[i] == book) {
 				page = session.currentTranslation[i].chapters[chapter - 1];
 				booky = session.currentTranslation[i].chapters.length;
-				currentBookNumber = i;
+				session.currentBookNumber = i;
 			}
 		}
 
@@ -200,6 +206,12 @@ function notify(text) {
 	} else if (text == "settings") {
 		popup.innerHTML = `
 		<h2>Settings</h2>
+		<span>Theme:</span>
+		<select onchange="setTheme(this.value)">
+			<option selected="selected">Default</option>
+			<option>Dark</option>
+			<option>Dark Blue</option>
+		</select>
 		`;
 	} else if (text == "info") {
 		popup.innerHTML = `
@@ -235,7 +247,7 @@ function random() {
 	var randomBook = Math.floor(Math.random() * books.length);
 	var randomChapter = Math.floor(Math.random() * session.currentTranslation[randomBook].chapters.length);
 	document.getElementById('page').innerHTML = load(books[randomBook], randomChapter);
-	settingsAnimation("close");
+	sidebarAnimation("close");
 }
 
 // Function to handle page updates
@@ -248,11 +260,11 @@ function update(option) {
 
 	// If the user goes back at the first chapter of a book, go back to the previous book
 	if (option == "next") {
-		if (session.currentTranslation[currentBookNumber].chapters.length == Number(document.getElementById('chapter').value)) {
+		if (bible[session.currentBookNumber][2] == Number(document.getElementById('chapter').value)) {
 			if (book == "Revelation" && chapter == 22) {
 				console.log("End of Bible :-/");
 			} else {
-				book = books[currentBookNumber + 1];
+				book = books[session.currentBookNumber + 1];
 				chapter = 1;
 			}
 		} else {
@@ -262,10 +274,11 @@ function update(option) {
 		if (chapter !== 1) {
 			chapter--;
 		} else {
-			book = books[currentBookNumber - 1];
-			chapter = session.currentTranslation[currentBookNumber - 1].chapters.length;
+			book = books[session.currentBookNumber - 1];
+			chapter = bible[session.currentBookNumber - 1][2];
 		}
 	}
+
 	// Show overlay iframe if translation is KJV Online
 	if (session.currentTranslationString == "KJVONLINE") {
 		document.getElementById('book').value = book;
@@ -278,7 +291,7 @@ function update(option) {
 
 	// Update the configuration file
 	if (!session.devmode) {
-		interface.exec("write",`/* Heb12 Configuration File - Edit at your own risk! */\ncurrentTranslation=` + session.currentTranslationString + `;\nlastBook=` + book + `;\nlastChapter=` + chapter + `;`);
+		updateConfigFile();
 	}
 }
 
@@ -292,7 +305,7 @@ function updateTranslation() {
 	} else if (translation.startsWith("KJV 2000")) {
 		document.getElementById('kjvOnline').style.display = "none";
 		session.currentTranslationString = "KJV2000";
-		session.currentTranslation = eval(kjv);
+		session.currentTranslation = eval(kjv2000);
 	} else if (translation.startsWith("KJV") && translation.endsWith("(Offline)")) {
 		session.currentTranslation = eval(kjv);
 		session.currentTranslationString = "KJV";
@@ -311,15 +324,15 @@ function search(thing) {
 }
 
 // Function to close settings menu
-function settingsAnimation(action) {
+function sidebarAnimation(action) {
 	if (action == "close") {
-		document.getElementById("settings").style.WebkitAnimationName = "slideOut";
+		document.getElementById("sidebar").style.WebkitAnimationName = "slideOut";
 		setTimeout(function() {
-			document.getElementById('settings').style.display = "none";
+			document.getElementById('sidebar').style.display = "none";
 		},500);
 	} else {
-		document.getElementById('settings').style.display = "block";
-		document.getElementById("settings").style.WebkitAnimationName = "slideIn";
+		document.getElementById('sidebar').style.display = "block";
+		document.getElementById("sidebar").style.WebkitAnimationName = "slideIn";
 	}
 }
 
@@ -335,4 +348,41 @@ function popupAnimation(action) {
 			popup.style.display = "none";
 		},500);
 	}
+}
+
+function updateConfigFile(def) {
+	var config = "/* Heb12 Configuration File - Edit at your own risk! */";
+
+	// Name, value, default value
+	var options = [
+		["currentTranslation",session.currentTranslationString,"BBE"],
+		["lastBook", document.getElementById('book').value,"Hebrews"],
+		["lastChapter",document.getElementById('chapter').value,"12"],
+		["theme",session.currentTheme,"Default"]
+	];
+
+	// Return a config file or just a default
+	if (!def) {
+		for (var i = 0; i < options.length; i++) {
+			config += options[i][0] + "=" + options[i][1] + ";";
+		}
+	} else {
+		for (var i = 0; i < options.length; i++) {
+			config += options[i][0] + "=" + options[i][2] + ";";
+		}
+	}
+	interface.exec("write",config);
+}
+
+function setTheme(theme) {
+	if (theme == "Dark") {
+		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/dark.css">';
+	} else if (theme == "Default") {
+		document.getElementById('theme').innerHTML = '';
+	} else if (theme == "Dark Blue") {
+		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/darkblue.css">';
+	}
+
+	popupAnimation("close");
+	sidebarAnimation("close");
 }

@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="bibles/kjv.js"></script>
 	<script type="text/javascript" src="bibles/bbe.js"></script>
 	<script type="text/javascript" src="bibles/kjv2000.js"></script>
+	<script type="text/javascript" src="bible.js"></script>
 
 </head>
 <body onmousedown="session.mouseDown = true" onmouseup="session.mouseDown = false">
@@ -24,17 +25,17 @@
 	<center>
 		<select id="book" onchange="update()"></select>
 		<select id="chapter" onchange="update()"></select>
-		<div id="hamburger" class="button" onclick="settingsAnimation('hehe')">
+		<div id="hamburger" class="icon" onclick="sidebarAnimation('hehe')">
 			<img src="images/menu.svg" width="45" >
 		</div>
 	</center>
 </div>
 
-<div id="main" onclick="settingsAnimation('close')">
+<div id="main" onclick="sidebarAnimation('close')">
 	<p id="page">
 		
 	</p>
-	<iframe id="kjvOnline" onmouseover="settingsAnimation('close')">
+	<iframe id="kjvOnline" onmouseover="sidebarAnimation('close')">
 		
 	</iframe>
 </div>
@@ -48,10 +49,10 @@
 	</div>
 </div>
 
-<div id="settings">
+<div id="sidebar">
 	<center>
 		<p class="large"><span id="hehe" onclick="notify('hehe')">Heb12</span> Mobile</p>
-		<span>Version 1.3</span>
+		<span>Version 0.1.0</span>
 		<br><br>
 		<input id="search" placeholder="John 3:16">
 		<div class="button bg" onclick="random()">
@@ -101,6 +102,9 @@
 	<div class="close" onclick="popupAnimation('close')">
 		<p><b>Okay</b></p>
 	</div>
+</div>
+<div id="theme">
+	
 </div>
 </body>
 <script type="text/javascript" src="javascript.js"></script>
