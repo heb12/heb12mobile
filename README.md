@@ -10,6 +10,6 @@ The app originally started on May 2nd, 2018 as a simple demo in MIT's App Invent
 3. Install it and follow the instructions to turn on storage permissions
 
 # Testing Online
+View the Html files here: https://heb12.ml/heb12-mobile/app/src/main/assets/index.html
 You can view the real app on an online Android emulator here: https://appetize.io/app/84f54x6gcjj12cy4ppz45kanqc?device=nexus5&scale=75&orientation=portrait&osVersion=8.1
 
-Or you can just view the Html files: https://heb12.ml/heb12-mobile/app/src/main/assets/index.html
