@@ -12,7 +12,7 @@ var session = {
 	currentTranslation:"",
 	currentTranslationString:"",
 	theme:"",
-	devmode:false
+	devmode:true
 }
 
 // When the page loads
@@ -68,6 +68,7 @@ window.onload = function() {
 // Function to get verse or verses from the json files
 function load(book,chapter,verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
+	document.getElementById('chapter').innerHTML = "";
 
 	if (session.currentTranslationString == "KJV2000") {
 
@@ -78,7 +79,6 @@ function load(book,chapter,verse) {
 		}
 
 		// Make accurate chapter length
-		document.getElementById('chapter').innerHTML = "";
 		for (var i = 1; i <= kjv2000.osis.osisText.div[bookNum].chapter.length; i++) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
@@ -86,7 +86,7 @@ function load(book,chapter,verse) {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
 
-		// For 1 chapter books
+		// 1 Chapter books
 		if (!kjv2000.osis.osisText.div[bookNum].chapter.verse) {
 			var verses = kjv2000.osis.osisText.div[bookNum].chapter[chapter - 1].verse;
 		} else {
@@ -94,10 +94,11 @@ function load(book,chapter,verse) {
 			var verses = kjv2000.osis.osisText.div[bookNum].chapter.verse;
 		}
 
+		// Add html to verses or return just a verse
 		var page = "";
 		if (!isNaN(verse)) {
 			page = verses[verse].text;
-			console.log();
+			alert();
 		} else {
 			for (var i = 0; i < verses.length; i++) {
 				page += " <b id='verse' onclick='notify(" + '"verse-' + (i + 1) + '"' + ")'>" + (i + 1) + "</b> " + verses[i].text + breaks;
@@ -117,8 +118,6 @@ function load(book,chapter,verse) {
 				currentBookNumber = i;
 			}
 		}
-
-		document.getElementById('chapter').innerHTML = "";
 
 		// Make accurate chapter length
 		for (var i = 1; i <= booky; i++) {
@@ -168,10 +167,20 @@ function notify(text) {
 		popup.innerHTML = `
 		<h2>` + entire + `</h2>
 		<span>` + load(book, chap, verse) + `</span>
-		<br><br>
-		<div style='width:200px;' class='button bg' onclick="search('` + entire + `')">Search verse on Google</div>
-		<br><br>
-		<div class='button bg' onclick="interface.exec('copy','` + session.currentVerse + `')">Copy verse</div> `;
+		<hr>
+		<div class="icon">
+			<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
+		</div>
+		<div class="icon">
+			<img src="images/clipboard.svg" width="45" onclick="interface.exec('copy','` + load(book, chap, verse) + `')">
+		</div>
+		<div class="icon">
+			<img src="images/share.svg" width="45" onclick="interface.exec('share','` + entire + " - " + load(book, chap, verse) + `')">
+		</div>
+		<hr>
+
+
+		`;
 	} else if (text == "firsttime") {
 		popup.innerHTML = `
 		<h2>Welcome to Heb12!</h2>
@@ -205,7 +214,7 @@ function notify(text) {
 	} else if (text == 'hehe') {
 		session.titleClicks++
 		if (session.titleClicks >= 10) {
-			popup.innerHTML = '<h1>You found an easter egg!</h1><p>This popup is very cool. Also you must check out <a href="http://frypup.is-great.net" target="_blank">frypup.is-great.net</a>. It is a website @Pufflegamerz made and it might just be the best one in the world. Also, you <i>need</i> to see this picture of my pet guinea pig:</p><img width="320" src="images/blank.jpg">';
+			popup.innerHTML = '<h1>You found an easter egg!</h1><p>This popup is very cool. Also you must check out <a href="http://frypup.is-great.net" target="_blank">frypup.is-great.net</a>. It is a website @Pufflegamerz made and it might just be the best one in the world. <br>Also, you <i>need</i> to see this picture of my pet guinea pig:</p><img width="320" src="images/blank.jpg">';
 		} else {
 			document.getElementsByClassName("popup")[0].style.display = "none";
 		}

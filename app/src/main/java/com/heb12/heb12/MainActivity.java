@@ -12,12 +12,16 @@ import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+import android.content.Intent;
+
 import java.io.File;
 import java.io.*;
 import java.io.FileOutputStream;
+
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.os.Environment;
+
 import java.io.ObjectOutputStream;
 
 
@@ -104,6 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     Toast.makeText(MainActivity.this, "Configuration file not found", Toast.LENGTH_SHORT).show();
                 }
+            } else if (type.equals("share")) {
+                Intent myIntent = new Intent(Intent.ACTION_SEND);
+                myIntent.setType("text/plain");
+                String shareBody = data;
+                myIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
+                startActivity(Intent.createChooser(myIntent, "Share using"));
             }
         }
     }
