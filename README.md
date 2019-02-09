@@ -6,3 +6,6 @@ Heb12 Mobile is a free mobile open-sourced app for reading the bible. It current
 1. Extract the latest file from `releases`
 2. Send the .apk file to your device
 3. Install it and follow the instructions to turn on storage permissions
+# Testing Online
+You can view the real app on an online Android emulator here: https://appetize.io/app/84f54x6gcjj12cy4ppz45kanqc?device=nexus5&scale=75&orientation=portrait&osVersion=8.1
+You can also view the Html files here: https://heb12.ml/heb12-mobile/app/src/main/assets/index.html
