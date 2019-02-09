@@ -28,6 +28,13 @@ window.onload = function() {
 		document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 	}
 
+	// A simple solution to the devmode problem :-)
+	if (!window.location.href.includes("?")) {
+		session.devmode = true;
+	} else {
+		session.devmode = false;
+	}
+
 	// Do some things if the viewer is on safari on iOS
 	if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
 		session.devmode = true;
