@@ -12,7 +12,7 @@ var session = {
 	currentTranslation:"",
 	currentTranslationString:"",
 	theme:"",
-	devmode:true
+	devmode:false
 }
 
 // When the page loads
