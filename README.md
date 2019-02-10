@@ -5,7 +5,7 @@ The app originally started on May 2nd, 2018 as a simple demo in MIT's App Invent
 
 ![Screenshots](https://raw.githubusercontent.com/heb12/heb12-mobile/master/screenshots.png)
 # Installation
-1. Extract the latest file from `releases`
+1. Extract the latest file from `prerelease`
 2. Send the .apk file to your device
 3. Install it and follow the instructions to turn on storage permissions
 
