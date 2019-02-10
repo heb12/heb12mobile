@@ -9,6 +9,9 @@ The app originally started on May 2nd, 2018 as a simple demo in MIT's App Invent
 2. Send the .apk file to your device
 3. Install it and follow the instructions to turn on storage permissions
 
+# Building and Editing
+Please refer to the (development page)[development].
+
 # Testing Online
 Make sure you resize the window because it will look wierd on a desktop.
 
