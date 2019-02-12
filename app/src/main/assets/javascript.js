@@ -404,7 +404,11 @@ function setTheme(theme) {
 function updateSearch(searching) {
 	var term = document.getElementById('search').value;
 	var result = document.getElementById('searchResults');
-	result.style.display = "block";
+	if (result.value == "") {
+		result.style.display = "none";
+	} else {
+		result.style.display = "block";
+	}
 	var validate = /([a-zA-z0-9 ]+)[: ;-]+([0-9]+)/gm;
 	var theBook = term.replace(validate,"$1");
 	var theChapter = term.replace(validate,"$2");
@@ -420,6 +424,8 @@ function updateSearch(searching) {
 	if (searching == "visit") {
 		sidebarAnimation("close");
 		document.getElementById('page').innerHTML = load(valid[1], theChapter);
+		result.style.display = "none";
+		document.getElementById('search').value = "";
 	}
 }
 
