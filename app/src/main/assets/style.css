@@ -174,12 +174,31 @@ select:active {
 }
 
 #search {
-	width: calc(90% - 80px);
+	width: calc(90%);
 	height: 33px;
 	outline: none;
 	border-radius: 4px;
 	border: 1px solid grey;
 	padding-left: 5px;
+}
+
+#searchResults {
+	margin-top: 5px;
+	width: calc(90% + 8px);
+	height: 36px;
+	outline: none;
+	border-radius: 4px;
+	border: 1px solid grey;
+	display: hidden;
+	box-sizing: border-box;
+	padding-top: 8px;
+	display: none;
+	user-select: none;
+	cursor: pointer;
+}
+
+#searchResults:active {
+	background: lightgrey;
 }
 
 #hamburger {

@@ -217,7 +217,7 @@ function notify(text) {
 		</select>
 		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>
 		<br>
-		<div class='button bg'>
+		<div class='button bg' onclick='updateConfigFile("def")'>
 			Reset
 		</div>
 		`;
@@ -398,4 +398,41 @@ function setTheme(theme) {
 	sidebarAnimation("close");
 	popupAnimation("close");
 	update();
+}
+
+// Update the search bar or go to the chapter
+function updateSearch(searching) {
+	var term = document.getElementById('search').value;
+	var result = document.getElementById('searchResults');
+	result.style.display = "block";
+	var validate = /([a-zA-z0-9 ]+)[: ;-]+([0-9]+)/gm;
+	var theBook = term.replace(validate,"$1");
+	var theChapter = term.replace(validate,"$2");
+
+	var valid = validChapter(theBook + "-" + theChapter);
+	if (valid[0]) {
+		result.innerHTML = "<span style='color:green;'>" + valid[1] + " " + theChapter + "</span>";
+	} else {
+		result.innerHTML = "<span style='color:red;'>Not found</span>";
+	}
+
+	// If user is searching something
+	if (searching == "visit") {
+		sidebarAnimation("close");
+		document.getElementById('page').innerHTML = load(valid[1], theChapter);
+	}
+}
+
+// Use like: validChapter("John-1");
+function validChapter(thing) {
+	for (var i = 0; i < books.length; i++) {
+		var firstPart = thing.replace("1st ","1").replace("2nd ","").split("-")[0].toUpperCase();
+		var secondPart = books[i].replace("1st ","1").replace("2nd ","").toUpperCase();
+		if (firstPart == secondPart) {
+			if (bible[i][2] >= thing.split("-")[1]) {
+				return [true,books[i]]
+			}
+		}
+	}
+	return [false]
 }

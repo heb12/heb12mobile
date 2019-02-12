@@ -54,9 +54,9 @@
 		<p class="large"><span id="hehe" onclick="notify('hehe')">Heb12</span> Mobile</p>
 		<span>Version 0.1.0</span>
 		<br><br>
-		<input id="search" placeholder="John 3:16">
-		<div class="button bg" onclick="random()">
-			Random
+		<input id="search" placeholder="John 3" onkeyup="updateSearch()">
+		<div id="searchResults" onclick="updateSearch('visit')">
+			
 		</div>
 		<br><hr>
 		<span>Current Translation:</span>
@@ -87,6 +87,10 @@
 			</div>
 		</div>
 		<hr><br>
+		<div class="button bg" onclick="random()">
+			Random
+		</div>
+		<br><br>
 		<div id="favorite">
 			<p class="text big">Psalms 5:3</p>
 			<br><br>
