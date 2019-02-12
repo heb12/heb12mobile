@@ -426,7 +426,7 @@ function updateSearch(searching) {
 // Use like: validChapter("John-1");
 function validChapter(thing) {
 	for (var i = 0; i < books.length; i++) {
-		var firstPart = thing.replace("1st ","1").replace("2nd ","").split("-")[0].toUpperCase();
+		var firstPart = thing.replace("1st ","1").replace("2nd ","").split("-")[0].replace("Psalm","Psalms").toUpperCase();
 		var secondPart = books[i].replace("1st ","1").replace("2nd ","").toUpperCase();
 		if (firstPart == secondPart) {
 			if (bible[i][2] >= thing.split("-")[1]) {
