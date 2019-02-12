@@ -10,7 +10,7 @@ The app originally started on May 2nd, 2018 as a simple demo in MIT's App Invent
 3. Install it and follow the instructions to turn on storage permissions
 
 # Building and Editing
-Please refer to the [development page](https://heb12.ml/heb12-mobile/development).
+Please refer to the [wiki page](https://github.com/heb12/heb12-mobile/wiki/Development).
 
 # Testing Online
 Make sure you resize the window because it will look wierd on a desktop.
