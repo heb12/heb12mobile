@@ -86,7 +86,7 @@ function load(book,chapter,verse) {
 	document.getElementById('chapter').innerHTML = "";
 
 	// Openbibles parser and the other json files
-	if (session.currentTranslationString == "KJV2000") {
+	if (isOpenbibles()) {
 
 		for (var i = 0; i < books.length; i++) {
 			if (books[i] == book) {
@@ -95,7 +95,7 @@ function load(book,chapter,verse) {
 		}
 
 		// Make accurate chapter length
-		for (var i = 1; i <= kjv2000.osis.osisText.div[bookNum].chapter.length; i++) {
+		for (var i = 1; i <= session.currentTranslation.osis.osisText.div[bookNum].chapter.length; i++) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
@@ -103,21 +103,20 @@ function load(book,chapter,verse) {
 		document.getElementById('chapter').value = chapter;
 
 		// 1 Chapter books
-		if (!kjv2000.osis.osisText.div[bookNum].chapter.verse) {
-			var verses = kjv2000.osis.osisText.div[bookNum].chapter[chapter - 1].verse;
+		if (!session.currentTranslation.osis.osisText.div[bookNum].chapter.verse) {
+			var verses = session.currentTranslation.osis.osisText.div[bookNum].chapter[chapter - 1].verse;
 		} else {
 			document.getElementById('chapter').innerHTML = "<option>1</option>";
-			var verses = kjv2000.osis.osisText.div[bookNum].chapter.verse;
+			var verses = session.currentTranslation.osis.osisText.div[bookNum].chapter.verse;
 		}
 
 		// Add html to verses or return just a verse
 		var page = "";
 		if (!isNaN(verse)) {
 			page = verses[verse].text;
-			alert();
 		} else {
 			for (var i = 0; i < verses.length; i++) {
-				page += " <b id='verse' onclick='notify(" + '"verse-' + (i + 1) + '"' + ")'>" + (i + 1) + "</b> " + verses[i].text + breaks;
+				page += " <b id='verse' onclick='notify(" + '"verse-' + (i) + '"' + ")'>" + (i + 1) + "</b> " + verses[i].text + breaks;
 			}
 		}
 
@@ -178,11 +177,15 @@ function notify(text) {
 		var chap = document.getElementById('chapter').value;
 		var verse = text.split("-")[1];
 		var entire = book + " " + chap + ":" + verse;
+		var verseText = verse;
+		if (isOpenbibles()) {
+			verseText += 2;
+		}
 		session.currentVerse = entire;
 
 		popup.innerHTML = `
 		<h2>` + entire + `</h2>
-		<span>` + load(book, chap, verse) + `</span>
+		<span>` + load(book, chap, verseText) + `</span>
 		<hr>
 		<div class="icon">
 			<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
@@ -412,7 +415,9 @@ function updateSearch(searching) {
 	} else {
 		result.style.display = "block";
 	}
-	var validate = /([a-zA-z0-9 ]+)[: ;-]+([0-9]+)/gm;
+
+	/// Regexp to recongnise books and chapters
+	var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
 	var theBook = term.replace(validate,"$1");
 	var theChapter = term.replace(validate,"$2");
 
@@ -435,8 +440,8 @@ function updateSearch(searching) {
 // Use like: validChapter("John-1");
 function validChapter(thing) {
 	for (var i = 0; i < books.length; i++) {
-		var firstPart = thing.replace("1st ","1").replace("2nd ","").split("-")[0].replace("Psalm","Psalms").toUpperCase();
-		var secondPart = books[i].replace("1st ","1").replace("2nd ","").toUpperCase();
+		var firstPart = editBook(thing, 1);
+		var secondPart = editBook(books[i], 2);
 		if (firstPart == secondPart) {
 			if (bible[i][2] >= thing.split("-")[1]) {
 				return [true,books[i]]
@@ -444,4 +449,24 @@ function validChapter(thing) {
 		}
 	}
 	return [false]
+}
+
+// Make Books easier to search
+function editBook(book, part) {
+	book = book.replace("1st ","1 ").replace("2nd ","2 ");
+	if (part == 1) {
+		book = book.replace("Psalm","Psalms").split("-")[0].toUpperCase();
+	} else {
+		book = book.toUpperCase();
+	}
+	return book
+}
+
+function isOpenbibles() {
+	var type = session.currentTranslationString;
+	if (type == "KJV2000") {
+		return true
+	} else {
+		return false
+	}
 }
