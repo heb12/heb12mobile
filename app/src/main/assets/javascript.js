@@ -255,6 +255,9 @@ function notify(text) {
 function random() {
 	var randomBook = Math.floor(Math.random() * books.length);
 	var randomChapter = Math.floor(Math.random() * session.currentTranslation[randomBook].chapters.length);
+	if (randomChapter == 0) {
+		randomChapter = 1;
+	}
 	document.getElementById('page').innerHTML = load(books[randomBook], randomChapter);
 	sidebarAnimation("close");
 }
@@ -263,7 +266,7 @@ function random() {
 function update(option) {
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
-	document.getElementById("kjvOnline").style.display = "none";
+	document.getElementById("netOnline").style.display = "none";
 
 	updateTranslation();
 
@@ -289,10 +292,10 @@ function update(option) {
 	}
 
 	// Show overlay iframe if translation is KJV Online
-	if (session.currentTranslationString == "KJVONLINE") {
+	if (session.currentTranslationString == "netOnline") {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
-		var iframe = document.getElementById('kjvOnline');
+		var iframe = document.getElementById('netOnline');
 		iframe.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full";
 	} else {
 		document.getElementById('page').innerHTML = load(book, chapter);
@@ -307,23 +310,23 @@ function update(option) {
 // Update the current translation
 function updateTranslation() {
 	var translation = document.getElementById('translation').value;
-	document.getElementById("kjvOnline").style.display = "none";
+	document.getElementById("netOnline").style.display = "none";
 	if (translation.startsWith("BBE")) {
 		session.currentTranslation = eval(bbe);
 		session.currentTranslationString = "BBE";
 	} else if (translation.startsWith("KJV 2000")) {
-		document.getElementById('kjvOnline').style.display = "none";
+		document.getElementById('netOnline').style.display = "none";
 		session.currentTranslationString = "KJV2000";
 		session.currentTranslation = eval(kjv2000);
 	} else if (translation.startsWith("KJV") && translation.endsWith("(Offline)")) {
 		session.currentTranslation = eval(kjv);
 		session.currentTranslationString = "KJV";
-	} else if (translation.startsWith("KJV") && translation.endsWith("(Online)")) {
-		document.getElementById('kjvOnline').style.display = "block";
-		session.currentTranslationString = "KJVONLINE";
-		session.currentTranslation = eval(kjv); // If current translation is KJV Offline, use Offline KJV so that everything works.
+	} else if (translation.startsWith("NET") && translation.endsWith("(Online)")) {
+		document.getElementById('netOnline').style.display = "block";
+		session.currentTranslationString = "netOnline";
+		session.currentTranslation = eval(kjv);
 	} else {
-		document.getElementById("kjvOnline").style.display = "none";
+		document.getElementById("netOnline").style.display = "none";
 	}
 }
 
