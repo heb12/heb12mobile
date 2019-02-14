@@ -97,6 +97,7 @@ function load(book,chapter,verse) {
 	// Openbibles parser and the other json files
 	if (isOpenbibles()) {
 
+		var bookNum;
 		for (var i = 0; i < books.length; i++) {
 			if (books[i] == book) {
 				bookNum = i;
@@ -104,7 +105,7 @@ function load(book,chapter,verse) {
 		}
 
 		// Make accurate chapter length
-		for (var i = 1; i <= session.currentTranslation.osis.osisText.div[bookNum].chapter.length; i++) {
+		for (var i = 1; i <= bible[bookNum][2]; i++) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
@@ -112,11 +113,12 @@ function load(book,chapter,verse) {
 		document.getElementById('chapter').value = chapter;
 
 		// 1 Chapter books
+		var verses;
 		if (!session.currentTranslation.osis.osisText.div[bookNum].chapter.verse) {
-			var verses = session.currentTranslation.osis.osisText.div[bookNum].chapter[chapter - 1].verse;
+			verses = session.currentTranslation.osis.osisText.div[bookNum].chapter[chapter - 1].verse;
 		} else {
 			document.getElementById('chapter').innerHTML = "<option>1</option>";
-			var verses = session.currentTranslation.osis.osisText.div[bookNum].chapter.verse;
+			verses = session.currentTranslation.osis.osisText.div[bookNum].chapter.verse;
 		}
 
 		// Add html to verses or return just a verse
@@ -128,6 +130,9 @@ function load(book,chapter,verse) {
 				page += " <b id='verse' onclick='notify(" + '"verse-' + (i) + '"' + ")'>" + (i + 1) + "</b> " + verses[i].text + breaks;
 			}
 		}
+
+		page = page.replace(/\[/g,"");
+		page = page.replace(/\]/g,"");
 
 		return page;
 	} else {
@@ -187,16 +192,16 @@ function notify(text) {
 		var book = document.getElementById('book').value;
 		var chap = document.getElementById('chapter').value;
 		var verse = text.split("-")[1];
-		var entire = book + " " + chap + ":" + verse;
 		var verseText = verse;
 		if (isOpenbibles()) {
-			verseText += 2;
+			verseText++;
 		}
+		var entire = book + " " + chap + ":" + verseText;
 		session.currentVerse = entire;
 
 		popup.innerHTML = `
 		<h2>` + entire + `</h2>
-		<span>` + load(book, chap, verseText) + `</span>
+		<span>` + load(book, chap, verse) + `</span>
 		<hr>
 		<div class="icon">
 			<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
