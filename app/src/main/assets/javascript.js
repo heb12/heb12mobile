@@ -101,6 +101,7 @@ function load(book,chapter,verse) {
 		for (var i = 0; i < books.length; i++) {
 			if (books[i] == book) {
 				bookNum = i;
+				session.currentBookNumber = i;
 			}
 		}
 
@@ -293,7 +294,8 @@ function update(option) {
 	if (option == "next") {
 		if (bible[session.currentBookNumber][2] == Number(document.getElementById('chapter').value)) {
 			if (book == "Revelation" && chapter == 22) {
-				console.log("End of Bible :-/");
+				book = "Genesis";
+				chapter = 1;
 			} else {
 				book = books[session.currentBookNumber + 1];
 				chapter = 1;
@@ -347,6 +349,8 @@ function updateTranslation() {
 		session.currentTranslationString = "KJV";
 	} else if (translation.startsWith("ASV") && translation.endsWith("(Offline)")) {
 		session.currentTranslationString = "ASV";
+	} else if (translation.startsWith("DBY") && translation.endsWith("(Offline)")) {
+		session.currentTranslationString = "DBY";
 	} else if (translation.startsWith("NET") && translation.endsWith("(Online)")) {
 		document.getElementById('netOnline').style.display = "block";
 		session.currentTranslationString = "netOnline";
@@ -365,7 +369,10 @@ function updateTranslation() {
 
 		script.onload = function() {
 			session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
+
 		}
+	} else {
+		session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
 	}
 }
 
@@ -501,7 +508,7 @@ function editBook(book, part) {
 // Check if current translation is Openbibles
 function isOpenbibles() {
 	var type = session.currentTranslationString;
-	if (type == "KJV2000" || type == "ASV") {
+	if (type == "KJV2000" || type == "ASV" || type == "DBY") {
 		return true
 	} else {
 		return false
