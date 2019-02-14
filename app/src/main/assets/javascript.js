@@ -10,7 +10,8 @@ var session = {
 	theme:"",
 	devmode:false,
 	currentBookNumber:57,
-	currentTheme:"Default"
+	currentTheme:"Default",
+	loadedTranslations:[]
 }
 
 var data;
@@ -72,12 +73,20 @@ window.onload = function() {
 
 	// load Hebrews 12
 	updateTranslation();
-	if (session.devmode) {
-		document.getElementById('page').innerHTML = load("Hebrews",12);
-	} else {
-		document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
-	}
-	update();
+
+	// Use special methods to use script only when it is loaded
+	var waitUntilLoad = setInterval(function() {
+		if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
+			if (session.devmode) {
+				document.getElementById('page').innerHTML = load("Hebrews",12);
+			} else {
+				document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
+			}
+			update();
+			clearInterval(waitUntilLoad);
+		}
+	},50);
+
 }
 
 // Function to get verse or verses from the json files
@@ -122,6 +131,7 @@ function load(book,chapter,verse) {
 
 		return page;
 	} else {
+
 		var page;
 		var booky;
 
@@ -167,6 +177,7 @@ function load(book,chapter,verse) {
 
 // Notify function - can only be used once at a time.
 function notify(text) {
+
 	popupAnimation("show");
 	var popup = document.getElementById('popupContent');
 
@@ -197,7 +208,6 @@ function notify(text) {
 			<img src="images/share.svg" width="45" onclick="interface.exec('share','` + entire + " - " + load(book, chap, verse) + `')">
 		</div>
 		<hr>
-
 
 		`;
 	} else if (text == "firsttime") {
@@ -261,6 +271,7 @@ function random() {
 	if (randomChapter == 0) {
 		randomChapter = 1;
 	}
+
 	document.getElementById('page').innerHTML = load(books[randomBook], randomChapter);
 	sidebarAnimation("close");
 }
@@ -285,6 +296,7 @@ function update(option) {
 		} else {
 			chapter++;
 		}
+
 	} else if (option == "previous") {
 		if (chapter !== 1) {
 			chapter--;
@@ -301,7 +313,12 @@ function update(option) {
 		var iframe = document.getElementById('netOnline');
 		iframe.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full";
 	} else {
-		document.getElementById('page').innerHTML = load(book, chapter);
+		var waitUntilLoad = setInterval(function() {
+			if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
+				document.getElementById('page').innerHTML = load(book, chapter);
+				clearInterval(waitUntilLoad);
+			}
+		},50);
 	}
 
 	// Update the configuration file
@@ -313,23 +330,37 @@ function update(option) {
 // Update the current translation
 function updateTranslation() {
 	var translation = document.getElementById('translation').value;
+
+	// Check what the selected translation is
 	document.getElementById("netOnline").style.display = "none";
 	if (translation.startsWith("BBE")) {
-		session.currentTranslation = eval(bbe);
 		session.currentTranslationString = "BBE";
 	} else if (translation.startsWith("KJV 2000")) {
 		document.getElementById('netOnline').style.display = "none";
 		session.currentTranslationString = "KJV2000";
-		session.currentTranslation = eval(kjv2000);
 	} else if (translation.startsWith("KJV") && translation.endsWith("(Offline)")) {
-		session.currentTranslation = eval(kjv);
 		session.currentTranslationString = "KJV";
+	} else if (translation.startsWith("ASV") && translation.endsWith("(Offline)")) {
+		session.currentTranslationString = "ASV";
 	} else if (translation.startsWith("NET") && translation.endsWith("(Online)")) {
 		document.getElementById('netOnline').style.display = "block";
 		session.currentTranslationString = "netOnline";
-		session.currentTranslation = eval(kjv);
 	} else {
 		document.getElementById("netOnline").style.display = "none";
+	}
+
+	// Only load the script if it hasn't loaded yet
+	if (!session.loadedTranslations.includes(session.currentTranslationString.toLowerCase())) {
+		var script = document.createElement("script");
+	    script.src = "bibles/" + session.currentTranslationString.toLowerCase() + ".js";
+	    script.type = "text/javascript";
+	    script.id = session.currentTranslationString.toLowerCase() + "Script";
+		document.getElementsByTagName("head")[0].appendChild(script);
+		session.loadedTranslations.push(session.currentTranslationString.toLowerCase());
+
+		script.onload = function() {
+			session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
+		}
 	}
 }
 
@@ -462,9 +493,10 @@ function editBook(book, part) {
 	return book
 }
 
+// Check if current translation is Openbibles
 function isOpenbibles() {
 	var type = session.currentTranslationString;
-	if (type == "KJV2000") {
+	if (type == "KJV2000" || type == "ASV") {
 		return true
 	} else {
 		return false
