@@ -12,7 +12,9 @@ var session = {
 	currentBookNumber:57,
 	currentTheme:"Default",
 	loadedTranslations:[],
-	netjsondata:"foo"
+	netjsondata:"foo",
+	doneLoadingJSON:false,
+	netTextData:"foo"
 }
 
 var data;
@@ -95,16 +97,17 @@ function load(book,chapter,verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
 	document.getElementById('chapter').innerHTML = "";
 
+	var bookNum;
+	for (var i = 0; i < books.length; i++) {
+		if (books[i] == book) {
+			bookNum = i;
+			session.currentBookNumber = i;
+		}
+	}
+
+
 	// Openbibles parser and the other json files
 	if (isOpenbibles()) {
-
-		var bookNum;
-		for (var i = 0; i < books.length; i++) {
-			if (books[i] == book) {
-				bookNum = i;
-				session.currentBookNumber = i;
-			}
-		}
 
 		// Make accurate chapter length
 		for (var i = 1; i <= bible[bookNum][2]; i++) {
@@ -137,6 +140,45 @@ function load(book,chapter,verse) {
 		page = page.replace(/\]/g,"");
 
 		return page;
+	} else if (session.currentTranslationString == "netOnline") {
+
+		for (var i = 1; i <= bible[session.currentBookNumber][2]; i++) {
+			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+		}
+
+		document.getElementById('book').value = book;
+		document.getElementById('chapter').value = chapter;
+
+		var netjson = document.createElement("SCRIPT");
+		netjson.type = "text/javascript";
+
+		if (!isNaN(verse)) {
+			netjson.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + ":" + verse + "&type=json&callback=getNET";
+		} else {
+			netjson.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getNET&&formatting=full";
+		}
+		console.log(netjson.src);
+
+		netjson.id = "netjson";
+		document.getElementsByTagName('head')[0].appendChild(netjson);
+
+		netjson.onload = function() {
+			var finaldata = "";
+			if (isNaN(verse)) {
+				for (var i = 0; i < session.netjsondata.length; i++) {
+					if (!(!session.netjsondata[i].title)) {
+						finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
+					}
+					finaldata +=  "<span> <b id='verse' onclick='notify(" + '"verse-' + (i) + '"' + ")'>" + (i + 1) + "</b> </span>"
+					finaldata += session.netjsondata[i].text;
+				}
+			} else {
+				finaldata = session.netjsondata[0].text;
+			}
+
+			session.doneLoadingJSON = true;
+			session.netTextData = finaldata;
+		}
 	} else {
 
 		var page;
@@ -195,28 +237,53 @@ function notify(text) {
 		var chap = document.getElementById('chapter').value;
 		var verse = text.split("-")[1];
 		var verseText = verse;
-		if (isOpenbibles()) {
+		if (isOpenbibles() || session.currentTranslationString == "netOnline") {
 			verseText++;
 		}
-		var entire = book + " " + chap + ":" + verseText;
-		session.currentVerse = entire;
+		var theVerse;
+		var done = false;
+		if (session.currentTranslationString == "netOnline") {
+			load(book, chap, verseText);
+			var int = setInterval(function() {
+				if (session.doneLoadingJSON) {
+					theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+					console.log(theVerse);
+					done = true;
+					clearInterval(int);
+				}
+			},1);
+		} else {
+			theVerse = load(book, chap, verse);
+			session.doneLoadingJSON = true;
+			done = true;
+		}
 
-		popup.innerHTML = `
-		<h2>` + entire + `</h2>
-		<span>` + load(book, chap, verse) + `</span>
-		<hr>
-		<div class="icon">
-			<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
-		</div>
-		<div class="icon">
-			<img src="images/clipboard.svg" width="45" onclick="interface.exec('copy','` + load(book, chap, verse) + `')">
-		</div>
-		<div class="icon">
-			<img src="images/share.svg" width="45" onclick="interface.exec('share','` + entire + " - " + load(book, chap, verse) + `')">
-		</div>
-		<hr>
+		var entire;
+		var wait = setInterval(function() {
+			if (session.doneLoadingJSON && done) {
+				entire = book + " " + chap + ":" + verseText;
+				session.currentVerse = entire;
 
-		`;
+				popup.innerHTML = `
+				<h2>` + entire + `</h2>
+				<span>` + theVerse + `</span>
+				<hr>
+				<div class="icon">
+					<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
+				</div>
+				<div class="icon">
+					<img src="images/clipboard.svg" width="45" onclick="interface.exec('copy','` + theVerse + `')">
+				</div>
+				<div class="icon">
+					<img src="images/share.svg" width="45" onclick="interface.exec('share','` + entire + " - " + theVerse + `')">
+				</div>
+				<hr>
+
+				`;
+				session.doneLoadingJSON = false;
+				clearInterval(wait);
+			}
+		},10);
 	} else if (text == "firsttime") {
 		popup.innerHTML = `
 		<h2>Welcome to Heb12!</h2>
@@ -309,6 +376,9 @@ function update(option) {
 			}
 		} else {
 			chapter++;
+			if (bible[session.currentBookNumber][2] <= chapter) {
+				chapter = bible[session.currentBookNumber][2];
+			}
 		}
 
 	} else if (option == "previous") {
@@ -320,33 +390,16 @@ function update(option) {
 		}
 	}
 
-	if (bible[session.currentBookNumber][2] <= chapter) {
-		chapter = bible[session.currentBookNumber][2];
-	}
-
 	// Get offline data
 	if (session.currentTranslationString == "netOnline") {
-		document.getElementById('book').value = book;
-		document.getElementById('chapter').value = chapter;
-
-		var netjson = document.createElement("SCRIPT");
-		netjson.type = "text/javascript";
-		netjson.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getNET&&formatting=full";
-		netjson.id = "netjson";
-		document.getElementsByTagName('head')[0].appendChild(netjson);
-
-		netjson.onload = function() {
-			var finaldata = "";
-			for (var i = 0; i < session.netjsondata.length; i++) {
-				if (!(!session.netjsondata[i].title)) {
-					finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
-				}
-				finaldata += session.netjsondata[i].text;
+		load(book, chapter);
+		var int = setInterval(function() {
+			if (session.doneLoadingJSON) {
+				document.getElementById('page').innerHTML = session.netTextData;
+				session.doneLoadingJSON = false;
+				clearInterval(int);
 			}
-
-			document.getElementById('page').innerHTML = finaldata;
-		}
-
+		},1);
 	} else {
 		var waitUntilLoad = setInterval(function() {
 			if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
@@ -502,7 +555,9 @@ function updateSearch(searching) {
 	// If user is searching something
 	if (searching == "visit") {
 		sidebarAnimation("close");
-		document.getElementById('page').innerHTML = load(valid[1], theChapter);
+		document.getElementById('book').value = valid[1];
+		document.getElementById('chapter').value = theChapter;
+		update();
 		result.style.display = "none";
 		document.getElementById('search').value = "";
 	}

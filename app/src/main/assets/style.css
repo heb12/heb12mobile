@@ -278,3 +278,13 @@ select:active {
     top: calc(-100% + 21px);
   }
 }
+
+/* Net Online Formatting Fixes */
+#main .bodytext {
+	
+}
+
+#main a {
+	margin-top: 10px;
+	display: block;
+}
