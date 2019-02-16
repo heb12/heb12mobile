@@ -85,7 +85,7 @@ window.onload = function() {
 			update();
 			clearInterval(waitUntilLoad);
 		}
-	},50);
+	},10);
 
 }
 
@@ -286,9 +286,15 @@ function random() {
 function update(option) {
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
-	document.getElementById("netOnline").style.display = "none";
 
 	updateTranslation();
+
+	// Update book number
+	for (var i = 0; i < books.length; i++) {
+		if (books[i] == book) {
+			session.currentBookNumber = i;
+		}
+	}
 
 	// If the user goes back at the first chapter of a book, go back to the previous book
 	if (option == "next") {
@@ -313,19 +319,27 @@ function update(option) {
 		}
 	}
 
-	// Show overlay iframe if translation is KJV Online
-	if (session.currentTranslationString == "netOnline") {
+	if (bible[session.currentBookNumber][2] <= chapter) {
+		chapter = bible[session.currentBookNumber][2];
+	}
+
+	// Get offline data
+	if (session.currentTranslationString == "netOnline" && !session.devmode) {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
-		var iframe = document.getElementById('netOnline');
-		iframe.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full";
+		var result = interface.exec("get", "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full");
+
+		// Very bad method - needs to be updated
+		setTimeout(function() {
+			document.getElementById('page').innerHTML = result;
+		},10);
 	} else {
 		var waitUntilLoad = setInterval(function() {
 			if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
 				document.getElementById('page').innerHTML = load(book, chapter);
 				clearInterval(waitUntilLoad);
 			}
-		},50);
+		},10);
 	}
 
 	// Update the configuration file
@@ -339,11 +353,9 @@ function updateTranslation() {
 	var translation = document.getElementById('translation').value;
 
 	// Check what the selected translation is
-	document.getElementById("netOnline").style.display = "none";
 	if (translation.startsWith("BBE")) {
 		session.currentTranslationString = "BBE";
 	} else if (translation.startsWith("KJV 2000")) {
-		document.getElementById('netOnline').style.display = "none";
 		session.currentTranslationString = "KJV2000";
 	} else if (translation.startsWith("KJV") && translation.endsWith("(Offline)")) {
 		session.currentTranslationString = "KJV";
@@ -352,10 +364,7 @@ function updateTranslation() {
 	} else if (translation.startsWith("DBY") && translation.endsWith("(Offline)")) {
 		session.currentTranslationString = "DBY";
 	} else if (translation.startsWith("NET") && translation.endsWith("(Online)")) {
-		document.getElementById('netOnline').style.display = "block";
 		session.currentTranslationString = "netOnline";
-	} else {
-		document.getElementById("netOnline").style.display = "none";
 	}
 
 	// Only load the script if it hasn't loaded yet
@@ -369,10 +378,11 @@ function updateTranslation() {
 
 		script.onload = function() {
 			session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
-
 		}
 	} else {
-		session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
+		if (!session.currentTranslationString == "netOnline") {
+			session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
+		}
 	}
 }
 
@@ -430,7 +440,7 @@ function updateConfigFile(def) {
 			config += options[i][0] + "=" + options[i][2] + ";";
 		}
 	}
-	interface.exec("write",config);
+	interface.exec("write", config);
 }
 
 // Set current theme
@@ -459,7 +469,7 @@ function updateSearch(searching) {
 		result.style.display = "block";
 	}
 
-	/// Regexp to recongnise books and chapters
+	// Regexp to recongnise books and chapters
 	var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
 	var theBook = term.replace(validate,"$1");
 	var theChapter = term.replace(validate,"$2");

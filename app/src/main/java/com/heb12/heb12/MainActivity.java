@@ -3,14 +3,8 @@ package com.heb12.heb12;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebView;
-import android.app.Activity;
-import android.os.Build;
-import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.webkit.ValueCallback;
-import android.webkit.WebViewClient;
 import android.widget.Toast;
 import android.content.Intent;
 
@@ -22,7 +16,12 @@ import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.os.Environment;
 
-import java.io.ObjectOutputStream;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 config.createNewFile();
                 firstTime = true;
             }
+
 
             // Read file and send it to the WebView
             int length = (int) config.length();
@@ -85,18 +85,24 @@ public class MainActivity extends AppCompatActivity {
 
     // Update settings --- toasty code: Toast.makeText(MainActivity.this, "foo", Toast.LENGTH_SHORT).show();
     private class JavaScriptInterface {
+        private RequestQueue queue;
+        private String result;
+
         @JavascriptInterface
-        public void exec(String type, String data) {
+        public String exec(String type, String data) {
             if (type.equals("other")) {
+
                 if (data.equals("close")) {
                     finish();
                 }
+
             } else if (type.equals("copy")) {
 
                 // Copy text to clipboard
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("Verse Copied", data);
                 clipboard.setPrimaryClip(clip);
+
             } else if (type.equals("write")) {
 
                 // Function to update the config file
@@ -108,15 +114,41 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     Toast.makeText(MainActivity.this, "Configuration file not found", Toast.LENGTH_SHORT).show();
                 }
+
             } else if (type.equals("share")) {
+
                 Intent myIntent = new Intent(Intent.ACTION_SEND);
                 myIntent.setType("text/plain");
                 String shareBody = data;
                 myIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
                 startActivity(Intent.createChooser(myIntent, "Share using"));
+
             } else if (type.equals("toast")) {
+
                 Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+
+            } else if (type.equals("get")) {
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, data,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                result = response;
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                
+                queue.add(stringRequest);
+
+                return result;
+
             }
+
+            return type;
         }
     }
 }
