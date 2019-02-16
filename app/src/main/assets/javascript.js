@@ -328,6 +328,7 @@ function update(option) {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
 		var result = interface.exec("get", "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full");
+		result = result.replace(/<span class="verseNumber">([0-9]+)<\/span>/gm,`<span id='verse' onclick="notify('verse-$1')">$1</span>`);
 
 		// Very bad method - needs to be updated
 		setTimeout(function() {
