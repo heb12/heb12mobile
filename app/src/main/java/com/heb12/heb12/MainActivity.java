@@ -16,14 +16,6 @@ import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.os.Environment;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-
 public class MainActivity extends AppCompatActivity {
 
     private WebView view;
@@ -85,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
     // Update settings --- toasty code: Toast.makeText(MainActivity.this, "foo", Toast.LENGTH_SHORT).show();
     private class JavaScriptInterface {
-        private RequestQueue queue;
         private String result;
 
         @JavascriptInterface
@@ -126,25 +117,6 @@ public class MainActivity extends AppCompatActivity {
             } else if (type.equals("toast")) {
 
                 Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
-
-            } else if (type.equals("get")) {
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, data,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                result = response;
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                queue.add(stringRequest);
-
-                return result;
 
             }
 

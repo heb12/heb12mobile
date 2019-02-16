@@ -11,7 +11,8 @@ var session = {
 	devmode:false,
 	currentBookNumber:57,
 	currentTheme:"Default",
-	loadedTranslations:[]
+	loadedTranslations:[],
+	netjsondata:"foo"
 }
 
 var data;
@@ -324,16 +325,28 @@ function update(option) {
 	}
 
 	// Get offline data
-	if (session.currentTranslationString == "netOnline" && !session.devmode) {
+	if (session.currentTranslationString == "netOnline") {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
-		var result = interface.exec("get", "http://labs.bible.org/api/?passage=" + book + " " + chapter + " && formatting=full");
-		result = result.replace(/<span class="verseNumber">([0-9]+)<\/span>/gm,`<span id='verse' onclick="notify('verse-$1')">$1</span>`);
 
-		// Very bad method - needs to be updated
-		setTimeout(function() {
-			document.getElementById('page').innerHTML = result;
-		},10);
+		var netjson = document.createElement("SCRIPT");
+		netjson.type = "text/javascript";
+		netjson.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getNET&&formatting=full";
+		netjson.id = "netjson";
+		document.getElementsByTagName('head')[0].appendChild(netjson);
+
+		netjson.onload = function() {
+			var finaldata = "";
+			for (var i = 0; i < session.netjsondata.length; i++) {
+				if (!(!session.netjsondata[i].title)) {
+					finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
+				}
+				finaldata += session.netjsondata[i].text;
+			}
+
+			document.getElementById('page').innerHTML = finaldata;
+		}
+
 	} else {
 		var waitUntilLoad = setInterval(function() {
 			if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
@@ -390,6 +403,10 @@ function updateTranslation() {
 // A simple function to search somthing on Google
 function search(thing) {
 	window.open("https://www.google.nl/search?q=" + thing);
+}
+
+function getNET(data) {
+	session.netjsondata = data;
 }
 
 // Function to close settings menu
