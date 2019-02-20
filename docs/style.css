@@ -59,7 +59,13 @@ li:hover {
 	font-style: 25px;
 }
 
-#about {
+#features {
 	height: 100%;
 	background: lightblue;
+}
+
+.fork {
+	position: absolute;
+	right: 0px;
+	top: 0px;
 }

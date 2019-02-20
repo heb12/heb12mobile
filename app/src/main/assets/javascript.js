@@ -157,7 +157,6 @@ function load(book,chapter,verse) {
 		} else {
 			netjson.src = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getNET&&formatting=full";
 		}
-		console.log(netjson.src);
 
 		netjson.id = "netjson";
 		document.getElementsByTagName('head')[0].appendChild(netjson);
@@ -247,7 +246,6 @@ function notify(text) {
 			var int = setInterval(function() {
 				if (session.doneLoadingJSON) {
 					theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
-					console.log(theVerse);
 					done = true;
 					clearInterval(int);
 				}
