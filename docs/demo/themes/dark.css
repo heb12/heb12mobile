@@ -1,0 +1,42 @@
+body {
+	color: white;
+	background: black;
+}
+
+#sidebar {
+	background: black;
+}
+
+#top {
+	background: black;
+}
+
+#bottom {
+	background: black;
+}
+
+select {
+	color: white;
+}
+
+option {
+	background: black;
+}
+
+.icon img {
+	filter: invert(1);
+}
+
+#popupContent {
+	background: black;
+}
+
+.popup .close {
+	background: black;
+	color: white;
+	border-top: 1px solid white;
+}
+
+a {
+	color: white;
+}

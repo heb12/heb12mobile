@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Heb12</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<center id='loadingMessage'>
+		<p>
+			Loading...
+		</p>
+	</center>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- Load Translations -->
+	<script type="text/javascript" src="bible.js"></script>
+
+</head>
+<body onmousedown="session.mouseDown = true" onmouseup="session.mouseDown = false">
+
+<div id="top">
+	<center>
+		<select id="book" onchange="update()"></select>
+		<select id="chapter" onchange="update()"></select>
+		<div id="hamburger" class="icon" onclick="sidebarAnimation('hehe')">
+			<img src="images/menu.svg" width="45" >
+		</div>
+	</center>
+</div>
+
+<div id="main" onclick="sidebarAnimation('close')">
+	<p id="page">
+		
+	</p>
+</div>
+
+<div id="bottom">
+	<div class="button left" onclick="update('previous')">
+		<span>Previous</span>
+	</div>
+	<div class="button right" onclick="update('next')">
+		<span>Next</span>
+	</div>
+</div>
+
+<div id="sidebar">
+	<center>
+		<p class="large"><span id="hehe" onclick="notify('hehe')">Heb12</span> Mobile</p>
+		<span>Version 0.1.0</span>
+		<br><br>
+		<input id="search" placeholder="Hebrews 12" onkeyup="updateSearch()">
+		<div id="searchResults" onclick="updateSearch('visit')">
+			
+		</div>
+		<br><hr>
+		<span>Current Translation:</span>
+		<select id="translation" onchange="update()">
+			<option selected="selected">
+				BBE (Bible in Basic English) (Offline)
+			</option>
+			<option>
+				KJV (King James Version) (Offline)
+			</option>
+			<option>
+				KJV 2000 (King James Version 2000) (Offline)
+			</option>
+			<option>
+				NET (New English Translation) (Online)
+			</option>
+			<option>
+				ASV (American Standard Version) (Offline)
+			</option>
+			<option>
+				DBY (Darby Bible) (Offline)
+			</option>
+		</select>
+		<br><hr>
+		<div id="iconToolbar">
+			<div class="icon">
+				<img src="images/info.svg" width="45" onclick='notify("info")'>
+			</div>
+			<div class="icon">
+				<img src="images/settings.svg" width="45" onclick="notify('settings')">
+			</div>
+			<div class="icon">
+				<img src="images/close.svg" width="45" onclick='interface.exec("other","close")'>
+			</div>
+		</div>
+		<hr><br>
+		<div class="button bg" onclick="random()">
+			Random
+		</div>
+	</center>
+</div>
+
+<div class="popup">
+	<div id="popupContent">
+		
+	</div>
+	<div class="close" onclick="popupAnimation('close')">
+		<p><b>Okay</b></p>
+	</div>
+</div>
+<div id="theme">
+	
+</div>
+</body>
+<script type="text/javascript" src="javascript.js"></script>
+</html>
