@@ -14,7 +14,10 @@ var session = {
 	loadedTranslations:[],
 	netjsondata:"foo",
 	doneLoadingJSON:false,
-	netTextData:"foo"
+	netTextData:"foo",
+	numberThingy:0,
+	loadedScript:false,
+	loadedScriptData:"foo"
 }
 
 var data;
@@ -87,6 +90,21 @@ window.onload = function() {
 			}
 			update();
 			clearInterval(waitUntilLoad);
+		}
+	},10);
+
+	// Load verse of the day
+	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript");
+	var waitUntilLoad2 = setInterval(function() {
+		if (session.loadedScript) {
+			var waitUntilLoad3 = setInterval(function() {
+				if (session.loadedScript) {
+					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+					document.getElementById('votd').innerHTML = theVerse;
+					clearInterval(waitUntilLoad3);
+				}
+			},1);
+			clearInterval(waitUntilLoad2);
 		}
 	},10);
 
@@ -594,4 +612,25 @@ function isOpenbibles() {
 	} else {
 		return false
 	}
+}
+
+// Simple script to load JSONP
+function loadJSONP(url) {
+	session.loadedScript = false;
+
+	var iframe = document.createElement("SCRIPT");
+	iframe.src = url;
+	iframe.id = "loadedScript" + session.numberThingy;
+	iframe.type = "text/javascript";
+	document.body.appendChild(iframe);
+
+	iframe.onload = function() {
+		session.loadedScript = true;
+	}
+
+	session.numberThingy++;
+}
+
+function getScript(data) {
+	session.loadedScriptData = data;
 }
