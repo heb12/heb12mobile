@@ -7,7 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be3830d1-5156-4f5a-80b9-7fcfd88dc92d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/src/main/assets/javascript.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/assets/javascript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,11 +26,12 @@
     <session id="1229048601">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.31" value="1" />
           <entry key="project.open.time.32" value="1" />
+          <entry key="project.open.time.34" value="1" />
           <entry key="project.open.time.35" value="1" />
           <entry key="project.open.time.37" value="1" />
           <entry key="project.open.time.41" value="1" />
@@ -39,7 +40,7 @@
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.97" value="1" />
-          <entry key="project.opened" value="12" />
+          <entry key="project.opened" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -96,7 +97,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/heb12/heb12/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1408">
+            <state relative-caret-position="17">
               <caret line="17" selection-start-line="17" selection-end-line="17" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -141,7 +142,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -153,8 +155,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -262,8 +263,8 @@
       <window_info anchor="bottom" id="Logcat" order="1" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.3295964" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="4" sideWeight="0.50488997" side_tool="true" visible="true" weight="0.3295964" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.49511003" visible="true" weight="0.3295964" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="4" sideWeight="0.5055012" side_tool="true" visible="true" weight="0.3295964" />
+      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.4944988" visible="true" weight="0.3295964" />
       <window_info anchor="bottom" id="Android Profiler" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="7" />
       <window_info anchor="bottom" id="Debug" order="8" />
@@ -308,7 +309,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/heb12/heb12/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1408">
+        <state relative-caret-position="17">
           <caret line="17" selection-start-line="17" selection-end-line="17" />
           <folding>
             <element signature="imports" expanded="true" />
