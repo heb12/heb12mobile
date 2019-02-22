@@ -244,6 +244,16 @@ select:active {
 	background: transparent;
 }
 
+@font-face {
+    font-family: Comfortaa;
+    src: url(Comfortaa.ttf);
+}
+
+@font-face {
+    font-family: Helvetica;
+    src: url(Helvetica.ttf);
+}
+
 @keyframes slideIn {
   from {
   	left: calc(-87% - 1px);

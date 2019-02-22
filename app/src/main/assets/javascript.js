@@ -17,7 +17,8 @@ var session = {
 	netTextData:"foo",
 	numberThingy:0,
 	loadedScript:false,
-	loadedScriptData:"foo"
+	loadedScriptData:"foo",
+	currentFont:"Arial"
 }
 
 var data;
@@ -84,7 +85,7 @@ window.onload = function() {
 	var waitUntilLoad = setInterval(function() {
 		if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
 			if (session.devmode) {
-				document.getElementById('page').innerHTML = load("Hebrews",12);
+				document.getElementById('page').innerHTML = load("Hebrews",4);
 			} else {
 				document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
 			}
@@ -318,6 +319,17 @@ function notify(text) {
 			<option>Dark</option>
 			<option>Dark Blue</option>
 		</select>
+		<br>
+		<p id="fontPreview">The big brown fox jumps over the lazy dog.</p>
+		<span class='textBesideSelect'>Theme:</span>
+		<select id='fontSelect' onchange="setFont(this.value)">
+			<option>Times New Roman</option>
+			<option>Arial</option>
+			<option>Comfortaa</option>
+			<option>Helvetica</option>
+			<option>Courier New</option>
+		</select>
+
 		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>
 		<br>
 		<div class='button bg' onclick='updateConfigFile("def")'>
@@ -325,6 +337,7 @@ function notify(text) {
 		</div>
 		`;
 		document.getElementById('themeSelect').value = session.currentTheme;
+		document.getElementById('fontSelect').value = session.currentFont;
 	} else if (text == "info") {
 		popup.innerHTML = `
 		<img style="display:inline; float:left; margin-right:10px;" src="images/logo.png" width="150">
@@ -511,10 +524,11 @@ function updateConfigFile(def) {
 
 	// Name, value, default value
 	var options = [
-		["currentTranslation",session.currentTranslationString,"BBE"],
-		["lastBook", document.getElementById('book').value,"Hebrews"],
-		["lastChapter",document.getElementById('chapter').value,"12"],
-		["theme",session.currentTheme,"Default"]
+		["currentTranslation", session.currentTranslationString, "BBE"],
+		["lastBook", document.getElementById('book').value, "Hebrews"],
+		["lastChapter", document.getElementById('chapter').value, "12"],
+		["theme", session.currentTheme, "Default"],
+		["font", session.currentFont, "Arial"]
 	];
 
 	// Return a config file or just a default
@@ -543,6 +557,28 @@ function setTheme(theme) {
 	session.currentTheme = theme;
 	sidebarAnimation("close");
 	popupAnimation("close");
+	update();
+}
+
+function setFont(font) {
+	if (font == "Arial") {
+		document.getElementById('page').style.fontFamily = font;
+		document.getElementById('fontPreview').style.fontFamily = font;
+	} else if (font == "Times New Roman") {
+		document.getElementById('page').style.fontFamily = font;
+		document.getElementById('fontPreview').style.fontFamily = font;
+	} else if (font == "Comfortaa") {
+		document.getElementById('page').style.fontFamily = font;
+		document.getElementById('fontPreview').style.fontFamily = font;
+	} else if (font == "Helvetica") {
+		document.getElementById('page').style.fontFamily = font;
+		document.getElementById('fontPreview').style.fontFamily = font;
+	} else if (font == "Courier New") {
+		document.getElementById('page').style.fontFamily = font;
+		document.getElementById('fontPreview').style.fontFamily = font;
+	}
+
+	session.currentFont = font;
 	update();
 }
 

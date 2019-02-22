@@ -6,7 +6,7 @@ body,html {
 	scroll-behavior: smooth;
 }
 
-ul {
+.nav {
 	list-style: none;
 	overflow: hidden;
 	margin: 0;
@@ -17,12 +17,12 @@ ul {
 	width: 100%;
 }
 
-li {
+.nav li {
 	float: left;
 	margin-right: 20px;
 }
 
-li a {
+.nav li a {
 	color: white;
 	text-decoration: none;
 	padding: 16px 8px;
@@ -30,7 +30,7 @@ li a {
 	text-align: center;
 }
 
-li:hover {
+.nav li:hover {
 	background: #fcb355;
 }
 
@@ -61,11 +61,23 @@ li:hover {
 
 #features {
 	height: 100%;
-	background: lightblue;
+	padding: 50px 50px 50px 50px;
+	background: #dbdbdb;
 }
 
 .fork {
 	position: absolute;
 	right: 0px;
 	top: 0px;
+}
+
+.big {
+	font-size: 25px;
+}
+
+#screenshots {
+	float: right;
+}
+#textbox {
+	float: left;
 }
