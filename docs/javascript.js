@@ -6,6 +6,6 @@ window.onload = function() {
 }
 
 function getMouse(event) {
-	x = event.clientX/60 - 10;
+	x = event.clientX/60 - 25;
 	y = event.clientY/20 - 100;
 }

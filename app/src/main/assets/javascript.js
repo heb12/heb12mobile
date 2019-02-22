@@ -73,6 +73,9 @@ window.onload = function() {
 			document.getElementById('chapter').value = configuration[2].split("=")[1];
 
 			session.currentTheme = configuration[3].split("=")[1];
+			session.currentFont = configuration[4].split("=")[1];
+			setFont(configuration[4].split("=")[1]);
+			session.currentTranslationString = configuration[0].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
 
 		}
@@ -85,7 +88,7 @@ window.onload = function() {
 	var waitUntilLoad = setInterval(function() {
 		if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
 			if (session.devmode) {
-				document.getElementById('page').innerHTML = load("Hebrews",4);
+				document.getElementById('page').innerHTML = load("Hebrews", 4);
 			} else {
 				document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
 			}
@@ -112,7 +115,7 @@ window.onload = function() {
 }
 
 // Function to get verse or verses from the json files
-function load(book,chapter,verse) {
+function load(book, chapter, verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
 	document.getElementById('chapter').innerHTML = "";
 
@@ -332,10 +335,11 @@ function notify(text) {
 
 		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>
 		<br>
-		<div class='button bg' onclick='updateConfigFile("def")'>
+		<div class='button bg' onclick='updateConfigFile("def"); interface.exec("other", "close")'>
 			Reset
 		</div>
 		`;
+
 		document.getElementById('themeSelect').value = session.currentTheme;
 		document.getElementById('fontSelect').value = session.currentFont;
 	} else if (text == "info") {
@@ -349,11 +353,13 @@ function notify(text) {
 		   </p>
 		</div>
 		<br>
+		<p><a style='color: blue; text-decoration: underline;' onclick="document.getElementById('page').innerHTML = load('Hebrews',4); notify('verse-12')">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>
+		<br>
 		<h2>Credits</h2>
-		<p>Pufflegamerz aka Petabyte Studios - Programming</p>
-		<p>MasterOfTheTiger - Founder of Heb12 Ministries</p>
-		<p>Material.io - Material icons</p>
-		<p>Bible Labs - Formatted KJV API</p>
+		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>
+		<p>Founder of Heb12 Ministries - MasterOfTheTiger</p>
+		<p>Material icons - Material.io</p>
+		<p>Formatted KJV API - Bible Labs</p>
 		<p><a href="https://github.com/thiagobodruk" target="_blank">@thiagobodruk</a> - Offline Bible JSON files</p>`;
 	} else if (text == 'hehe') {
 		session.titleClicks++
@@ -592,26 +598,32 @@ function updateSearch(searching) {
 		result.style.display = "block";
 	}
 
-	// Regexp to recongnise books and chapters
-	var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
-	var theBook = term.replace(validate,"$1");
-	var theChapter = term.replace(validate,"$2");
-
-	var valid = validChapter(theBook + "-" + theChapter);
-	if (valid[0]) {
-		result.innerHTML = "<span style='color:green;'>" + valid[1] + " " + theChapter + "</span>";
+	if (term == "Hello") {
+		result.innerHTML = "<span style='color:green;'>Hello!</span>"
 	} else {
-		result.innerHTML = "<span style='color:red;'>Not found</span>";
-	}
+		// Regexp to recongnise books and chapters
+		var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
+		var theBook = term.replace(validate,"$1");
+		var theChapter = term.replace(validate,"$2");
 
-	// If user is searching something
-	if (searching == "visit") {
-		sidebarAnimation("close");
-		document.getElementById('book').value = valid[1];
-		document.getElementById('chapter').value = theChapter;
-		update();
-		result.style.display = "none";
-		document.getElementById('search').value = "";
+		var valid = validChapter(theBook + "-" + theChapter);
+		if (valid[0]) {
+			result.innerHTML = "<span style='color:green;'>" + valid[1] + " " + theChapter + "</span>";
+		} else {
+			result.innerHTML = "<span style='color:red;'>Not found</span>";
+		}
+
+		// If user is searching something
+		if (searching == "visit") {
+			if (!term == "") {
+				sidebarAnimation("close");
+				document.getElementById('book').value = valid[1];
+				document.getElementById('chapter').value = theChapter;
+				update();
+				result.style.display = "none";
+				document.getElementById('search').value = "";
+			}
+		}
 	}
 }
 
@@ -633,7 +645,24 @@ function validChapter(thing) {
 function editBook(book, part) {
 	book = book.replace("1st ","1 ").replace("2nd ","2 ");
 	if (part == 1) {
-		book = book.replace("Psalm","Psalms").split("-")[0].toUpperCase();
+		book = book.toUpperCase();
+
+		// Fix common spelling mistakes
+		var correct = [
+		["Psalm", "Psalms"],
+		["Jhon", "John"],
+		["Dan", "Daniel"],
+		["Esra", "Ezra"],
+		["Thesolionions", "Thessalonians"],
+		["Psalmss", "Psalms"] // Bug in Javascript?
+		];
+
+		for (var i = 0; i < correct.length; i++) {
+			console.log(book);
+			book = book.replace(correct[i][0].toUpperCase(), correct[i][1].toUpperCase());
+		}
+
+		book = book.split("-")[0];
 	} else {
 		book = book.toUpperCase();
 	}
