@@ -255,40 +255,60 @@ select:active {
 }
 
 @keyframes slideIn {
-  from {
-  	left: calc(-87% - 1px);
-  }
-  to {
-  	left: 0px;
-  }
+	from {
+		left: calc(-87% - 1px);
+	}
+	to {
+		left: 0px;
+	}
 }
 
 @keyframes slideOut {
-  from {
-  	left: 0px;
-  }
-  to {
-  	left: calc(-87% - 1px);
-  }
+	from {
+		left: 0px;
+	}
+	to {
+		left: calc(-87% - 1px);
+	}
 }
 
 @keyframes showPopup {
-  from {
-  	top: calc(100% - 21px);
-  }
-  to {
-    top: 10px;
-  }
+	from {
+		top: calc(100% - 21px);
+	}
+	to {
+		top: 10px;
+	}
 }
 
 @keyframes hidePopup {
-  from {
-  	top: 10px;
-  }
-  to {
-    top: calc(-100% + 21px);
-  }
+	from {
+		top: 10px;
+	}
+	to {
+		top: calc(-100% + 21px);
+	}
 }
+
+@keyframes up {
+	from {
+		bottom: -51px;
+	}
+	to {
+		bottom: 75px;
+	}
+}
+
+@keyframes down {
+	from {
+		bottom: 75px;
+	}
+	to {
+		bottom: -51px;
+	}
+}
+
+
 
 /* Net Online Formatting Fixes */
 #main .bodytext {
@@ -298,4 +318,36 @@ select:active {
 #main a {
 	margin-top: 10px;
 	display: block;
+}
+
+#highlightMenu {
+	position: absolute;
+	bottom: 75px;
+	left: 25px;
+	width: calc(100% - 50px);
+	height: 50px;
+	background: white;
+	border: 1px solid black;
+	display: none;
+	animation-name: up;
+	animation-duration: .7s;
+}
+
+.color {
+	width: 50px;
+	height: 50px;
+	border-right: 1px solid black;
+	display: table-cell;
+}
+
+.color.yellow {
+	background: yellow;
+}
+
+.color.lightgreen {
+	background: lightgreen;
+}
+
+.color.lightblue {
+	background: lightblue;
 }

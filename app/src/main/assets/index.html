@@ -83,14 +83,10 @@
 				<img src="images/settings.svg" width="45" onclick="notify('settings')">
 			</div>
 			<div class="icon">
-				<img src="images/close.svg" width="45" onclick='interface.exec("other","close")'>
+				<img src="images/random.svg" width="45" onclick='random()'>
 			</div>
 		</div>
-		<hr><br>
-		<div class="button bg" onclick="random()">
-			Random
-		</div>
-		<br><br><hr><br>
+		<hr>
 		<p class="text big">Verse of the Day</p>
 		<br>
 		<p class="text" id="votd">VOTD goes here</p>
@@ -105,8 +101,21 @@
 		<p><b>Okay</b></p>
 	</div>
 </div>
+
 <div id="theme">
-	
+
+</div>
+
+<div id="highlightMenu" verse="John 3 16">
+	<div class="color yellow" onclick="highlightVerse(this)">
+		
+	</div>
+	<div class="color lightgreen" onclick="highlightVerse(this)">
+		
+	</div>
+	<div class="color lightblue" onclick="highlightVerse(this)">
+		
+	</div>
 </div>
 </body>
 <script type="text/javascript" src="javascript.js"></script>

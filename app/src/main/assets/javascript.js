@@ -18,7 +18,8 @@ var session = {
 	numberThingy:0,
 	loadedScript:false,
 	loadedScriptData:"foo",
-	currentFont:"Arial"
+	currentFont:"Arial",
+	highlightedVerses:["John 3 16 yellow", "Hebrews 4 12 lightgreen"]
 }
 
 var data;
@@ -74,9 +75,10 @@ window.onload = function() {
 
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
-			setFont(configuration[4].split("=")[1]);
+			//setFont(configuration[4].split("=")[1]);
 			session.currentTranslationString = configuration[0].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
+			session.highlightedVerses = configuration[5].split("=")[1].split(",");
 
 		}
 	}
@@ -227,8 +229,7 @@ function load(book, chapter, verse) {
 		// Return verse or verses
 		if (isNaN(verse)) {
 			for (var i = 0; i < page.length; i++) {
-				var breaks = "<br>".repeat(session.breaksAfterVerse);
-				finalResult += " <b id='verse' onclick='notify(" + '"verse-' + (i + 1) + '"' + ")'>" + (i + 1) + "</b> " + page[i] + breaks;
+				finalResult += modifyVerse(i, page[i]);
 			}
 		} else {
 			finalResult = page[verse - 1];
@@ -236,7 +237,6 @@ function load(book, chapter, verse) {
 
 		// Remove wierd things inserted inside text in Offline KJV version
 		finalResult = finalResult.replace(/\{[a-zA-Z0-9 .,;]+: or, [a-zA-Z0-9 .,;]+\}/g,"");
-		finalResult = finalResult.replace(/:/g,"");
 		finalResult = finalResult.replace(/\}/g,"");
 		finalResult = finalResult.replace(/\{/g,"");
 		finalResult = finalResult.replace(/\.\.\./g,"");
@@ -534,7 +534,8 @@ function updateConfigFile(def) {
 		["lastBook", document.getElementById('book').value, "Hebrews"],
 		["lastChapter", document.getElementById('chapter').value, "12"],
 		["theme", session.currentTheme, "Default"],
-		["font", session.currentFont, "Arial"]
+		["font", session.currentFont, "Arial"],
+		["highlightedVerses", session.highlightedVerses.toString(), "John 3 16 yellow, Hebrews 4 12 lightgreen"]
 	];
 
 	// Return a config file or just a default
@@ -698,4 +699,41 @@ function loadJSONP(url) {
 
 function getScript(data) {
 	session.loadedScriptData = data;
+}
+
+function modifyVerse(verseNum, verseText) {
+	var book = document.getElementById('book').value;
+	var chapter = document.getElementById('chapter').value;
+	var color = "transparent";
+
+	for (var i = 0; i < session.highlightedVerses.length; i++) {
+		if (session.highlightedVerses[i].startsWith(book + " " + chapter + " " + (Number(verseNum) + 1) + " ")) {
+			color = session.highlightedVerses[i].split(" ")[3];
+		}
+	}
+
+	return ` <b id='verse' onclick='notify("verse-` + verseNum + `")'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' onclick='highlightVersePopup(` + verseNum + `)'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
+}
+
+function highlightVersePopup(verse) {
+	var book = document.getElementById('book').value;
+	var chapter = document.getElementById('chapter').value;
+
+	document.getElementById('highlightMenu').style.display = "block";
+	document.getElementById('highlightMenu').style.WebkitAnimationName = "up";
+
+	document.getElementById('highlightMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
+}
+
+function highlightVerse(elem) {
+	var verse = elem.parentElement.getAttribute("verse");
+	var color = elem.getAttribute("class").split(" ")[1];
+
+	session.highlightedVerses.push(verse + " " + color);
+	update();
+
+	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
+	setTimeout(function() {
+		document.getElementById('highlightMenu').style.display = "none";
+	},700);
 }
