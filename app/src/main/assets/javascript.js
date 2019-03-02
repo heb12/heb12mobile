@@ -19,7 +19,7 @@ var session = {
 	loadedScript:false,
 	loadedScriptData:"foo",
 	currentFont:"Arial",
-	highlightedVerses:["John 3 16 yellow", "Hebrews 4 12 lightgreen"]
+	highlightedVerses:["John 3 16 lightgreen", "Hebrews 4 12 yellow"]
 }
 
 var data;
@@ -106,6 +106,7 @@ window.onload = function() {
 			var waitUntilLoad3 = setInterval(function() {
 				if (session.loadedScript) {
 					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+					theVerse = "<b>" + session.loadedScriptData[0].bookname + " " + session.loadedScriptData[0].chapter + ":" + session.loadedScriptData[0].verse + "</b> - " + theVerse;
 					document.getElementById('votd').innerHTML = theVerse;
 					clearInterval(waitUntilLoad3);
 				}
@@ -701,10 +702,12 @@ function getScript(data) {
 	session.loadedScriptData = data;
 }
 
+// Modify a verse and check if it it highlighted
 function modifyVerse(verseNum, verseText) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
 	var color = "transparent";
+	var textColor = "black"
 
 	for (var i = 0; i < session.highlightedVerses.length; i++) {
 		if (session.highlightedVerses[i].startsWith(book + " " + chapter + " " + (Number(verseNum) + 1) + " ")) {
@@ -712,26 +715,42 @@ function modifyVerse(verseNum, verseText) {
 		}
 	}
 
-	return ` <b id='verse' onclick='notify("verse-` + verseNum + `")'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' onclick='highlightVersePopup(` + verseNum + `)'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
+	return ` <b id='verse' onclick='notify("verse-` + verseNum + `")'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' onclick='highlightVersePopup(` + verseNum + `)' class='verseText'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
 }
 
+// Show highlighting menu
 function highlightVersePopup(verse) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
 
-	document.getElementById('highlightMenu').style.display = "block";
-	document.getElementById('highlightMenu').style.WebkitAnimationName = "up";
+	if (document.getElementById('sidebar').style.display == "none" || document.getElementById('sidebar').style.display == "") {
+		document.getElementById('highlightMenu').style.display = "block";
+		document.getElementById('highlightMenu').style.WebkitAnimationName = "up";
 
-	document.getElementById('highlightMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
+		document.getElementById('highlightMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
+	}
 }
 
+// Highlight a verse (called from html element)
 function highlightVerse(elem) {
 	var verse = elem.parentElement.getAttribute("verse");
 	var color = elem.getAttribute("class").split(" ")[1];
+	var alreadyDone = session.highlightedVerses.indexOf(verse + " " + color);
 
-	session.highlightedVerses.push(verse + " " + color);
+	if (alreadyDone == -1) {
+		session.highlightedVerses.push(verse + " " + color);
+	} else {
+		session.highlightedVerses.splice(alreadyDone, alreadyDone + 1);
+	}
 	update();
 
+	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
+	setTimeout(function() {
+		document.getElementById('highlightMenu').style.display = "none";
+	},700);
+}
+
+function closeHighlightMenu() {
 	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
 	setTimeout(function() {
 		document.getElementById('highlightMenu').style.display = "none";

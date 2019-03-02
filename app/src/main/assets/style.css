@@ -105,6 +105,10 @@ select:active {
 
 }
 
+.verseText:active {
+	text-decoration: underline;
+}
+
 #verse:active {
 	text-decoration: underline;
 }
@@ -350,4 +354,15 @@ select:active {
 
 .color.lightblue {
 	background: lightblue;
+}
+
+.color.close {
+	float: right;
+	margin-top: -50px;
+	border-right: transparent;
+	border-left: 1px solid black;
+}
+
+.color:active {
+	background: lightgrey;
 }

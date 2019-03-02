@@ -27,6 +27,10 @@ option {
 	filter: invert(1);
 }
 
+.color.close {
+	filter: invert(1);
+}
+
 #popupContent {
 	background: black;
 }
