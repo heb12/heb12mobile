@@ -19,7 +19,10 @@ var session = {
 	loadedScript:false,
 	loadedScriptData:"foo",
 	currentFont:"Arial",
-	highlightedVerses:["John 3 16 lightgreen", "Hebrews 4 12 yellow"]
+	highlightedVerses:{
+		John_3_16:"yellow",
+		Hebrews_4_12:"lightgreen"
+	}
 }
 
 var data;
@@ -78,12 +81,12 @@ window.onload = function() {
 			//setFont(configuration[4].split("=")[1]);
 			session.currentTranslationString = configuration[0].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
-			session.highlightedVerses = configuration[5].split("=")[1].split(",");
+			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
 
 		}
 	}
 
-	// load Hebrews 12
+	// load Hebrews 4
 	updateTranslation();
 
 	// Use special methods to use script only when it is loaded
@@ -98,6 +101,9 @@ window.onload = function() {
 			clearInterval(waitUntilLoad);
 		}
 	},10);
+
+	document.getElementById("book") = "Hebrews";
+	document.getElementById("chapter") = "4";
 
 	// Load verse of the day
 	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript");
@@ -252,9 +258,7 @@ function notify(text) {
 	popupAnimation("show");
 	var popup = document.getElementById('popupContent');
 
-	if (text == "welcome") {
-		popup.innerHTML = "<h2>Welcome to Heb12 Mobile!</h2><br><span><b>Tip</b>: Tap on the bold number in front of a verse to get some info about it.</span>";
-	} else if (text.startsWith("verse")) {
+	if (text.startsWith("verse")) {
 		var book = document.getElementById('book').value;
 		var chap = document.getElementById('chapter').value;
 		var verse = text.split("-")[1];
@@ -358,7 +362,7 @@ function notify(text) {
 		<br>
 		<h2>Credits</h2>
 		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>
-		<p>Founder of Heb12 Ministries - MasterOfTheTiger</p>
+		<p>Openbibles - MasterOfTheTiger</p>
 		<p>Material icons - Material.io</p>
 		<p>Formatted KJV API - Bible Labs</p>
 		<p><a href="https://github.com/thiagobodruk" target="_blank">@thiagobodruk</a> - Offline Bible JSON files</p>`;
@@ -536,7 +540,7 @@ function updateConfigFile(def) {
 		["lastChapter", document.getElementById('chapter').value, "12"],
 		["theme", session.currentTheme, "Default"],
 		["font", session.currentFont, "Arial"],
-		["highlightedVerses", session.highlightedVerses.toString(), "John 3 16 yellow, Hebrews 4 12 lightgreen"]
+		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen"]
 	];
 
 	// Return a config file or just a default
@@ -660,7 +664,6 @@ function editBook(book, part) {
 		];
 
 		for (var i = 0; i < correct.length; i++) {
-			console.log(book);
 			book = book.replace(correct[i][0].toUpperCase(), correct[i][1].toUpperCase());
 		}
 
@@ -709,10 +712,9 @@ function modifyVerse(verseNum, verseText) {
 	var color = "transparent";
 	var textColor = "black"
 
-	for (var i = 0; i < session.highlightedVerses.length; i++) {
-		if (session.highlightedVerses[i].startsWith(book + " " + chapter + " " + (Number(verseNum) + 1) + " ")) {
-			color = session.highlightedVerses[i].split(" ")[3];
-		}
+	var item = eval("session.highlightedVerses." + book + "_" + chapter + "_" + (Number(verseNum) + 1));
+	if (!(!item)) {
+		color = item;
 	}
 
 	return ` <b id='verse' onclick='notify("verse-` + verseNum + `")'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' onclick='highlightVersePopup(` + verseNum + `)' class='verseText'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
@@ -735,13 +737,9 @@ function highlightVersePopup(verse) {
 function highlightVerse(elem) {
 	var verse = elem.parentElement.getAttribute("verse");
 	var color = elem.getAttribute("class").split(" ")[1];
-	var alreadyDone = session.highlightedVerses.indexOf(verse + " " + color);
 
-	if (alreadyDone == -1) {
-		session.highlightedVerses.push(verse + " " + color);
-	} else {
-		session.highlightedVerses.splice(alreadyDone, alreadyDone + 1);
-	}
+	// I know, I know... eval.
+	eval("session.highlightedVerses." + verse.replace(/ /g, "_") + " = '" + color + "'");
 	update();
 
 	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
