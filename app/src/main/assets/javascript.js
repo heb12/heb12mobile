@@ -56,8 +56,8 @@ window.onload = function() {
 	if (!session.devmode) {
 		// Open data
 		data = window.location.href.split("?")[1];
-		data = data.replace(/%22/g,'"');
-		data = data.replace(/%20/g," ");
+		data = data.replace(/%22/g, '"');
+		data = data.replace(/%20/g, " ");
 		data = eval(data);
 
 		// If loading the app for the first time.
@@ -71,7 +71,7 @@ window.onload = function() {
 		// Parse config file into JS
 		if (!data[1] == "") {
 			var configuration = data[1];
-			configuration = configuration.replace(/\/\*[A-Za-z0-9 -!.:]+\*\//g,"");
+			configuration = configuration.replace(/\/\*[A-Za-z0-9 -!.:]+\*\//g, "");
 			configuration = configuration.split(";");
 			document.getElementById('book').value = configuration[1].split("=")[1];
 			document.getElementById('chapter').value = configuration[2].split("=")[1];
@@ -95,15 +95,15 @@ window.onload = function() {
 			if (session.devmode) {
 				document.getElementById('page').innerHTML = load("Hebrews", 4);
 			} else {
-				document.getElementById('page').innerHTML = load(document.getElementById('book').value,document.getElementById('chapter').value);
+				document.getElementById('page').innerHTML = load(document.getElementById('book').value, document.getElementById('chapter').value);
 			}
 			update();
 			clearInterval(waitUntilLoad);
 		}
-	},10);
+	}, 10);
 
-	document.getElementById("book") = "Hebrews";
-	document.getElementById("chapter") = "4";
+	document.getElementById("book").value = "Hebrews";
+	document.getElementById("chapter").value = "4";
 
 	// Load verse of the day
 	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript");
@@ -111,15 +111,15 @@ window.onload = function() {
 		if (session.loadedScript) {
 			var waitUntilLoad3 = setInterval(function() {
 				if (session.loadedScript) {
-					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>', "");
 					theVerse = "<b>" + session.loadedScriptData[0].bookname + " " + session.loadedScriptData[0].chapter + ":" + session.loadedScriptData[0].verse + "</b> - " + theVerse;
 					document.getElementById('votd').innerHTML = theVerse;
 					clearInterval(waitUntilLoad3);
 				}
-			},1);
+			}, 1);
 			clearInterval(waitUntilLoad2);
 		}
-	},10);
+	}, 10);
 
 }
 
@@ -167,8 +167,8 @@ function load(book, chapter, verse) {
 			}
 		}
 
-		page = page.replace(/\[/g,"");
-		page = page.replace(/\]/g,"");
+		page = page.replace(/\[/g, "");
+		page = page.replace(/\]/g, "");
 
 		return page;
 	} else if (session.currentTranslationString == "netOnline") {
@@ -243,10 +243,10 @@ function load(book, chapter, verse) {
 		}
 
 		// Remove wierd things inserted inside text in Offline KJV version
-		finalResult = finalResult.replace(/\{[a-zA-Z0-9 .,;]+: or, [a-zA-Z0-9 .,;]+\}/g,"");
-		finalResult = finalResult.replace(/\}/g,"");
-		finalResult = finalResult.replace(/\{/g,"");
-		finalResult = finalResult.replace(/\.\.\./g,"");
+		finalResult = finalResult.replace(/\{[a-zA-Z0-9 .,;]+: or, [a-zA-Z0-9 .,;]+\}/g, "");
+		finalResult = finalResult.replace(/\}/g, "");
+		finalResult = finalResult.replace(/\{/g, "");
+		finalResult = finalResult.replace(/\.\.\./g, "");
 
 		return finalResult;
 	}
@@ -308,7 +308,7 @@ function notify(text) {
 				session.doneLoadingJSON = false;
 				clearInterval(wait);
 			}
-		},10);
+		}, 10);
 	} else if (text == "firsttime") {
 		popup.innerHTML = `
 		<h2>Welcome to Heb12!</h2>
@@ -358,7 +358,7 @@ function notify(text) {
 		   </p>
 		</div>
 		<br>
-		<p><a style='color: blue; text-decoration: underline;' onclick="document.getElementById('page').innerHTML = load('Hebrews',4); notify('verse-12')">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>
+		<p><a style='color: blue; text-decoration: underline;' onclick="document.getElementById('page').innerHTML = load('Hebrews', 4); notify('verse-12')">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>
 		<br>
 		<h2>Credits</h2>
 		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>
@@ -604,32 +604,37 @@ function updateSearch(searching) {
 		result.style.display = "block";
 	}
 
-	if (term == "Hello") {
-		result.innerHTML = "<span style='color:green;'>Hello!</span>"
+	// Regexp to recongnise books and chapters
+	var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
+	var theBook = term.replace(validate,"$1");
+	var theChapter = term.replace(validate,"$2");
+
+	var valid = validChapter(theBook + "-" + theChapter);
+	if (valid[0]) {
+		result.innerHTML = "<span style='color:green;'>" + valid[1] + " " + theChapter + "</span>";
 	} else {
-		// Regexp to recongnise books and chapters
-		var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
-		var theBook = term.replace(validate,"$1");
-		var theChapter = term.replace(validate,"$2");
+		result.innerHTML = "<span style='color:red;'>Not found</span>";
+	}
 
-		var valid = validChapter(theBook + "-" + theChapter);
-		if (valid[0]) {
-			result.innerHTML = "<span style='color:green;'>" + valid[1] + " " + theChapter + "</span>";
-		} else {
-			result.innerHTML = "<span style='color:red;'>Not found</span>";
+	// If user is searching something
+	if (searching == "visit") {
+		if (!term == "") {
+			sidebarAnimation("close");
+			document.getElementById('book').value = valid[1];
+			document.getElementById('chapter').value = theChapter;
+			update();
+			result.style.display = "none";
+			document.getElementById('search').value = "";
 		}
+	}
 
-		// If user is searching something
-		if (searching == "visit") {
-			if (!term == "") {
-				sidebarAnimation("close");
-				document.getElementById('book').value = valid[1];
-				document.getElementById('chapter').value = theChapter;
-				update();
-				result.style.display = "none";
-				document.getElementById('search').value = "";
-			}
-		}
+	switch (term.toLowerCase()) {
+		case "hello":
+		case "hi":
+		case "Hello":
+		case "Hi":
+			result.innerHTML = "<span style='color:green;'>Hello!</span>";
+			break;
 	}
 }
 
@@ -640,7 +645,7 @@ function validChapter(thing) {
 		var secondPart = editBook(books[i], 2);
 		if (firstPart == secondPart) {
 			if (bible[i][2] >= thing.split("-")[1]) {
-				return [true,books[i]]
+				return [true, books[i]]
 			}
 		}
 	}
