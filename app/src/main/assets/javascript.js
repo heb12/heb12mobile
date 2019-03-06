@@ -767,8 +767,8 @@ function versePopup(verse) {
 
 			mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
 			document.getElementById("verseMenu").children[1].children[0].children[0].setAttribute("onclick", `search("` + theVerseText + `")`);
-			document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", `interface.exec('copy','` + theVerseText + ` - ` + theVerse + `')`);
-			document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", `interface.exec('copy','` + theVerseText + ` - ` + theVerse + `')`);
+			document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", `interface.exec('copy',"` + theVerseText + ` - ` + theVerse + `")`);
+			document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", `interface.exec('share',"` + theVerseText + ` - ` + theVerse + `")`);
 
 			session.doneLoadingJSON = false;
 			clearInterval(wait);
