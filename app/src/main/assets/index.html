@@ -106,22 +106,41 @@
 
 </div>
 
-<div id="highlightMenu" verse="John 3 16">
-	<div class="color yellow" onclick="highlightVerse(this)">
-		
+<div id="verseMenu" verse="John 3 16">
+	<div id="mainContent">
+		<h2>verse</h2>
+		<span>versetext</span>
 	</div>
-	<div class="color lightgreen" onclick="highlightVerse(this)">
-		
+
+	<center>
+		<div class="icon">
+			<img src="images/search.svg" width="40" onclick="search('')">
+		</div>
+		<div class="icon">
+			<img src="images/clipboard.svg" width="40" onclick="interface.exec('copy','')">
+		</div>
+		<div class="icon">
+			<img src="images/share.svg" width="40" onclick="interface.exec('share','')">
+		</div>
+	</center>
+
+	<div id="colors">
+		<div class="color yellow" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color lightgreen" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color lightblue" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color white" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color close" onclick="closeVerseMenu()">
+			<img src="images/close.svg" width="50">
+		</div>
 	</div>
-	<div class="color lightblue" onclick="highlightVerse(this)">
-		
-	</div>
-	<div class="color white" onclick="highlightVerse(this)">
-		
-	</div>
-	<img class="color close" onclick="closeHighlightMenu()" src="images/close.svg">
-		
-	</img>
 </div>
 </body>
 <script type="text/javascript" src="javascript.js"></script>

@@ -163,7 +163,7 @@ function load(book, chapter, verse) {
 			page = verses[verse].text;
 		} else {
 			for (var i = 0; i < verses.length; i++) {
-				page += " <b id='verse' onclick='notify(" + '"verse-' + (i) + '"' + ")'>" + (i + 1) + "</b> " + verses[i].text + breaks;
+				page += modifyVerse(i + 1, verses[i].text);
 			}
 		}
 
@@ -199,10 +199,11 @@ function load(book, chapter, verse) {
 					if (!(!session.netjsondata[i].title)) {
 						finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
 					}
-					finaldata +=  "<span> <b id='verse' onclick='notify(" + '"verse-' + (i) + '"' + ")'>" + (i + 1) + "</b> </span>"
-					finaldata += session.netjsondata[i].text;
+
+					finaldata += modifyVerse(i, session.netjsondata[i].text);
 				}
 			} else {
+				console.log(verse);
 				finaldata = session.netjsondata[0].text;
 			}
 
@@ -715,47 +716,84 @@ function modifyVerse(verseNum, verseText) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
 	var color = "transparent";
-	var textColor = "black"
+	var textColor = "black";
+	if (isOpenbibles()) {
+		verseNum--;
+	}
 
 	var item = eval("session.highlightedVerses." + book + "_" + chapter + "_" + (Number(verseNum) + 1));
 	if (!(!item)) {
 		color = item;
 	}
 
-	return ` <b id='verse' onclick='notify("verse-` + verseNum + `")'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' onclick='highlightVersePopup(` + verseNum + `)' class='verseText'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
+	return `<b id='verse' onclick='versePopup(` + verseNum + `)'> ` + (verseNum + 1) + ` </b><span style='background: ` + color + `;' class='verseText'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
 }
 
 // Show highlighting menu
-function highlightVersePopup(verse) {
+function versePopup(verse) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
+	var theVerseText = book + " " + chapter + ":" + (verse + 1);
+	document.getElementById('verseMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
 
-	if (document.getElementById('sidebar').style.display == "none" || document.getElementById('sidebar').style.display == "") {
-		document.getElementById('highlightMenu').style.display = "block";
-		document.getElementById('highlightMenu').style.WebkitAnimationName = "up";
+	document.getElementById('verseMenu').style.display = "block";
+	document.getElementById('verseMenu').style.WebkitAnimationName = "up";
 
-		document.getElementById('highlightMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
+	var mainContent = document.getElementById("mainContent");
+	mainContent.getElementsByTagName("H2")[0].innerHTML = theVerseText;
+
+	var theVerse;
+	var done = false;
+
+	if (session.currentTranslationString == "netOnline") {
+		load(book, chapter, verse + 1);
+		var int = setInterval(function() {
+			if (session.doneLoadingJSON) {
+				theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+				done = true;
+				clearInterval(int);
+			}
+		},1);
+	} else {
+		theVerse = load(book, chapter, verse);
+		session.doneLoadingJSON = true;
+		done = true;
 	}
+
+	var entire;
+	var wait = setInterval(function() {
+		if (session.doneLoadingJSON && done) {
+			session.currentVerse = entire;
+
+			mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
+			document.getElementById("verseMenu").children[1].children[0].children[0].setAttribute("onclick", `search("` + theVerseText + `")`);
+			document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", `interface.exec('copy','` + theVerseText + ` - ` + theVerse + `')`);
+			document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", `interface.exec('copy','` + theVerseText + ` - ` + theVerse + `')`);
+
+			session.doneLoadingJSON = false;
+			clearInterval(wait);
+		}
+	}, 10);
 }
 
 // Highlight a verse (called from html element)
 function highlightVerse(elem) {
-	var verse = elem.parentElement.getAttribute("verse");
+	var verse = elem.parentElement.parentElement.getAttribute("verse");
 	var color = elem.getAttribute("class").split(" ")[1];
 
 	// I know, I know... eval.
 	eval("session.highlightedVerses." + verse.replace(/ /g, "_") + " = '" + color + "'");
 	update();
 
-	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
+	document.getElementById('verseMenu').style.WebkitAnimationName = "down";
 	setTimeout(function() {
-		document.getElementById('highlightMenu').style.display = "none";
+		document.getElementById('verseMenu').style.display = "none";
 	},700);
 }
 
-function closeHighlightMenu() {
-	document.getElementById('highlightMenu').style.WebkitAnimationName = "down";
+function closeVerseMenu() {
+	document.getElementById('verseMenu').style.WebkitAnimationName = "down";
 	setTimeout(function() {
-		document.getElementById('highlightMenu').style.display = "none";
+		document.getElementById('verseMenu').style.display = "none";
 	},700);
 }
