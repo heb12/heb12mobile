@@ -726,7 +726,7 @@ function modifyVerse(verseNum, verseText) {
 		color = item;
 	}
 
-	return `<b id='verse' onclick='versePopup(` + verseNum + `)'> ` + (verseNum + 1) + ` </b><span style='background: ` + color + `;' class='verseText'>` + verseText + `</span>` + "<br>".repeat(session.breaksAfterVerse);
+	return `<span id='verse' onclick='versePopup(` + verseNum + `)'><b id='verse'>` + (verseNum + 1) + `</b> <span style='background: ` + color + `;' class='verseText'>` + verseText + `</span></span>` + "<br>".repeat(session.breaksAfterVerse);
 }
 
 // Show highlighting menu
@@ -745,6 +745,7 @@ function versePopup(verse) {
 	var theVerse;
 	var done = false;
 
+	// Get bible verse
 	if (session.currentTranslationString == "netOnline") {
 		load(book, chapter, verse + 1);
 		var int = setInterval(function() {
