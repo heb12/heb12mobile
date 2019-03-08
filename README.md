@@ -15,5 +15,5 @@ Please refer to the [wiki page](https://github.com/heb12/heb12-mobile/wiki/Devel
 # Testing Online
 Make sure you resize the window because it will look wierd on a desktop.
 
-Online Demo: [http://heb12.ml/heb12-mobile/demo/](http://heb12.ml/heb12-mobile/demo/)
+Online Demo: [https://heb12.ml/heb12-mobile/app/src/main/assets/](https://heb12.ml/heb12-mobile/app/src/main/assets/)
 
