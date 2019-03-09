@@ -33,7 +33,7 @@
     <session id="1229048601">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
+          <entry key="project.closed" value="16" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.26" value="1" />
           <entry key="project.open.time.31" value="1" />
@@ -318,7 +318,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.3294621" />
@@ -333,7 +332,7 @@
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.3295964" />
       <window_info anchor="bottom" id="Event Log" order="4" sideWeight="0.5067237" side_tool="true" weight="0.3295964" />
-      <window_info anchor="bottom" id="Build" order="5" sideWeight="0.4932763" visible="true" weight="0.3295964" />
+      <window_info active="true" anchor="bottom" id="Build" order="5" sideWeight="0.4932763" visible="true" weight="0.3295964" />
       <window_info anchor="bottom" id="Android Profiler" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="7" />
       <window_info anchor="bottom" id="Debug" order="8" />
