@@ -22,7 +22,8 @@ var session = {
 	highlightedVerses:{
 		John_3_16:"yellow",
 		Hebrews_4_12:"lightgreen"
-	}
+	},
+	currentFontSize:18
 }
 
 var data;
@@ -78,6 +79,11 @@ window.onload = function() {
 
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
+			session.currentFontSize = Number(configuration[6].split("=")[1]);
+
+			document.getElementById('page').style.fontSize = session.currentFontSize + "px";
+			document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";
+			document.getElementById('page').style.fontFamily = session.currentFont;
 			//setFont(configuration[4].split("=")[1]);
 			session.currentTranslationString = configuration[0].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
@@ -283,6 +289,25 @@ function notify(text) {
 			<option>Helvetica</option>
 			<option>Courier New</option>
 		</select>
+		<br>
+		<div>
+			<div class='icon' style='float: left' onclick='setFontSize("minus")'>
+				<img src="images/left.svg" width="45">
+			</div>
+			
+			<div class='icon' style='float:left'>
+				<div style='width: 45px; text-align: center; padding-top: 10px; font-size: 20px;' id='fontSizeSelect'>
+					12
+				</div>
+			</div>
+
+			<div class='icon' style='float: left' onclick='setFontSize("plus")'>
+				<img src="images/right.svg" width="45">
+			</div>
+		</div>
+		<br>
+		<br>
+
 
 		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>
 		<br>
@@ -291,8 +316,12 @@ function notify(text) {
 		</div>
 		`;
 
+		document.getElementById('page').style.fontSize = session.currentFontSize + "px";
+		document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";
+		document.getElementById('fontPreview').style.fontSize = session.currentFontSize + "px";
 		document.getElementById('themeSelect').value = session.currentTheme;
 		document.getElementById('fontSelect').value = session.currentFont;
+		document.getElementById('fontSizeSelect').innerHTML = session.currentFontSize;
 	} else if (text == "info") {
 		popup.innerHTML = `
 		<img style="display:inline; float:left; margin-right:10px;" src="images/logo.png" width="150">
@@ -486,7 +515,8 @@ function updateConfigFile(def) {
 		["lastChapter", document.getElementById('chapter').value, "12"],
 		["theme", session.currentTheme, "Default"],
 		["font", session.currentFont, "Arial"],
-		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen"]
+		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen"],
+		["fonSize", session.currentFontSize, "18"]
 	];
 
 	// Return a config file or just a default
@@ -519,22 +549,8 @@ function setTheme(theme) {
 }
 
 function setFont(font) {
-	if (font == "Arial") {
-		document.getElementById('page').style.fontFamily = font;
-		document.getElementById('fontPreview').style.fontFamily = font;
-	} else if (font == "Times New Roman") {
-		document.getElementById('page').style.fontFamily = font;
-		document.getElementById('fontPreview').style.fontFamily = font;
-	} else if (font == "Comfortaa") {
-		document.getElementById('page').style.fontFamily = font;
-		document.getElementById('fontPreview').style.fontFamily = font;
-	} else if (font == "Helvetica") {
-		document.getElementById('page').style.fontFamily = font;
-		document.getElementById('fontPreview').style.fontFamily = font;
-	} else if (font == "Courier New") {
-		document.getElementById('page').style.fontFamily = font;
-		document.getElementById('fontPreview').style.fontFamily = font;
-	}
+	document.getElementById('page').style.fontFamily = font;
+	document.getElementById('fontPreview').style.fontFamily = font;
 
 	session.currentFont = font;
 	update();
@@ -746,4 +762,19 @@ function closeVerseMenu() {
 	setTimeout(function() {
 		document.getElementById('verseMenu').style.display = "none";
 	},700);
+}
+
+function setFontSize(action) {
+	if (action == "plus") {
+		session.currentFontSize++
+	} else {
+		session.currentFontSize--
+	}
+
+	document.getElementById('page').style.fontSize = session.currentFontSize + "px";
+	document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";
+	document.getElementById('fontPreview').style.fontSize = session.currentFontSize + "px";
+	document.getElementById('fontSizeSelect').innerHTML = session.currentFontSize;
+
+	update();
 }

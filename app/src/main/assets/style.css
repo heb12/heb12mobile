@@ -378,3 +378,7 @@ select:active {
 #mainContent h2 {
 	margin: 0;
 }
+
+#fontPreview {
+	font-size: 18px;
+}
