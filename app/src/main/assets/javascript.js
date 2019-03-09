@@ -258,67 +258,12 @@ function notify(text) {
 
 	popupAnimation("show");
 	var popup = document.getElementById('popupContent');
-
-	if (text.startsWith("verse")) {
-		var book = document.getElementById('book').value;
-		var chap = document.getElementById('chapter').value;
-		var verse = text.split("-")[1];
-		var verseText = verse;
-		if (isOpenbibles() || session.currentTranslationString == "netOnline") {
-			verseText++;
-		}
-		var theVerse;
-		var done = false;
-		if (session.currentTranslationString == "netOnline") {
-			load(book, chap, verseText);
-			var int = setInterval(function() {
-				if (session.doneLoadingJSON) {
-					theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
-					done = true;
-					clearInterval(int);
-				}
-			},1);
-		} else {
-			theVerse = load(book, chap, verse);
-			session.doneLoadingJSON = true;
-			done = true;
-		}
-
-		var entire;
-		var wait = setInterval(function() {
-			if (session.doneLoadingJSON && done) {
-				entire = book + " " + chap + ":" + verseText;
-				session.currentVerse = entire;
-
-				popup.innerHTML = `
-				<h2>` + entire + `</h2>
-				<span>` + theVerse + `</span>
-				<hr>
-				<div class="icon">
-					<img src="images/search.svg" width="45" onclick="search('` + entire + `')">
-				</div>
-				<div class="icon">
-					<img src="images/clipboard.svg" width="45" onclick="interface.exec('copy','` + theVerse + `')">
-				</div>
-				<div class="icon">
-					<img src="images/share.svg" width="45" onclick="interface.exec('share','` + entire + " - " + theVerse + `')">
-				</div>
-				<hr>
-
-				`;
-				session.doneLoadingJSON = false;
-				clearInterval(wait);
-			}
-		}, 10);
-	} else if (text == "firsttime") {
+	
+	if (text == "firsttime") {
 		popup.innerHTML = `
 		<h2>Welcome to Heb12!</h2>
-		<p>
-		Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free.
-		</p>
-		<p>
-		Tip: Tap on the bold text of a verse to get some info on it.
-		</p>`;
+		<p>Heb12 Mobile is a free open-sourced app designed to make reading the Bible easy and hassle-free. If you would like to contribute or give feedback, please visit the&nbsp;<a href="https://github.com/heb12/heb12-mobile" target="_blank" rel="noopener">Github repository</a>.</p>
+		<p><strong>Pro Tip: Tap on a bible verse for a list of extra actions.</strong></p>`;
 	} else if (text == "settings") {
 		popup.innerHTML = `
 		<h2>Settings</h2>
@@ -721,7 +666,7 @@ function modifyVerse(verseNum, verseText) {
 		verseNum--;
 	}
 
-	var item = eval("session.highlightedVerses." + book + "_" + chapter + "_" + (Number(verseNum) + 1));
+	var item = eval("session.highlightedVerses." + book + "_" + chapter + "_" + (Number(verseNum) + 1) );
 	if (!(!item)) {
 		color = item;
 	}
@@ -755,8 +700,12 @@ function versePopup(verse) {
 				clearInterval(int);
 			}
 		},1);
-	} else {
+	} else if (isOpenbibles()) {
 		theVerse = load(book, chapter, verse);
+		session.doneLoadingJSON = true;
+		done = true;
+	} else {
+		theVerse = load(book, chapter, verse + 1);
 		session.doneLoadingJSON = true;
 		done = true;
 	}
