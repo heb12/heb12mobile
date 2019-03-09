@@ -206,7 +206,7 @@ function load(book, chapter, verse) {
 						finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
 					}
 
-					finaldata += modifyVerse(i, session.netjsondata[i].text);
+					finaldata += modifyVerse(i, session.netjsondata[i].text.replace(/<\/?(st|p)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, ""));
 				}
 			} else {
 				console.log(verse);
