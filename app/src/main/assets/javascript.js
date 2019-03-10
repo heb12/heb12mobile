@@ -30,7 +30,6 @@ var data;
 
 // When the page loads
 window.onload = function() {
-	document.getElementById('loadingMessage').style.display = "none";
 
 	// Fill the selects
 	for (var i = 0; i < books.length; i++) {
@@ -74,25 +73,25 @@ window.onload = function() {
 			var configuration = data[1];
 			configuration = configuration.replace(/\/\*[A-Za-z0-9 -!.:]+\*\//g, "");
 			configuration = configuration.split(";");
-			document.getElementById('book').value = configuration[1].split("=")[1];
-			document.getElementById('chapter').value = configuration[2].split("=")[1];
 
+			// Update Vars
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
 			session.currentFontSize = Number(configuration[6].split("=")[1]);
+			session.currentTranslationString = configuration[0].split("=")[1];
+			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
 
+			// Update Elements
 			document.getElementById('page').style.fontSize = session.currentFontSize + "px";
+			document.getElementById('book').value = configuration[1].split("=")[1];
+			document.getElementById('chapter').value = configuration[2].split("=")[1];
 			document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";
 			document.getElementById('page').style.fontFamily = session.currentFont;
-			//setFont(configuration[4].split("=")[1]);
-			session.currentTranslationString = configuration[0].split("=")[1];
 			setTheme(configuration[3].split("=")[1]);
-			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
 
 		}
 	}
 
-	// load Hebrews 4
 	updateTranslation();
 
 	// Use special methods to use script only when it is loaded
@@ -108,6 +107,7 @@ window.onload = function() {
 		}
 	}, 10);
 
+	// Just in case it didn't load
 	document.getElementById("book").value = "Hebrews";
 	document.getElementById("chapter").value = "4";
 
