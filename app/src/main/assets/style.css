@@ -364,6 +364,10 @@ select:active {
 	background: lightblue;
 }
 
+.color.white {
+	background: white;
+}
+
 .color.close {
 	float: right;
 	margin-top: -50px;
