@@ -4,11 +4,12 @@
 	<title>Heb12 Mobile</title>
 	<script type="text/javascript">
 		window.onerror = function(msg, url, linenumber) {
-		    document.write('Error message: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+		    interface.toast('JavaScript Error: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
 		    return true;
 		}
 	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="https://raw.githubusercontent.com/aFarkas/html5shiv/master/src/html5shiv-printshiv.js"></script>
 	<link rel="shortcut icon" type="image/png" href="images/logo.png"/>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="bible.js"></script>
