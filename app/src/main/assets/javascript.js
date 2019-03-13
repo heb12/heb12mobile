@@ -563,8 +563,8 @@ function updateSearch(searching) {
 
 	// Regexp to recongnise books and chapters
 	var validate = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
-	var theBook = term.replace(validate,"$1");
-	var theChapter = term.replace(validate,"$2");
+	var theBook = term.replace(validate, "$1");
+	var theChapter = term.replace(validate, "$2");
 
 	var valid = validChapter(theBook + "-" + theChapter);
 	if (valid[0]) {
@@ -578,6 +578,7 @@ function updateSearch(searching) {
 		if (!term == "") {
 			sidebarAnimation("close");
 			document.getElementById('book').value = valid[1];
+			updateChapters(valid[1]);
 			document.getElementById('chapter').value = theChapter;
 			update();
 			result.style.display = "none";
@@ -772,4 +773,15 @@ function setFontSize(action) {
 	document.getElementById('fontSizeSelect').innerHTML = session.currentFontSize;
 
 	update();
+}
+
+function updateChapters(book) {
+	for (var i = 0; i < books.length; i++) {
+		if (books[i] == book) {
+			document.getElementById('chapter').innerHTML = "";
+			for (var n = 1; n <= bible[i][2]; n++) {
+				document.getElementById('chapter').innerHTML += "<option>" + n + "</option>";
+			}
+		}
+	}
 }
