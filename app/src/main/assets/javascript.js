@@ -21,7 +21,8 @@ var session = {
 	currentFont:"Arial",
 	highlightedVerses:{
 		John_3_16:"yellow",
-		Hebrews_4_12:"lightgreen"
+		Hebrews_4_12:"lightgreen",
+		Luke_9_23:"lightgreen"
 	},
 	currentFontSize:18
 }
@@ -127,6 +128,12 @@ window.onload = function() {
 		}
 	}, 10);
 
+	// Background loop - executes every 5 seconds
+	connectStatus();
+	setInterval(function() {
+		connectStatus();
+	},5000)
+
 }
 
 // Function to get verse or verses from the json files
@@ -205,11 +212,12 @@ function load(book, chapter, verse) {
 					if (!(!session.netjsondata[i].title)) {
 						finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
 					}
+					var modifiedVerse = session.netjsondata[i].text.replace(/<\/?(st)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, "");
+					modifiedVerse = modifiedVerse.replace(/<p class="bodytext">/g, "");
 
-					finaldata += modifyVerse(i, session.netjsondata[i].text.replace(/<\/?(st|p)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, ""));
+					finaldata += modifyVerse(i, modifiedVerse);
 				}
 			} else {
-				console.log(verse);
 				finaldata = session.netjsondata[0].text;
 			}
 
@@ -400,6 +408,10 @@ function update(option) {
 		}
 	}
 
+	if (bible[session.currentBookNumber][2] < chapter) {
+		chapter = bible[session.currentBookNumber][2];
+	}
+
 	// Get offline data
 	if (session.currentTranslationString == "netOnline") {
 		load(book, chapter);
@@ -450,7 +462,9 @@ function updateTranslation() {
 	    script.src = "bibles/" + session.currentTranslationString.toLowerCase() + ".js";
 	    script.type = "text/javascript";
 	    script.id = session.currentTranslationString.toLowerCase() + "Script";
-		document.getElementsByTagName("head")[0].appendChild(script);
+		if (session.currentTranslationString == "netOnline") {} else {
+			document.getElementsByTagName("head")[0].appendChild(script);
+		}
 		session.loadedTranslations.push(session.currentTranslationString.toLowerCase());
 
 		script.onload = function() {
@@ -510,7 +524,7 @@ function updateConfigFile(def) {
 		["lastChapter", document.getElementById('chapter').value, "12"],
 		["theme", session.currentTheme, "Default"],
 		["font", session.currentFont, "Arial"],
-		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen"],
+		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen, Luke 9 23 lightgreen"],
 		["fonSize", session.currentFontSize, "18"]
 	];
 
@@ -783,5 +797,15 @@ function updateChapters(book) {
 				document.getElementById('chapter').innerHTML += "<option>" + n + "</option>";
 			}
 		}
+	}
+}
+
+function connectStatus() {
+	if (navigator.onLine) {
+		document.getElementById('connectivity').innerHTML = " <span style='color: green;'>(Online)</span>";
+		document.getElementById('translation').options[3].disabled = false;
+	} else {
+		document.getElementById('connectivity').innerHTML = " <span style='color: red;'>(Offline)</span>";
+		document.getElementById('translation').options[3].disabled = true;
 	}
 }

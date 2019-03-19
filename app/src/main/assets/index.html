@@ -4,8 +4,12 @@
 	<title>Heb12 Mobile</title>
 	<script type="text/javascript">
 		window.onerror = function(msg, url, linenumber) {
-		    interface.exec("toast", 'JavaScript Error: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
-		    alert('JavaScript Error: '+msg+'\nURL: '+url+'\nLine Number: '+linenumber);
+			var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
+		    if (window.location.href.includes("?")) {
+		    	interface.exec("toast", error);
+		    } else {
+		    	alert(error);
+		    }
 		    return true;
 		}
 	</script>
@@ -46,7 +50,7 @@
 <div id="sidebar">
 	<center>
 		<p class="large"><span id="hehe" onclick="notify('hehe')">Heb12</span> Mobile</p>
-		<span>Version 0.1.0</span>
+		<span>Version 0.1.0<span id="connectivity"></span></span>
 		<br><br>
 		<input id="search" placeholder="Hebrews 4" onkeyup="updateSearch()">
 		<div id="searchResults" onclick="updateSearch('visit')">
