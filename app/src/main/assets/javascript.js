@@ -113,20 +113,7 @@ window.onload = function() {
 	document.getElementById("chapter").value = "4";
 
 	// Load verse of the day
-	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript");
-	var waitUntilLoad2 = setInterval(function() {
-		if (session.loadedScript) {
-			var waitUntilLoad3 = setInterval(function() {
-				if (session.loadedScript) {
-					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>', "");
-					theVerse = "<b>" + session.loadedScriptData[0].bookname + " " + session.loadedScriptData[0].chapter + ":" + session.loadedScriptData[0].verse + "</b> - " + theVerse;
-					document.getElementById('votd').innerHTML = theVerse;
-					clearInterval(waitUntilLoad3);
-				}
-			}, 1);
-			clearInterval(waitUntilLoad2);
-		}
-	}, 10);
+	loadVOTD();
 
 	// Background loop - executes every 5 seconds
 	connectStatus();
@@ -193,6 +180,10 @@ function load(book, chapter, verse) {
 		document.getElementById('book').value = book;
 		document.getElementById('chapter').value = chapter;
 
+		book = book.replace("st", "");
+		book = book.replace("nd", "");
+		book = book.replace("rd", "");
+
 		var netjson = document.createElement("SCRIPT");
 		netjson.type = "text/javascript";
 
@@ -212,6 +203,7 @@ function load(book, chapter, verse) {
 					if (!(!session.netjsondata[i].title)) {
 						finaldata += "<h3>" + session.netjsondata[i].title + "</h3>";
 					}
+
 					var modifiedVerse = session.netjsondata[i].text.replace(/<\/?(st)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, "");
 					modifiedVerse = modifiedVerse.replace(/<p class="bodytext">/g, "");
 
@@ -342,7 +334,7 @@ function notify(text) {
 		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>\
 		<p>Openbibles - MasterOfTheTiger</p>\
 		<p>Material icons - Material.io</p>\
-		<p>Formatted KJV API - Bible Labs</p>\
+		<p>Formatted NET API - Bible Labs</p>\
 		<p><a href=\"https://github.com/thiagobodruk\" target=\"_blank\">@thiagobodruk</a> - Offline Bible JSON files</p>";
 	} else if (text == 'hehe') {
 		session.titleClicks++
@@ -692,7 +684,7 @@ function modifyVerse(verseNum, verseText) {
 		verseNum--;
 	}
 
-	var item = eval("session.highlightedVerses." + book + "_" + chapter + "_" + (Number(verseNum) + 1) );
+	var item = eval("session.highlightedVerses." + book.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three") + "_" + chapter + "_" + (Number(verseNum) + 1) );
 	if (!(!item)) {
 		color = item;
 	}
@@ -758,7 +750,7 @@ function highlightVerse(elem) {
 	var color = elem.getAttribute("class").split(" ")[1];
 
 	// I know, I know... eval.
-	eval("session.highlightedVerses." + verse.replace(/ /g, "_") + " = '" + color + "'");
+	eval("session.highlightedVerses." + verse.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three").replace(/ /g, "_") + " = '" + color + "'");
 	update();
 
 	document.getElementById('verseMenu').style.WebkitAnimationName = "down";
@@ -808,4 +800,21 @@ function connectStatus() {
 		document.getElementById('connectivity').innerHTML = " <span style='color: red;'>(Offline)</span>";
 		document.getElementById('translation').options[3].disabled = true;
 	}
+}
+
+function loadVOTD() {
+	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript");
+	var waitUntilLoad2 = setInterval(function() {
+		if (session.loadedScript) {
+			var waitUntilLoad3 = setInterval(function() {
+				if (session.loadedScript) {
+					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>', "");
+					theVerse = "<b>" + session.loadedScriptData[0].bookname + " " + session.loadedScriptData[0].chapter + ":" + session.loadedScriptData[0].verse + "</b> - " + theVerse;
+					document.getElementById('votd').innerHTML = theVerse;
+					clearInterval(waitUntilLoad3);
+				}
+			}, 1);
+			clearInterval(waitUntilLoad2);
+		}
+	}, 10);
 }

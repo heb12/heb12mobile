@@ -6,10 +6,11 @@
 		window.onerror = function(msg, url, linenumber) {
 			var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
 		    if (window.location.href.includes("?")) {
-		    	interface.exec("toast", error);
+		    	interface.exec("toast", "error");
 		    } else {
 		    	alert(error);
 		    }
+
 		    return true;
 		}
 	</script>
@@ -26,7 +27,7 @@
 	<center>
 		<select id="book" onchange="update()"></select>
 		<select id="chapter" onchange="update()"></select>
-		<div id="hamburger" class="icon" onclick="sidebarAnimation('hehe')">
+		<div id="hamburger" class="icon" onclick="sidebarAnimation('whoosh')">
 			<img src="images/menu.svg" width="45" >
 		</div>
 	</center>
@@ -94,7 +95,11 @@
 		<hr>
 
 		<div style="padding: 10px;">
-			<p class="text big">Verse of the Day</p>
+			<span class="text big">Verse of the Day</span>
+			<div class="icon" style="width: 15px; height: 15px;">
+				<img src="images/refresh.svg" width="15" onclick='loadVOTD()'>
+			</div>
+			<br>
 			<br>
 			<p class="text" id="votd">VOTD goes here</p>
 		</div>
