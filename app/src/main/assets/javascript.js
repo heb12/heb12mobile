@@ -136,7 +136,6 @@ function load(book, chapter, verse) {
 		}
 	}
 
-
 	// Openbibles parser and the other json files
 	if (isOpenbibles()) {
 
@@ -360,7 +359,7 @@ function random() {
 	sidebarAnimation("close");
 }
 
-// Function to handle page updates
+// Function to handle page updates (runs after load)
 function update(option) {
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
@@ -653,7 +652,6 @@ function isOpenbibles() {
 	}
 }
 
-// Simple script to load JSONP
 function loadJSONP(url) {
 	session.loadedScript = false;
 
@@ -692,56 +690,58 @@ function modifyVerse(verseNum, verseText) {
 	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + ";' class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);
 }
 
-// Show highlighting menu
+// Show verse menu
 function versePopup(verse) {
-	var book = document.getElementById('book').value;
-	var chapter = document.getElementById('chapter').value;
-	var theVerseText = book + " " + chapter + ":" + (verse + 1);
-	document.getElementById('verseMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
+	if (document.getElementById('sidebar').style.display == "none") {
+		var book = document.getElementById('book').value;
+		var chapter = document.getElementById('chapter').value;
+		var theVerseText = book + " " + chapter + ":" + (verse + 1);
+		document.getElementById('verseMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1));
 
-	document.getElementById('verseMenu').style.display = "block";
-	document.getElementById('verseMenu').style.WebkitAnimationName = "up";
+		document.getElementById('verseMenu').style.display = "block";
+		document.getElementById('verseMenu').style.WebkitAnimationName = "up";
 
-	var mainContent = document.getElementById("mainContent");
-	mainContent.getElementsByTagName("H2")[0].innerHTML = theVerseText;
+		var mainContent = document.getElementById("mainContent");
+		mainContent.getElementsByTagName("H2")[0].innerHTML = theVerseText;
 
-	var theVerse;
-	var done = false;
+		var theVerse;
+		var done = false;
 
-	// Get bible verse
-	if (session.currentTranslationString == "netOnline") {
-		load(book, chapter, verse + 1);
-		var int = setInterval(function() {
-			if (session.doneLoadingJSON) {
-				theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
-				done = true;
-				clearInterval(int);
-			}
-		},1);
-	} else if (isOpenbibles()) {
-		theVerse = load(book, chapter, verse);
-		session.doneLoadingJSON = true;
-		done = true;
-	} else {
-		theVerse = load(book, chapter, verse + 1);
-		session.doneLoadingJSON = true;
-		done = true;
-	}
-
-	var entire;
-	var wait = setInterval(function() {
-		if (session.doneLoadingJSON && done) {
-			session.currentVerse = entire;
-
-			mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
-			document.getElementById("verseMenu").children[1].children[0].children[0].setAttribute("onclick", 'search("' + theVerseText + '")');
-			document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", "interface.exec('copy'," + theVerseText + " - " + theVerse + ")");
-			document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", "interface.exec('share'," + theVerseText + " - " + theVerse + ")");
-
-			session.doneLoadingJSON = false;
-			clearInterval(wait);
+		// Get bible verse
+		if (session.currentTranslationString == "netOnline") {
+			load(book, chapter, verse + 1);
+			var int = setInterval(function() {
+				if (session.doneLoadingJSON) {
+					theVerse = session.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+					done = true;
+					clearInterval(int);
+				}
+			},1);
+		} else if (isOpenbibles()) {
+			theVerse = load(book, chapter, verse);
+			session.doneLoadingJSON = true;
+			done = true;
+		} else {
+			theVerse = load(book, chapter, verse + 1);
+			session.doneLoadingJSON = true;
+			done = true;
 		}
-	}, 10);
+
+		var entire;
+		var wait = setInterval(function() {
+			if (session.doneLoadingJSON && done) {
+				session.currentVerse = entire;
+
+				mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
+				document.getElementById("verseMenu").children[1].children[0].children[0].setAttribute("onclick", 'search("' + theVerseText + '")');
+				document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", "interface.exec('copy'," + theVerseText + " - " + theVerse + ")");
+				document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", "interface.exec('share'," + theVerseText + " - " + theVerse + ")");
+
+				session.doneLoadingJSON = false;
+				clearInterval(wait);
+			}
+		}, 10);
+	}
 }
 
 // Highlight a verse (called from html element)
@@ -781,6 +781,7 @@ function setFontSize(action) {
 	update();
 }
 
+// Load the number of chapters in book in chapter select
 function updateChapters(book) {
 	for (var i = 0; i < books.length; i++) {
 		if (books[i] == book) {
@@ -809,7 +810,12 @@ function loadVOTD() {
 			var waitUntilLoad3 = setInterval(function() {
 				if (session.loadedScript) {
 					var theVerse = session.loadedScriptData[0].text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>', "");
-					theVerse = "<b>" + session.loadedScriptData[0].bookname + " " + session.loadedScriptData[0].chapter + ":" + session.loadedScriptData[0].verse + "</b> - " + theVerse;
+					var chapter = session.loadedScriptData[0].chapter;
+					var book = session.loadedScriptData[0].bookname;
+					book = book.replace(/1/g, "1st");
+					book = book.replace(/2/g, "2nd");
+					book = book.replace(/3/g, "3rd");
+					theVerse = "<a class='votdVerse' onclick='load(\"" + book + "\", " + chapter + "); update(); sidebarAnimation(\"close\")'><b>" + book + " " + chapter + ":" + session.loadedScriptData[0].verse + "</b></a> - " + theVerse;
 					document.getElementById('votd').innerHTML = theVerse;
 					clearInterval(waitUntilLoad3);
 				}
@@ -817,4 +823,9 @@ function loadVOTD() {
 			clearInterval(waitUntilLoad2);
 		}
 	}, 10);
+}
+
+function goToChapter(book, chapter) {
+	load(book, chapter);
+	update();
 }
