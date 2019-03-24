@@ -364,7 +364,7 @@ select:active {
 	background: lightblue;
 }
 
-.color.white {
+.color.transparent {
 	background: white;
 }
 
@@ -386,6 +386,21 @@ select:active {
 #fontPreview {
 	font-size: 18px;
 }
+
 .votdVerse:active {
 	text-decoration: underline;
+}
+
+#debugText {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 40px;
+	height: 18px;
+	font-size: 15px;
+	background: white;
+	border: 1px solid black;
+	font-family: times new roman;
+	/*Change to block*/
+	display: none;
 }

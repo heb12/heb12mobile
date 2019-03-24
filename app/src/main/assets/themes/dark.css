@@ -27,6 +27,10 @@ option {
 	filter: invert(1);
 }
 
+.popup {
+	background: black;
+}
+
 .color.close {
 	filter: invert(1);
 }
@@ -42,6 +46,10 @@ option {
 }
 
 a {
+	color: white;
+}
+
+a:visited {
 	color: white;
 }
 

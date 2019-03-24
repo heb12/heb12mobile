@@ -18,6 +18,7 @@ var session = {
 	numberThingy:0,
 	loadedScript:false,
 	loadedScriptData:"foo",
+	sidebarTouch:false,
 	currentFont:"Arial",
 	highlightedVerses:{
 		John_3_16:"yellow",
@@ -111,8 +112,8 @@ window.onload = function() {
 	// Just in case it didn't load
 	document.getElementById("book").value = "Hebrews";
 	document.getElementById("chapter").value = "4";
+	document.getElementById('sidebar').style.display = "none";
 
-	// Load verse of the day
 	loadVOTD();
 
 	// Background loop - executes every 5 seconds
@@ -120,6 +121,11 @@ window.onload = function() {
 	setInterval(function() {
 		connectStatus();
 	},5000)
+
+	//Use for easily debugging thingies
+	// setInterval(function() {
+	// 	document.getElementById('debugText').innerHTML = session.sidebarTouch;
+	// });
 
 }
 
@@ -183,6 +189,11 @@ function load(book, chapter, verse) {
 		book = book.replace("nd", "");
 		book = book.replace("rd", "");
 
+		//Check if script tag already exists
+		if (!(!document.getElementById('netjson'))) {
+			document.getElementById('netjson').outerHTML = "";
+		}
+
 		var netjson = document.createElement("SCRIPT");
 		netjson.type = "text/javascript";
 
@@ -193,7 +204,7 @@ function load(book, chapter, verse) {
 		}
 
 		netjson.id = "netjson";
-		document.getElementsByTagName('head')[0].appendChild(netjson);
+		document.getElementById('loadedScripts').appendChild(netjson);
 
 		netjson.onload = function() {
 			var finaldata = "";
@@ -255,95 +266,6 @@ function load(book, chapter, verse) {
 		finalResult = finalResult.replace(/\.\.\./g, "");
 
 		return finalResult;
-	}
-}
-
-// Notify function - can only be used once at a time.
-function notify(text) {
-
-	popupAnimation("show");
-	var popup = document.getElementById('popupContent');
-	
-	if (text == "firsttime") {
-		popup.innerHTML = '<h2>Welcome to Heb12!</h2>\
-		<p>Heb12 Mobile is a free open-sourced app designed to make reading the Bible easy and hassle-free. If you would like to contribute or give feedback, please visit the&nbsp;<a href="https://github.com/heb12/heb12-mobile" target="_blank" rel="noopener">Github repository</a>.</p> \
-		<p><strong>Pro Tip: Tap on a bible verse for a list of extra actions.</strong></p>';
-	} else if (text == "settings") {
-		popup.innerHTML = "\
-		<h2>Settings</h2>\
-		<span class='textBesideSelect'>Theme:</span>\
-		<select id='themeSelect' onchange=\"setTheme(this.value)\">\
-			<option>Default</option>\
-			<option>Dark</option>\
-			<option>Dark Blue</option>\
-		</select>\
-		<br>\
-		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
-		<span class='textBesideSelect'>Theme:</span>\
-		<select id='fontSelect' onchange=\"setFont(this.value)\">\
-			<option>Times New Roman</option>\
-			<option>Arial</option>\
-			<option>Comfortaa</option>\
-			<option>Helvetica</option>\
-			<option>Courier New</option>\
-		</select>\
-		<br>\
-		<div>\
-			<div class='icon' style='float: left' onclick='setFontSize(\"minus\")'>\
-				<img src=\"images/left.svg\" width=\"45\">\
-			</div>\
-			<div class='icon' style='float:left'>\
-				<div style='width: 45px; text-align: center; padding-top: 10px; font-size: 20px;' id='fontSizeSelect'>\
-					12\
-				</div>\
-			</div>\
-			<div class='icon' style='float: left' onclick='setFontSize(\"plus\")'>\
-				<img src=\"images/right.svg\" width=\"45\">\
-			</div>\
-		</div>\
-		<br>\
-		<br>\
-		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>\
-		<br>\
-		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
-			Reset\
-		</div>\
-		";
-
-		document.getElementById('page').style.fontSize = session.currentFontSize + "px";
-		document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";
-		document.getElementById('fontPreview').style.fontSize = session.currentFontSize + "px";
-		document.getElementById('themeSelect').value = session.currentTheme;
-		document.getElementById('fontSelect').value = session.currentFont;
-		document.getElementById('fontSizeSelect').innerHTML = session.currentFontSize;
-	} else if (text == "info") {
-		popup.innerHTML = "\
-		<img style=\"display:inline; float:left; margin-right:10px;\" src=\"images/logo.png\" width=\"150\">\
-		<div style=\"display:inline;\">\
-		   <h2>Heb12 Mobile v1.0</h2>\
-		   <p>\
-		   Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the \
-		   <a target=\"_blank\" href=\"https://github.com/heb12/heb12-mobile\">Github repository</a>.\
-		   </p>\
-		</div>\
-		<br>\
-		<p><a style='color: blue; text-decoration: underline;' onclick=\"document.getElementById('page').innerHTML = load('Hebrews', 4); notify('verse-12')\">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>\
-		<br>\
-		<h2>Credits</h2>\
-		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>\
-		<p>Openbibles - MasterOfTheTiger</p>\
-		<p>Material icons - Material.io</p>\
-		<p>Formatted NET API - Bible Labs</p>\
-		<p><a href=\"https://github.com/thiagobodruk\" target=\"_blank\">@thiagobodruk</a> - Offline Bible JSON files</p>";
-	} else if (text == 'hehe') {
-		session.titleClicks++
-		if (session.titleClicks >= 10) {
-			popup.innerHTML = '<h1>You found an easter egg!</h1><p>This popup is very cool. Also you must check out <a href="http://frypup.is-great.net" target="_blank">frypup.is-great.net</a>. It is a website @Pufflegamerz made and it might just be the best one in the world. <br>Also, you <i>need</i> to see this picture of my pet guinea pig:</p><img width="320" src="images/blank.jpg">';
-		} else {
-			document.getElementsByClassName("popup")[0].style.display = "none";
-		}
-	} else {
-		popup.innerHTML = text;
 	}
 }
 
@@ -454,7 +376,7 @@ function updateTranslation() {
 	    script.type = "text/javascript";
 	    script.id = session.currentTranslationString.toLowerCase() + "Script";
 		if (session.currentTranslationString == "netOnline") {} else {
-			document.getElementsByTagName("head")[0].appendChild(script);
+			document.getElementById('loadedScripts').appendChild(script);
 		}
 		session.loadedTranslations.push(session.currentTranslationString.toLowerCase());
 
@@ -540,6 +462,8 @@ function setTheme(theme) {
 		document.getElementById('theme').innerHTML = '';
 	} else if (theme == "Dark Blue") {
 		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/darkblue.css">';
+	} else if (theme == "Amethyst") {
+		document.getElementById('theme').innerHTML = '<link rel="stylesheet" type="text/css" href="themes/amethyst.css">';
 	}
 
 	session.currentTheme = theme;

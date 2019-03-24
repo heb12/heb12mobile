@@ -1,0 +1,64 @@
+body {
+	color: black;
+	background: white;
+}
+
+#sidebar {
+	background: #666A86;
+	color: white;
+}
+
+#top {
+	background: #666A86;
+	color: white;
+}
+
+#main {
+	color: #666A86;
+	background: #E8DDB5;
+}
+
+#bottom {
+	background: #666A86;
+	color: white;
+}
+
+select {
+	color: white;
+}
+
+option {
+	background: black;
+}
+
+.icon img {
+	filter: invert(1);
+}
+
+.color.close {
+	filter: invert(1);
+}
+
+#popupContent {
+	background: #666A86;
+	color: white;
+}
+
+.popup .close {
+	background: #666A86;
+	color: white;
+	border-top: 1px solid white;
+}
+
+a {
+	color: white;
+}
+
+#verseMenu {
+	background: #666A86;
+	color: white;
+}
+
+#connectivity {
+	mix-blend-mode: color-dodge;
+}

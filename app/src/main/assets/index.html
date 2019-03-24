@@ -3,21 +3,23 @@
 <head>
 	<title>Heb12 Mobile</title>
 	<script type="text/javascript">
-		// window.onerror = function(msg, url, linenumber) {
-		// 	var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
-		//     if (window.location.href.includes("?")) {
-		//     	interface.exec("toast", "error");
-		//     } else {
-		//     	alert(error);
-		//     }
+		window.onerror = function(msg, url, linenumber) {
+			var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
+		    if (window.location.href.includes("?")) {
+		    	interface.exec("toast", "error");
+		    } else {
+		    	//annoying sometimes
+		    	//alert(error);
+		    }
 
-		//     return true;
-		// }
+		    return true;
+		}
 	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" type="image/png" href="images/logo.png"/>
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="bible.js"></script>
+	<script type="text/javascript" src="notify.js"></script>
 	<script type="text/javascript" src="javascript.js"></script>
 
 </head>
@@ -115,10 +117,6 @@
 	</div>
 </div>
 
-<div id="theme">
-
-</div>
-
 <div id="verseMenu" verse="John 3 16">
 	<div id="mainContent">
 		<h2>verse</h2>
@@ -147,13 +145,23 @@
 		<div class="color lightblue" onclick="highlightVerse(this)">
 			
 		</div>
-		<div class="color white" onclick="highlightVerse(this)">
+		<div class="color transparent" onclick="highlightVerse(this)">
 			
 		</div>
 		<div class="color close" onclick="closeVerseMenu()">
 			<img src="images/close.svg" width="50">
 		</div>
 	</div>
+</div>
+
+<div id="theme">
+
+</div>
+<div id="loadedScripts">
+	
+</div>
+<div id="debugText">
+	
 </div>
 </body>
 </html>
