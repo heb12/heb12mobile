@@ -13,7 +13,5 @@ The app originally started on May 2nd, 2018 as a simple demo in MIT's App Invent
 Please refer to the [wiki page](https://github.com/heb12/heb12-mobile/wiki/Development).
 
 # Testing Online
-Make sure you resize the window because it will look wierd on a desktop.
-
 Online Demo: [https://heb12.ml/mobile/demo/index.html](https://heb12.ml/mobile/demo/index.html)
 
