@@ -4,7 +4,7 @@ var session = {
 	breaksAfterVerse:1,
 	mouseDown:false,
 	titleClicks:0,
-	currentVerse:"Hmmmm.",
+	currentVerse:"",
 	currentTranslation:"",
 	currentTranslationString:"",
 	theme:"",
@@ -12,12 +12,12 @@ var session = {
 	currentBookNumber:57,
 	currentTheme:"Default",
 	loadedTranslations:[],
-	netjsondata:"foo",
+	netjsondata:"",
 	doneLoadingJSON:false,
-	netTextData:"foo",
+	netTextData:"",
 	numberThingy:0,
 	loadedScript:false,
-	loadedScriptData:"foo",
+	loadedScriptData:"",
 	sidebarTouch:false,
 	currentFont:"Arial",
 	highlightedVerses:{
@@ -318,11 +318,8 @@ function update(option) {
 		} else {
 			book = books[session.currentBookNumber - 1];
 			chapter = bible[session.currentBookNumber - 1][2];
+			console.log(session.currentBookNumber)
 		}
-	}
-
-	if (bible[session.currentBookNumber][2] < chapter) {
-		chapter = bible[session.currentBookNumber][2];
 	}
 
 	// Get offline data

@@ -3,16 +3,16 @@
 <head>
 	<title>Heb12 Mobile</title>
 	<script type="text/javascript">
-		window.onerror = function(msg, url, linenumber) {
-			var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
-		    if (window.location.href.includes("?")) {
-		    	interface.exec("toast", "error");
-		    } else {
-		    	//annoying sometimes
-		    	//alert(error);
-		    }
+		// Error message on Android
+		if (!window.location.href.includes("?")) {
+			window.onerror = function(msg, url, linenumber) {
+				var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
+			    if (window.location.href.includes("?")) {
+			    	interface.exec("toast", "error");
+			    }
 
-		    return true;
+			    return true;
+			}
 		}
 	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
