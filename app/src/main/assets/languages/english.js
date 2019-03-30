@@ -1,7 +1,7 @@
 var english = {
 	next: "Next",
-	previous: "Previous"
-	connection: "Version [version] ([connection])",
+	previous: "Previous",
+	version: "Version [version] ([connection])",
 	translationTitle: "Current Translation",
 	translations: [
 		"BBE (Bible in Basic English) (Offline)",
@@ -11,7 +11,7 @@ var english = {
 		"ASV (American Standard Version) (Offline)",
 		"DBY (Darby Bible) (Offline)"
 	],
-	votdTitle: "Verse of the Day",
+	VOTDTitle: "Verse of the Day",
 	description: "Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the {Github repository}.",
 	credits: [
 		"Credits",

@@ -20,6 +20,7 @@ var session = {
 	loadedScriptData:"",
 	sidebarTouch:false,
 	currentFont:"Arial",
+	currentLanguage:"english",
 	highlightedVerses:{
 		John_3_16:"yellow",
 		Hebrews_4_12:"lightgreen",
@@ -598,7 +599,7 @@ function modifyVerse(verseNum, verseText) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
 	var color = "transparent";
-	var textColor = "black";
+	var textColor = "";
 	if (isOpenbibles()) {
 		verseNum--;
 	}
@@ -606,9 +607,11 @@ function modifyVerse(verseNum, verseText) {
 	var item = eval("session.highlightedVerses." + book.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three") + "_" + chapter + "_" + (Number(verseNum) + 1) );
 	if (!(!item)) {
 		color = item;
+		if (session.currentTheme == "Dark") {
+			textColor = "black";
+		}
 	}
-
-	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + ";' class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);
+	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; color: " + textColor +";' class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);
 }
 
 // Show verse menu
