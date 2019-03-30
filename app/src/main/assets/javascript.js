@@ -26,7 +26,10 @@ var session = {
 		Hebrews_4_12:"lightgreen",
 		Luke_9_23:"lightgreen"
 	},
-	currentFontSize:18
+	currentFontSize:18,
+	bookmarkedChapters:{
+
+	}
 }
 
 var data;
@@ -83,7 +86,7 @@ window.onload = function() {
 			session.currentFontSize = Number(configuration[6].split("=")[1]);
 			session.currentTranslationString = configuration[0].split("=")[1];
 			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
-
+			session.bookmarkedChapters = JSON.parse(configuration[7].split("=")[1]);
 			// Update Elements
 			document.getElementById('page').style.fontSize = session.currentFontSize + "px";
 			document.getElementById('book').value = configuration[1].split("=")[1];
@@ -346,6 +349,14 @@ function update(option) {
 	if (!session.devmode) {
 		updateConfigFile();
 	}
+
+	var marked = eval("session.bookmarkedChapters." + replaceNumbers(book, "1") + "_" + chapter);
+	if (marked == true || !(!marked)) {
+		document.getElementById('bookmark').src = "images/bookmarked.svg";
+	} else {
+		document.getElementById('bookmark').src = "images/notbookmarked.svg"
+	}
+
 }
 
 // Update the current translation
@@ -436,7 +447,9 @@ function updateConfigFile(def) {
 		["theme", session.currentTheme, "Default"],
 		["font", session.currentFont, "Arial"],
 		["highlightedVerses",JSON.stringify(session.highlightedVerses), "John 3 16 yellow, Hebrews 4 12 lightgreen, Luke 9 23 lightgreen"],
-		["fonSize", session.currentFontSize, "18"]
+		["fontSize", session.currentFontSize, "18"],
+		["bookmarkedChapters", JSON.stringify(session.bookmarkedChapters), ""]
+
 	];
 
 	// Return a config file or just a default
@@ -752,4 +765,31 @@ function loadVOTD() {
 function goToChapter(book, chapter) {
 	load(book, chapter);
 	update();
+}
+
+function bookmark() {
+	var chapter = document.getElementById('chapter').value;
+	var book = document.getElementById('book').value;
+	var button = document.getElementById('bookmark');
+	book = replaceNumbers(book, "1")
+
+	if (eval("session.bookmarkedChapters." + book + "_" + chapter)) {
+		eval("session.bookmarkedChapters." + book + "_" + chapter + " = false;");
+		button.src = "images/notbookmarked.svg";
+	} else {
+		eval("session.bookmarkedChapters." + book + "_" + chapter + " = true;");
+		button.src = "images/bookmarked.svg";
+	}
+
+	update();
+}
+
+// Replace 1st with one, and one with 1st
+function replaceNumbers(stringy, way) {
+	if (way == "1") {
+		stringy = stringy.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three");
+	} else {
+		stringy = stringy.replace("one", "1st ").replace("one", "2nd").replace("three", "4rd");
+	}
+	return stringy
 }

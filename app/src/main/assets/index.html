@@ -8,7 +8,7 @@
 			window.onerror = function(msg, url, linenumber) {
 				var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
 			    if (window.location.href.includes("?")) {
-			    	interface.exec("toast", "error");
+			    	interface.exec("toast", "Javascript error on line " + linenumber + ": " + msg);
 			    }
 
 			    return true;
@@ -57,6 +57,9 @@
 		<span name="text-version">Version 0.1.0<span id="connectivity"></span></span>
 		<br><br>
 		<input id="search" placeholder="Hebrews 4" onkeyup="updateSearch()">
+		<div class="icon" style="vertical-align: -webkit-baseline-middle;">
+			<img id="bookmark" src="images/notbookmarked.svg" width="33" onclick='bookmark()'>
+		</div>
 		<div id="searchResults" onclick="updateSearch('visit')">
 			
 		</div>
@@ -92,6 +95,9 @@
 			</div>
 			<div class="icon">
 				<img src="images/random.svg" width="45" onclick='random()'>
+			</div>
+			<div class="icon">
+				<img src="images/bookmarks.svg" width="45" onclick='notify("bookmarks")'>
 			</div>
 		</div>
 

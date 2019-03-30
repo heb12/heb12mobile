@@ -175,7 +175,7 @@ select:active {
 }
 
 #search {
-	width: calc(90%);
+	width: calc(90% - 50px);
 	height: 33px;
 	outline: none;
 	border-radius: 4px;

@@ -74,6 +74,26 @@ function notify(text) {
 		<p>Material icons - Material.io</p>\
 		<p>Formatted NET API - Bible Labs</p>\
 		<p><a href=\"https://github.com/thiagobodruk\" target=\"_blank\">@thiagobodruk</a> - Offline Bible JSON files</p>";
+	} else if (text == "bookmarks") {
+		var htmlList = "";
+		for (var i = 0; i < Object.keys(session.bookmarkedChapters).length; i++) {
+			if (eval("session.bookmarkedChapters." + Object.keys(session.bookmarkedChapters)[i])) {
+				var chapter = Object.keys(session.bookmarkedChapters)[i].toString();
+				chapter = replaceNumbers(chapter, "2")
+				htmlList += "\
+				<hr>\
+				<p style='font-size:21px;'>" + chapter.replace(/_/g, " ") + "</p>\
+				<div class='button bg' onclick='goToChapter(\"" + chapter +"\".split(\"_\")[0], \"" + chapter +"\".split(\"_\")[1]); sidebarAnimation(\"close\"); popupAnimation(\"close\")'>\
+					Visit\
+				</div>\
+				<br><br>\
+				"
+			}
+		}
+		popup.innerHTML = "\
+		<h2>Bookmarks</h2>\
+		" + htmlList + "\
+		";
 	} else if (text == 'hehe') {
 		session.titleClicks++
 		if (session.titleClicks >= 10) {
