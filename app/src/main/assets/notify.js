@@ -4,50 +4,10 @@ function notify(text) {
 	
 	if (text == "firsttime") {
 		popup.innerHTML = '<h2>Welcome to Heb12!</h2>\
-		<p>Heb12 Mobile is a free open-sourced app designed to make reading the Bible easy and hassle-free. If you would like to contribute or give feedback, please visit the&nbsp;<a href="https://github.com/heb12/heb12-mobile" target="_blank" rel="noopener">Github repository</a>.</p> \
+		<p>' + session.language.description + '</p> \
 		<p><strong>Pro Tip: Tap on a bible verse for a list of extra actions.</strong></p>';
 	} else if (text == "settings") {
-		popup.innerHTML = "\
-		<h2>Settings</h2>\
-		<span class='textBesideSelect'>Theme:</span>\
-		<select id='themeSelect' onchange=\"setTheme(this.value)\">\
-			<option>Default</option>\
-			<option>Dark</option>\
-			<option>Dark Blue</option>\
-			<option>Amethyst</option>\
-		</select>\
-		<br>\
-		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
-		<span class='textBesideSelect'>Theme:</span>\
-		<select id='fontSelect' onchange=\"setFont(this.value)\">\
-			<option>Times New Roman</option>\
-			<option>Arial</option>\
-			<option>Comfortaa</option>\
-			<option>Helvetica</option>\
-			<option>Courier New</option>\
-		</select>\
-		<br>\
-		<div>\
-			<div class='icon' style='float: left' onclick='setFontSize(\"minus\")'>\
-				<img src=\"images/left.svg\" width=\"45\">\
-			</div>\
-			<div class='icon' style='float:left'>\
-				<div style='width: 45px; text-align: center; padding-top: 10px; font-size: 20px;' id='fontSizeSelect'>\
-					12\
-				</div>\
-			</div>\
-			<div class='icon' style='float: left' onclick='setFontSize(\"plus\")'>\
-				<img src=\"images/right.svg\" width=\"45\">\
-			</div>\
-		</div>\
-		<br>\
-		<br>\
-		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>\
-		<br>\
-		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
-			Reset\
-		</div>\
-		";
+		popup.innerHTML = session.language.settings;
 
 		document.getElementById('page').style.fontSize = session.currentFontSize + "px";
 		document.getElementById('page').style.lineHeight = (session.currentFontSize + 7) + "px";

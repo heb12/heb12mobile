@@ -1,16 +1,11 @@
-// Session Variables
+// Main Variables
 var session = {
-	version:"1.3",
+	version:"0.1.0",
 	breaksAfterVerse:1,
 	mouseDown:false,
 	titleClicks:0,
-	currentVerse:"",
-	currentTranslation:"",
-	currentTranslationString:"",
 	theme:"",
 	devmode:false,
-	currentBookNumber:57,
-	currentTheme:"Default",
 	loadedTranslations:[],
 	netjsondata:"",
 	doneLoadingJSON:false,
@@ -18,18 +13,24 @@ var session = {
 	numberThingy:0,
 	loadedScript:false,
 	loadedScriptData:"",
+	connectivity:"",
 	sidebarTouch:false,
+	language:english,
 	currentFont:"Arial",
 	currentLanguage:"english",
+	currentBookNumber:57,
+	currentTheme:"Default",
+	currentVerse:"",
+	currentTranslation:"",
+	currentTranslationString:"",
+	currentFontSize:18,
 	highlightedVerses:{
 		John_3_16:"yellow",
 		Hebrews_4_12:"lightgreen",
 		Luke_9_23:"lightgreen"
 	},
-	currentFontSize:18,
-	bookmarkedChapters:{
-
-	}
+	bookmarkedChapters:{},
+	configuration:""
 }
 
 var data;
@@ -46,7 +47,7 @@ window.onload = function() {
 		document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 	}
 
-	// A simple solution to the devmode problem :-)
+	// Set session.devmode to false if not coding app
 	if (!window.location.href.includes("?")) {
 		session.devmode = true;
 	} else {
@@ -98,8 +99,6 @@ window.onload = function() {
 		}
 	}
 
-	updateTranslation();
-
 	// Use special methods to use script only when it is loaded
 	var waitUntilLoad = setInterval(function() {
 		if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
@@ -124,12 +123,19 @@ window.onload = function() {
 	connectStatus();
 	setInterval(function() {
 		connectStatus();
+		updateLanguage();
 	},5000)
 
 	//Use for easily debugging thingies
 	// setInterval(function() {
 	// 	document.getElementById('debugText').innerHTML = session.sidebarTouch;
 	// });
+
+	session.currentLanguage = "spanish";
+
+	updateTranslation();
+	connectStatus();
+	updateLanguage();
 
 }
 
@@ -732,10 +738,10 @@ function updateChapters(book) {
 
 function connectStatus() {
 	if (navigator.onLine) {
-		document.getElementById('connectivity').innerHTML = " <span style='color: green;'>(Online)</span>";
+		session.connectivity = "<span style='color: green;'>(Online)</span>";
 		document.getElementById('translation').options[3].disabled = false;
 	} else {
-		document.getElementById('connectivity').innerHTML = " <span style='color: red;'>(Offline)</span>";
+		session.connectivity = "<span style='color: red;'>(Offline)</span>";
 		document.getElementById('translation').options[3].disabled = true;
 	}
 }

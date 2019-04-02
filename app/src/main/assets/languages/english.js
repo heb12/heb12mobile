@@ -1,7 +1,7 @@
 var english = {
 	next: "Next",
 	previous: "Previous",
-	version: "Version [version] ([connection])",
+	version: "Version [version] [connection]",
 	translationTitle: "Current Translation",
 	translations: [
 		"BBE (Bible in Basic English) (Offline)",
@@ -20,5 +20,46 @@ var english = {
 		"Material icons - Material.io",
 		"Formatted NET API - Bible Labs",
 		"@thiagobodruk - Offline Bible JSON files"
-	]
+	],
+	settings:"\
+		<h2>Settings</h2>\
+		<span class='textBesideSelect'>Theme:</span>\
+		<select id='themeSelect' onchange=\"setTheme(this.value)\">\
+			<option>Default</option>\
+			<option>Dark</option>\
+			<option>Dark Blue</option>\
+			<option>Amethyst</option>\
+		</select>\
+		<br>\
+		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
+		<span class='textBesideSelect'>Theme:</span>\
+		<select id='fontSelect' onchange=\"setFont(this.value)\">\
+			<option>Times New Roman</option>\
+			<option>Arial</option>\
+			<option>Comfortaa</option>\
+			<option>Helvetica</option>\
+			<option>Courier New</option>\
+		</select>\
+		<br>\
+		<div>\
+			<div class='icon' style='float: left' onclick='setFontSize(\"minus\")'>\
+				<img src=\"images/left.svg\" width=\"45\">\
+			</div>\
+			<div class='icon' style='float:left'>\
+				<div style='width: 45px; text-align: center; padding-top: 10px; font-size: 20px;' id='fontSizeSelect'>\
+					12\
+				</div>\
+			</div>\
+			<div class='icon' style='float: left' onclick='setFontSize(\"plus\")'>\
+				<img src=\"images/right.svg\" width=\"45\">\
+			</div>\
+		</div>\
+		<br>\
+		<br>\
+		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>\
+		<br>\
+		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
+			Reset\
+		</div>\
+		"
 }
