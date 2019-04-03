@@ -131,7 +131,7 @@ window.onload = function() {
 	// 	document.getElementById('debugText').innerHTML = session.sidebarTouch;
 	// });
 
-	session.currentLanguage = "spanish";
+	session.currentLanguage = "english";
 
 	updateTranslation();
 	connectStatus();

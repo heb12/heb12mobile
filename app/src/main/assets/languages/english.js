@@ -23,6 +23,12 @@ var english = {
 	],
 	settings:"\
 		<h2>Settings</h2>\
+		<span class='textBesideSelect'>Language:</span>\
+		<select id='languageSelect' onchange=\"setLanguage(this.value)\">\
+			<option>English</option>\
+			<option>Spanish</option>\
+		</select>\
+		<br>\
 		<span class='textBesideSelect'>Theme:</span>\
 		<select id='themeSelect' onchange=\"setTheme(this.value)\">\
 			<option>Default</option>\
