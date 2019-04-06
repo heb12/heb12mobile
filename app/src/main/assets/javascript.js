@@ -143,7 +143,6 @@ window.onload = function() {
 function load(book, chapter, verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
 	document.getElementById('chapter').innerHTML = "";
-
 	var bookNum;
 	for (var i = 0; i < books.length; i++) {
 		if (books[i] == book) {
@@ -156,7 +155,7 @@ function load(book, chapter, verse) {
 	if (isOpenbibles()) {
 
 		// Make accurate chapter length
-		for (var i = 1; i <= bible[bookNum][2]; i++) {
+		for (var i = 1; i <= bible[bookNum][1]; i++) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
@@ -188,7 +187,7 @@ function load(book, chapter, verse) {
 		return page;
 	} else if (session.currentTranslationString == "netOnline") {
 
-		for (var i = 1; i <= bible[session.currentBookNumber][2]; i++) {
+		for (var i = 1; i <= bible[session.currentBookNumber][1]; i++) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
@@ -307,7 +306,7 @@ function update(option) {
 
 	// If the user goes back at the first chapter of a book, go back to the previous book
 	if (option == "next") {
-		if (bible[session.currentBookNumber][2] == Number(document.getElementById('chapter').value)) {
+		if (bible[session.currentBookNumber][1] == Number(document.getElementById('chapter').value)) {
 			if (book == "Revelation" && chapter == 22) {
 				book = "Genesis";
 				chapter = 1;
@@ -317,8 +316,8 @@ function update(option) {
 			}
 		} else {
 			chapter++;
-			if (bible[session.currentBookNumber][2] <= chapter) {
-				chapter = bible[session.currentBookNumber][2];
+			if (bible[session.currentBookNumber][1] <= chapter) {
+				chapter = bible[session.currentBookNumber][1];
 			}
 		}
 
@@ -327,8 +326,7 @@ function update(option) {
 			chapter--;
 		} else {
 			book = books[session.currentBookNumber - 1];
-			chapter = bible[session.currentBookNumber - 1][2];
-			console.log(session.currentBookNumber)
+			chapter = bible[session.currentBookNumber - 1][1];
 		}
 	}
 
@@ -526,9 +524,9 @@ function updateSearch(searching) {
 			document.getElementById('book').value = valid[1];
 			updateChapters(valid[1]);
 			document.getElementById('chapter').value = theChapter;
-			update();
 			result.style.display = "none";
 			document.getElementById('search').value = "";
+			update();
 		}
 	}
 
@@ -548,7 +546,7 @@ function validChapter(thing) {
 		var firstPart = editBook(thing, 1);
 		var secondPart = editBook(books[i], 2);
 		if (firstPart == secondPart) {
-			if (bible[i][2] >= thing.split("-")[1]) {
+			if (bible[i][1] >= thing.split("-")[1]) {
 				return [true, books[i]]
 			}
 		}
@@ -729,7 +727,7 @@ function updateChapters(book) {
 	for (var i = 0; i < books.length; i++) {
 		if (books[i] == book) {
 			document.getElementById('chapter').innerHTML = "";
-			for (var n = 1; n <= bible[i][2]; n++) {
+			for (var n = 1; n <= bible[i][1]; n++) {
 				document.getElementById('chapter').innerHTML += "<option>" + n + "</option>";
 			}
 		}
