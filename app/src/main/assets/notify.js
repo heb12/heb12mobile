@@ -15,6 +15,7 @@ function notify(text) {
 		document.getElementById('themeSelect').value = session.currentTheme;
 		document.getElementById('fontSelect').value = session.currentFont;
 		document.getElementById('fontSizeSelect').innerHTML = session.currentFontSize;
+		document.getElementById('languageSelect').value = session.currentLanguage;
 	} else if (text == "info") {
 		popup.innerHTML = "\
 		<img style=\"display:inline; float:left; margin-right:10px;\" src=\"images/logo.png\" width=\"150\">\

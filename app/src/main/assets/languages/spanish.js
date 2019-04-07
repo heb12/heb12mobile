@@ -22,8 +22,14 @@ var spanish = {
 		"@thiagobodruk - Archivos JSON de la Biblia sin conexi&oacute;n"
 	],
 	settings:"\
-		<h2>Settings</h2>\
-		<span class='textBesideSelect'>Theme:</span>\
+		<h2>Configuraci&oacute;n</h2>\
+		<span class='textBesideSelect'>Idioma:</span>\
+		<select id='languageSelect' onchange=\"setLanguage(this.value)\">\
+			<option>English</option>\
+			<option>Spanish</option>\
+		</select>\
+		<br>\
+		<span class='textBesideSelect'>El tema:</span>\
 		<select id='themeSelect' onchange=\"setTheme(this.value)\">\
 			<option>Default</option>\
 			<option>Dark</option>\
@@ -32,7 +38,7 @@ var spanish = {
 		</select>\
 		<br>\
 		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
-		<span class='textBesideSelect'>Theme:</span>\
+		<span class='textBesideSelect'>Fuente:</span>\
 		<select id='fontSelect' onchange=\"setFont(this.value)\">\
 			<option>Times New Roman</option>\
 			<option>Arial</option>\
@@ -56,10 +62,10 @@ var spanish = {
 		</div>\
 		<br>\
 		<br>\
-		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>\
+		<p>Esto restablecer&aacute; todos los datos guardados. Cuando reinicie la aplicaci&oacute;n, se cerrar&aacute; para que pueda volver a iniciarla.</p>\
 		<br>\
 		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
-			Reset\
+			Reiniciar\
 		</div>\
 		"
 }

@@ -131,7 +131,7 @@ window.onload = function() {
 	// 	document.getElementById('debugText').innerHTML = session.sidebarTouch;
 	// });
 
-	session.currentLanguage = "english";
+	session.currentLanguage = "English";
 
 	updateTranslation();
 	connectStatus();
@@ -556,7 +556,7 @@ function validChapter(thing) {
 
 // Make Books easier to search
 function editBook(book, part) {
-	book = book.replace("1st ","1 ").replace("2nd ","2 ");
+	book = book.replace("1st ","1 ").replace("2nd ","2 ").replace("3rd ","3 ");
 	if (part == 1) {
 		book = book.toUpperCase();
 
@@ -675,8 +675,8 @@ function versePopup(verse) {
 
 				mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
 				document.getElementById("verseMenu").children[1].children[0].children[0].setAttribute("onclick", 'search("' + theVerseText + '")');
-				document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", "interface.exec('copy'," + theVerseText + " - " + theVerse + ")");
-				document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", "interface.exec('share'," + theVerseText + " - " + theVerse + ")");
+				document.getElementById("verseMenu").children[1].children[1].children[0].setAttribute("onclick", "interface.exec('copy','" + theVerseText + " - " + theVerse + "')");
+				document.getElementById("verseMenu").children[1].children[2].children[0].setAttribute("onclick", "interface.exec('share','" + theVerseText + " - " + theVerse + "')");
 
 				session.doneLoadingJSON = false;
 				clearInterval(wait);
@@ -796,4 +796,10 @@ function replaceNumbers(stringy, way) {
 		stringy = stringy.replace("one", "1st ").replace("one", "2nd").replace("three", "4rd");
 	}
 	return stringy
+}
+
+function setLanguage(elem) {
+	session.currentLanguage = elem;
+	updateLanguage();
+	popupAnimation("close");
 }
