@@ -12,7 +12,7 @@ var english = {
 		"DBY (Darby Bible) (Offline)"
 	],
 	VOTDTitle: "Verse of the Day",
-	description: "Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the {Github repository}.",
+	description: "Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the <a href='https://github.com/heb12/heb12-mobile'>Github repository</a>.",
 	credits: [
 		"Credits",
 		"Lead Programmer - Pufflegamerz aka Petabyte Studios",

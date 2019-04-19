@@ -12,7 +12,7 @@ var spanish = {
 		"DBY (Biblia de Darby) (Desconectado)"
 	],
 	VOTDTitle: "Verso del d&iacute;a",
-	description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto dise&ntilde;ada para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir al {Github repository}.",
+	description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto dise&ntilde;ada para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir al <a href='https://github.com/heb12/heb12-mobile'>Github repository</a>.",
 	credits: [
 		"Cr&eacute;ditos",
 		"Programador principal - Pufflegamerz aka Petabyte Studios",
