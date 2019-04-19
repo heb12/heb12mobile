@@ -3,7 +3,7 @@ Heb12 Mobile is a free mobile open-sourced app for reading the bible. It current
 
 The app originally started on May 2nd, 2018 as a simple demo in MIT's App Inventor. It was later re-written in Html5 so it could be fast and easy to modify. Heb12 Mobile will launch sometime in late February or March.
 
-![pic|512x397](https://heb12.ml/mobile/screenshot1.png)
+![pic|12x97](https://heb12.ml/mobile/screenshot1.png)
 # Installation
 1. Extract the latest file from `prerelease`
 2. Send the .apk file to your device
