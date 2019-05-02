@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         boolean firstTime = false;
 
-        // Create Heb12 config file
+        // Create Heb12 config file () (the main purpose of the entire file)
         File config = new File(Environment.getExternalStorageDirectory(), "Heb12Config");
         try {
 
@@ -78,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
             int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
 
-            // Here, thisActivity is the current activity
+            // I stole this code from Google
             if (ContextCompat.checkSelfPermission(MainActivity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
                 // Permission is not granted
-                // Should we show an explanation?
+                // Should we show an explanation? No
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     // Show an explanation to the user *asynchronously* -- don't block
@@ -95,13 +95,9 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
-
-                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
             } else {
-                // Permission has already been granted
+                // Permission has already been granted, all of that code was useless
             }
         }
     }

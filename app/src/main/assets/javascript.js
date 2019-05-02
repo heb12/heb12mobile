@@ -22,7 +22,7 @@ var session = {
 	currentTheme:"Default",
 	currentVerse:"",
 	currentTranslation:"",
-	currentTranslationString:"",
+	currentTranslationString:"KJV",
 	currentFontSize:18,
 	highlightedVerses:{
 		John_3_16:"yellow",
@@ -30,7 +30,8 @@ var session = {
 		Luke_9_23:"lightgreen"
 	},
 	bookmarkedChapters:{},
-	configuration:""
+	configuration:"",
+	lastTranslation:""
 }
 
 var data;
@@ -81,13 +82,27 @@ window.onload = function() {
 			configuration = configuration.replace(/\/\*[A-Za-z0-9 -!.:]+\*\//g, "");
 			configuration = configuration.split(";");
 
+			// Set the translation before everything breaks it
+			session.currentTranslationString = configuration[0].split("=")[1];
+			if (session.currentTranslationString == "netOnline") {
+				session.currentTranslationString = "NET";
+			}
+			for (var i = 0; i < document.getElementById("translation").children.length; i++) {
+				if (document.getElementById("translation").children[i].value.startsWith(session.currentTranslationString)) {
+					document.getElementById("translation").children[i].selected = true;
+					i = 100;
+				}
+			}
+			update();
+
 			// Update Vars
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
 			session.currentFontSize = Number(configuration[6].split("=")[1]);
-			session.currentTranslationString = configuration[0].split("=")[1];
+			//session.lastTranslation = configuration[0].split("=")[1];
 			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
 			session.bookmarkedChapters = JSON.parse(configuration[7].split("=")[1]);
+
 			// Update Elements
 			document.getElementById('page').style.fontSize = session.currentFontSize + "px";
 			document.getElementById('book').value = configuration[1].split("=")[1];
@@ -343,6 +358,7 @@ function update(option) {
 	} else {
 		var waitUntilLoad = setInterval(function() {
 			if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
+				session.currentTranslation = eval(session.currentTranslationString.toLowerCase());
 				document.getElementById('page').innerHTML = load(book, chapter);
 				clearInterval(waitUntilLoad);
 			}
@@ -626,6 +642,9 @@ function modifyVerse(verseNum, verseText) {
 		color = item;
 		if (session.currentTheme == "Dark") {
 			textColor = "black";
+		}
+		if (item == "transparent") {
+			textColor = "white";
 		}
 	}
 	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; color: " + textColor +";' class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);

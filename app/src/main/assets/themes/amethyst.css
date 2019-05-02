@@ -18,6 +18,10 @@ body {
 	background: #E8DDB5;
 }
 
+.color.transparent {
+	background: #E8DDB5;
+}
+
 #bottom {
 	background: #666A86;
 	color: white;
