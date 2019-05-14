@@ -296,7 +296,7 @@ function load(book, chapter, verse) {
 // Visit a random chapter
 function random() {
 	var randomBook = Math.floor(Math.random() * books.length);
-	var randomChapter = Math.floor(Math.random() * session.currentTranslation[randomBook].chapters.length);
+	var randomChapter = Math.floor(Math.random() * bibleObj[books[randomBook]]);
 	if (randomChapter == 0) {
 		randomChapter = 1;
 	}
@@ -822,3 +822,5 @@ function setLanguage(elem) {
 	updateLanguage();
 	popupAnimation("close");
 }
+
+// So long and thanks for all the fish

@@ -11,7 +11,6 @@ function updateLanguage() {
 				var text = translation[Object.keys(translation)[i]];
 				text = text.replace(/\[version\]/g, session.version);
 				text = text.replace(/\[connection\]/g, session.connectivity);
-				text = text.replace(/\{Github repository\}/g, "<a href='https://github.com/heb12/heb12-mobile'>Github repository</a>");
 				document.getElementsByName("text-" + Object.keys(translation)[i])[0].innerHTML = text;
 			}
 		}
