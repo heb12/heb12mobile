@@ -113,6 +113,7 @@ window.onload = function() {
 
 		}
 	}
+	
 
 	// Use special methods to use script only when it is loaded
 	var waitUntilLoad = setInterval(function() {
@@ -128,8 +129,6 @@ window.onload = function() {
 	}, 10);
 
 	// Just in case it didn't load
-	document.getElementById("book").value = "Hebrews";
-	document.getElementById("chapter").value = "4";
 	document.getElementById('sidebar').style.display = "none";
 
 	loadVOTD();
