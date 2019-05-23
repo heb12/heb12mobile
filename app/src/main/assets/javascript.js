@@ -29,7 +29,10 @@ var session = {
 		Hebrews_4_12:"lightgreen",
 		Luke_9_23:"lightgreen"
 	},
-	bookmarkedChapters:{},
+	bookmarkedChapters:{
+		Hebrews_4:true,
+		John_3:true
+	},
 	configuration:"",
 	lastTranslation:""
 }
@@ -99,7 +102,6 @@ window.onload = function() {
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
 			session.currentFontSize = Number(configuration[6].split("=")[1]);
-			//session.lastTranslation = configuration[0].split("=")[1];
 			session.highlightedVerses = JSON.parse(configuration[5].split("=")[1].split(","));
 			session.bookmarkedChapters = JSON.parse(configuration[7].split("=")[1]);
 
