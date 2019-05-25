@@ -77,7 +77,7 @@ window.onload = function() {
 
 			// Load the default config file
 			updateConfigFile("def");
-		}	
+		}
 
 		// Parse config file into JS
 		if (!data[1] == "") {
@@ -322,6 +322,7 @@ function update(option) {
 
 	// If the user goes back at the first chapter of a book, go back to the previous book
 	if (option == "next") {
+		sidebarAnimation("close");
 		if (bible[session.currentBookNumber][1] == Number(document.getElementById('chapter').value)) {
 			if (book == "Revelation" && chapter == 22) {
 				book = "Genesis";
@@ -338,6 +339,7 @@ function update(option) {
 		}
 
 	} else if (option == "previous") {
+		sidebarAnimation("close");
 		if (chapter !== 1) {
 			chapter--;
 		} else {
