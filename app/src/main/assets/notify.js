@@ -62,7 +62,10 @@ function notify(text) {
 		} else {
 			document.getElementsByClassName("popup")[0].style.display = "none";
 		}
-	} else {
+	} else if (text == 'download') {
+		popup.innerHTML = "Download";
+	}
+	 else {
 		popup.innerHTML = text;
 	}
 }

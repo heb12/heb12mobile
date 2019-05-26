@@ -270,8 +270,8 @@ function load(book, chapter, verse) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
-		document.getElementById('book').value = book;
-		document.getElementById('chapter').value = chapter;
+		document.getElementById('chapter').options[chapter].selected = true
+		document.getElementById('book').options[i].selected = true
 		
 		var finalResult = "";
 
@@ -384,6 +384,14 @@ function update(option) {
 function updateTranslation() {
 	var translation = document.getElementById('translation').value;
 
+	if (translation == "Download more translations") {
+		document.getElementById('translation').value = session.lastTranslation;
+		sidebarAnimation("close");
+		notify("download");
+	} else {
+		session.lastTranslation = translation;
+	}
+
 	// Check what the selected translation is
 	if (translation.startsWith("BBE")) {
 		session.currentTranslationString = "BBE";
@@ -400,7 +408,7 @@ function updateTranslation() {
 	}
 
 	// Only load the script if it hasn't loaded yet
-	if (!session.loadedTranslations.includes(session.currentTranslationString.toLowerCase())) {
+	if (!(!session.loadedTranslations.indexOf(session.currentTranslationString.toLowerCase()))) {
 		var script = document.createElement("script");
 	    script.src = "bibles/" + session.currentTranslationString.toLowerCase() + ".js";
 	    script.type = "text/javascript";
