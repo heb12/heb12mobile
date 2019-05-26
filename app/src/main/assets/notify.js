@@ -18,7 +18,7 @@ function notify(text) {
 		document.getElementById('languageSelect').value = session.currentLanguage;
 	} else if (text == "info") {
 		popup.innerHTML = "\
-		<img style=\"display:inline; float:left; margin-right:10px;\" src=\"images/logo.png\" width=\"150\">\
+		<img onclick='haha()' style=\"display:inline; float:left; margin-right:10px;\" src=\"images/logo.png\" width=\"150\">\
 		<div style=\"display:inline;\">\
 		   <h2>Heb12 Mobile v1.0</h2>\
 		   <p>\
@@ -67,5 +67,12 @@ function notify(text) {
 	}
 	 else {
 		popup.innerHTML = text;
+	}
+}
+var hahaha = 0;
+function haha() {
+	hahaha++
+	if (hahaha > 5) {
+		interface.exec("toast", "There totally aren't any easter eggs in this app...")
 	}
 }

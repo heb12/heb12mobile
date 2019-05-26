@@ -17,7 +17,7 @@ function arrayHas(array, thing) {
 
 String.prototype.repeat = function (num) {
     var it = this;
-    for (var i = 0; i < num; i++) {
+    for (var i = 0; i < num - 1; i++) {
     	it += it;
     }
     return it;
