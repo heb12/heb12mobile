@@ -34,7 +34,8 @@ var session = {
 		John_3:true
 	},
 	configuration:"",
-	lastTranslation:""
+	lastTranslation:"",
+	status:""
 }
 
 var data;
@@ -123,7 +124,11 @@ window.onload = function() {
 			if (session.devmode) {
 				document.getElementById('page').innerHTML = load("Hebrews", 4);
 			} else {
-				document.getElementById('page').innerHTML = load(document.getElementById('book').value, document.getElementById('chapter').value);
+				if (data[0] == "true") {
+					document.getElementById('page').innerHTML = load("Hebrews", 4);
+				} else {
+					document.getElementById('page').innerHTML = load(configuration[1].split("=")[1], configuration[2].split("=")[1]);
+				}
 			}
 			update();
 			clearInterval(waitUntilLoad);
@@ -160,6 +165,7 @@ function load(book, chapter, verse) {
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
 	document.getElementById('chapter').innerHTML = "";
 	var bookNum;
+
 	for (var i = 0; i < books.length; i++) {
 		if (books[i] == book) {
 			bookNum = i;
@@ -175,8 +181,8 @@ function load(book, chapter, verse) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
-		document.getElementById('book').value = book;
-		document.getElementById('chapter').value = chapter;
+		document.getElementById('book').options[bookNum].selected = true;
+		document.getElementById('chapter').options[chapter - 1].selected = true;
 
 		// 1 Chapter books
 		var verses;
@@ -207,8 +213,8 @@ function load(book, chapter, verse) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
-		document.getElementById('book').value = book;
-		document.getElementById('chapter').value = chapter;
+		document.getElementById('book').options[bookNum].selected = true;
+		document.getElementById('chapter').options[chapter - 1].selected = true;
 
 		book = book.replace("st", "");
 		book = book.replace("nd", "");
@@ -270,8 +276,8 @@ function load(book, chapter, verse) {
 			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
 		}
 
-		document.getElementById('chapter').options[chapter].selected = true
-		document.getElementById('book').options[i].selected = true
+		document.getElementById('book').options[bookNum].selected = true;
+		document.getElementById('chapter').options[chapter - 1].selected = true
 		
 		var finalResult = "";
 
@@ -303,11 +309,13 @@ function random() {
 	}
 
 	document.getElementById('page').innerHTML = load(books[randomBook], randomChapter);
+	update();
 	sidebarAnimation("close");
 }
 
 // Function to handle page updates (runs after load)
 function update(option) {
+	console.log("update called")
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
 
@@ -643,22 +651,22 @@ function modifyVerse(verseNum, verseText) {
 	var book = document.getElementById('book').value;
 	var chapter = document.getElementById('chapter').value;
 	var color = "transparent";
-	var textColor = "";
+	var textColor =  "color: ;'"
 	if (isOpenbibles()) {
 		verseNum--;
 	}
 
-	var item = eval("session.highlightedVerses." + book.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three") + "_" + chapter + "_" + (Number(verseNum) + 1) );
+	var item = eval("session.highlightedVerses." + replaceNumbers(book, "1") + "_" + chapter + "_" + (Number(verseNum) + 1) );
 	if (!(!item)) {
 		color = item;
-		if (session.currentTheme == "Dark") {
-			textColor = "black";
+		if (session.currentTheme == "Dark" && item !== "transparent") {
+			textColor = "color: black;'";
 		}
 		if (item == "transparent") {
-			textColor = "white";
+			textcolor = "'";
 		}
 	}
-	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; color: " + textColor +";' class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);
+	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; " + textColor + " class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(session.breaksAfterVerse);
 }
 
 // Show verse menu
@@ -768,9 +776,11 @@ function connectStatus() {
 	if (navigator.onLine) {
 		session.connectivity = "<span style='color: green;'>(Online)</span>";
 		document.getElementById('translation').options[3].disabled = false;
+		session.status = "Online";
 	} else {
 		session.connectivity = "<span style='color: red;'>(Offline)</span>";
 		document.getElementById('translation').options[3].disabled = true;
+		session.status = "Offline";
 	}
 }
 

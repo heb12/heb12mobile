@@ -169,6 +169,16 @@ select:active {
 	animation-duration: .5s;
 }
 
+@media only screen and (min-width: 600px) {
+  #sidebar {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  #sidebar {
+    width: 87%;
+  }
+}
 .large {
 	font-size: 30px;
 	margin-bottom: 0px;

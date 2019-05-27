@@ -7,7 +7,7 @@ String.prototype.startsWith = function (string) {
     return this.indexOf(string) == 0;
 };
 
-String.prototype.startsWith = function (string) {
+String.prototype.endsWith = function (string) {
     return this.lastIndexOf(string) == this.length - string.length;
 };
 

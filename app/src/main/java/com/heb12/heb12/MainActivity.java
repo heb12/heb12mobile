@@ -1,6 +1,8 @@
 package com.heb12.heb12;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView view;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
             // Add a Javascript interface
             view.addJavascriptInterface(new JavaScriptInterface(), "interface");
+
+            view.setWebContentsDebuggingEnabled(true);
 
 
         } catch (IOException e) {

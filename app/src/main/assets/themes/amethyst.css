@@ -34,10 +34,12 @@ option {
 
 .icon img {
 	filter: invert(1);
+	-webkit-filter: invert(1);
 }
 
 .color.close {
 	filter: invert(1);
+	-webkit-filter: invert(1);
 }
 
 #popupContent {

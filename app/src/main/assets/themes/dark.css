@@ -24,6 +24,7 @@ option {
 }
 
 .icon img {
+	-webkit-filter: invert(1);
 	filter: invert(1);
 }
 
@@ -55,4 +56,8 @@ a:visited {
 
 #verseMenu {
 	background-color: black;
+}
+
+.verseColor {
+	color: white;
 }

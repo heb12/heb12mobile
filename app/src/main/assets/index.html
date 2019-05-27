@@ -5,16 +5,16 @@
 	<script type="text/javascript" src="specialfunctions.js"></script>
 	<script type="text/javascript">
 		// Error message on Android
-		if (window.location.href.includes("?")) {
-			window.onerror = function(msg, url, linenumber) {
-				var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
-			    if (window.location.href.includes("?")) {
-			    	interface.exec("toast", "Javascript error on line " + linenumber + ": " + msg);
-			    }
+		// if (window.location.href.includes("?")) {
+		// 	window.onerror = function(msg, url, linenumber) {
+		// 		var error = 'JavaScript Error: ' + msg + '\nURL: ' + url + '\nLine Number: ' + linenumber;
+		// 	    if (window.location.href.includes("?")) {
+		// 	    	interface.exec("toast", "Javascript error on line " + linenumber + ": " + msg);
+		// 	    }
 
-			    return true;
-			}
-		}
+		// 	    return true;
+		// 	}
+		// }
 	</script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="shortcut icon" type="image/png" href="images/logo.png"/>
@@ -65,7 +65,7 @@
 		<br><br>
 		<input id="search" placeholder="Hebrews 4" onkeyup="updateSearch()">
 		<div class="icon" style="vertical-align: -webkit-baseline-middle;">
-			<img id="bookmark" src="images/notbookmarked.svg" width="33" onclick='bookmark()'>
+			<img id="bookmark" src="images/notbookmarked.svg" width="33">
 		</div>
 		<div id="searchResults" onclick="updateSearch('visit')">
 			
@@ -181,4 +181,10 @@
 	
 </div>
 </body>
+<!-- Workaround of wierd Kindle bug -->
+<script type="text/javascript">
+	document.getElementById("bookmark").addEventListener("click", function() {
+		bookmark()
+	});
+</script>
 </html>

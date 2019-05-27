@@ -63,7 +63,13 @@ function notify(text) {
 			document.getElementsByClassName("popup")[0].style.display = "none";
 		}
 	} else if (text == 'download') {
-		popup.innerHTML = "Download";
+		popup.innerHTML = "<h1>Download</h1>";
+		if (session.status == "Offline") {
+			popup.innerHTML += "To download translations, you must be connected to the internet.";
+		} else {
+			popup.innerHTML += "Feature unfinished";
+
+		}
 	}
 	 else {
 		popup.innerHTML = text;
