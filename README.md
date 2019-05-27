@@ -14,4 +14,4 @@ Please refer to the [wiki page](https://github.com/heb12/heb12-mobile/wiki/Devel
 Online Demo: [https://heb12.ml/mobile/demo/index.html](https://heb12.ml/mobile/demo/index.html)
 
 # Supported Devices
-Any Android device running Android 7.0 and later should be able to run Heb12 Mobile stably. You can check out the updated App Inventor version for older devices here: https://github.com/pufflegamerz/Heb12MobileAi2
+Any Android device running Android 6.0 and later should be able to run Heb12 Mobile stably. Older versions may work, but are likely to have bugs. You can check out the updated App Inventor version for older devices here: https://github.com/pufflegamerz/Heb12MobileAi2
