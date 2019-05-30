@@ -1,5 +1,5 @@
 # Heb12 Mobile
-
+[![](https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png)(https://play.google.com/store/apps/details?id=com.heb12.heb12)
 [![](https://heb12.ml/mobile/amazon2.png)](https://www.amazon.com/pufflegamerz-Heb12-Bible/dp/B07SDL9VSR/ref=sr_1_1?keywords=heb12&qid=1558971521&s=gateway&sr=8-1)
 
 Heb12 Mobile is a free mobile open-sourced app for reading the bible. It currently features 5 translations (soon to be more) and a clean, simple, and efficient GUI.
