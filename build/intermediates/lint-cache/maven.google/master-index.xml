@@ -126,4 +126,5 @@
   <androidx.camera/>
   <androidx.benchmark/>
   <androidx.security/>
+  <com.google.android.datatransport/>
 </metadata>
