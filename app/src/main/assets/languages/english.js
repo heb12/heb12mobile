@@ -37,8 +37,10 @@ var english = {
 			<option>Amethyst</option>\
 		</select>\
 		<br>\
+		<div id='fontPreviewBox'>\
 		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
-		<span class='textBesideSelect'>Theme:</span>\
+		</div>\
+		<span class='textBesideSelect'>Font:</span>\
 		<select id='fontSelect' onchange=\"setFont(this.value)\">\
 			<option>Times New Roman</option>\
 			<option>Arial</option>\

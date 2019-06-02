@@ -35,7 +35,8 @@ var session = {
 	},
 	configuration:"",
 	lastTranslation:"",
-	status:""
+	status:"",
+	lastBook:""
 }
 
 var data;
@@ -147,7 +148,7 @@ window.onload = function() {
 		updateLanguage();
 	},5000)
 
-	//Use for easily debugging thingies
+	// Use for easily debugging thingies
 	// setInterval(function() {
 	// 	document.getElementById('debugText').innerHTML = session.sidebarTouch;
 	// });
@@ -158,12 +159,37 @@ window.onload = function() {
 	connectStatus();
 	updateLanguage();
 
+	// Detect keys
+	document.body.onkeydown = function(event) {
+		if (event.key == "ArrowRight") {
+			update("next")
+		} else if (event.key == "ArrowLeft") {
+			update("previous")
+		}
+	}
 }
 
 // Function to get verse or verses from the json files
 function load(book, chapter, verse) {
+	var redoChapters = true;
+
+	if (book == "SongOfSolomon") {
+		book = "Song of Solomon";
+	}
+
+	if (session.lastBook == "") {
+		session.lastBook = book;	
+	}
+
+	if (book == session.lastBook) {
+		redoChapters = false;
+	} else {
+		document.getElementById('chapter').innerHTML = "";
+	}
+
+	session.lastBook = book;
+
 	var breaks = "<br>".repeat(session.breaksAfterVerse);
-	document.getElementById('chapter').innerHTML = "";
 	var bookNum;
 
 	for (var i = 0; i < books.length; i++) {
@@ -177,8 +203,10 @@ function load(book, chapter, verse) {
 	if (isOpenbibles()) {
 
 		// Make accurate chapter length
-		for (var i = 1; i <= bible[bookNum][1]; i++) {
-			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+		if (redoChapters) {
+			for (var i = 1; i <= bible[bookNum][1]; i++) {
+				document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+			}
 		}
 
 		document.getElementById('book').options[bookNum].selected = true;
@@ -209,8 +237,10 @@ function load(book, chapter, verse) {
 		return page;
 	} else if (session.currentTranslationString == "netOnline") {
 
-		for (var i = 1; i <= bible[session.currentBookNumber][1]; i++) {
-			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+		if (redoChapters) {
+			for (var i = 1; i <= bible[session.currentBookNumber][1]; i++) {
+				document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+			}
 		}
 
 		document.getElementById('book').options[bookNum].selected = true;
@@ -271,9 +301,10 @@ function load(book, chapter, verse) {
 			}
 		}
 
-		// Make accurate chapter length
-		for (var i = 1; i <= booky; i++) {
-			document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+		if (redoChapters) {
+			for (var i = 1; i <= booky; i++) {
+				document.getElementById('chapter').innerHTML += "<option>" + i + "</option>";
+			}
 		}
 
 		document.getElementById('book').options[bookNum].selected = true;
@@ -302,20 +333,20 @@ function load(book, chapter, verse) {
 
 // Visit a random chapter
 function random() {
-	var randomBook = Math.floor(Math.random() * books.length);
-	var randomChapter = Math.floor(Math.random() * bibleObj[books[randomBook]]);
+	var randomBook = books[Math.floor(Math.random() * books.length)];
+	var randomChapter = Math.floor(Math.random() * bibleObj[replaceNumbers(randomBook, "3")]);
 	if (randomChapter == 0) {
 		randomChapter = 1;
 	}
 
-	document.getElementById('page').innerHTML = load(books[randomBook], randomChapter);
+	document.getElementById('page').innerHTML = load(randomBook, randomChapter);
 	update();
 	sidebarAnimation("close");
 }
 
 // Function to handle page updates (runs after load)
 function update(option) {
-	console.log("update called")
+	//console.log("update called")
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
 
@@ -348,7 +379,10 @@ function update(option) {
 
 	} else if (option == "previous") {
 		sidebarAnimation("close");
-		if (chapter !== 1) {
+		if (book == "Genesis" && chapter == 1) {
+				book = "Revelation";
+				chapter = 22;
+		} else if (chapter !== 1) {
 			chapter--;
 		} else {
 			book = books[session.currentBookNumber - 1];
@@ -379,6 +413,10 @@ function update(option) {
 	// Update the configuration file
 	if (!session.devmode) {
 		updateConfigFile();
+	}
+
+	if (book == "Song of Solomon") {
+		book = "SongOfSolomon"
 	}
 
 	var marked = eval("session.bookmarkedChapters." + replaceNumbers(book, "1") + "_" + chapter);
@@ -591,7 +629,7 @@ function validChapter(thing) {
 
 // Make Books easier to search
 function editBook(book, part) {
-	book = book.replace("1st ","1 ").replace("2nd ","2 ").replace("3rd ","3 ");
+	book = replaceNumbers(book, "1");
 	if (part == 1) {
 		book = book.toUpperCase();
 
@@ -654,6 +692,10 @@ function modifyVerse(verseNum, verseText) {
 	var textColor =  "color: ;'"
 	if (isOpenbibles()) {
 		verseNum--;
+	}
+
+	if (book == "Song of Solomon") {
+		book = "SongOfSolomon"
 	}
 
 	var item = eval("session.highlightedVerses." + replaceNumbers(book, "1") + "_" + chapter + "_" + (Number(verseNum) + 1) );
@@ -729,7 +771,7 @@ function highlightVerse(elem) {
 	var color = elem.getAttribute("class").split(" ")[1];
 
 	// I know, I know... eval.
-	eval("session.highlightedVerses." + verse.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three").replace(/ /g, "_") + " = '" + color + "'");
+	eval("session.highlightedVerses." + replaceNumbers(verse, "1").replace(/ /g, "_") + " = '" + color + "'");
 	update();
 
 	document.getElementById('verseMenu').style.WebkitAnimationName = "down";
@@ -749,7 +791,9 @@ function setFontSize(action) {
 	if (action == "plus") {
 		session.currentFontSize++
 	} else {
-		session.currentFontSize--
+		if (session.currentFontSize !== 5) {
+			session.currentFontSize--
+		}
 	}
 
 	document.getElementById('page').style.fontSize = session.currentFontSize + "px";
@@ -832,6 +876,8 @@ function bookmark() {
 function replaceNumbers(stringy, way) {
 	if (way == "1") {
 		stringy = stringy.replace("1st ", "one").replace("2nd ", "two").replace("3rd ", "three");
+	} else if (way == "3") {
+		stringy = stringy.replace("1st ", "1 ").replace("2nd ", "2 ").replace("3rd ", "3 ");
 	} else {
 		stringy = stringy.replace("one", "1st ").replace("one", "2nd").replace("three", "4rd");
 	}

@@ -256,12 +256,12 @@ select:active {
 
 @font-face {
     font-family: Comfortaa;
-    src: url(Comfortaa.ttf);
+    src: url(fonts/Comfortaa.ttf);
 }
 
 @font-face {
     font-family: Helvetica;
-    src: url(Helvetica.ttf);
+    src: url(fonts/Helvetica.ttf);
 }
 
 @keyframes slideIn {
@@ -395,6 +395,7 @@ select:active {
 
 #fontPreview {
 	font-size: 18px;
+	position: fixed;
 }
 
 .votdVerse:active {
@@ -413,4 +414,7 @@ select:active {
 	font-family: times new roman;
 	/*Change to block*/
 	display: none;
+}
+#fontPreviewBox {
+	height: 100px;
 }

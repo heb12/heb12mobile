@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 1;
 
-            // I stole this code from Google
+            // I stole this code from Google, that's why there are comments everywhere
             if (ContextCompat.checkSelfPermission(MainActivity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -156,3 +156,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+// So long and thanks for all the fish

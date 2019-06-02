@@ -1,3 +1,4 @@
+// This is OUTDATED
 var spanish = {
 	next: "Siguiente",
 	previous: "Anterior",
