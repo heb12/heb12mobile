@@ -37,7 +37,7 @@ var session = {
 	lastTranslation:"",
 	status:"",
 	lastBook:""
-}
+};
 
 var data;
 
@@ -100,7 +100,7 @@ window.onload = function() {
 			}
 			update();
 
-			// Update Vars
+			// Update Variables
 			session.currentTheme = configuration[3].split("=")[1];
 			session.currentFont = configuration[4].split("=")[1];
 			session.currentFontSize = Number(configuration[6].split("=")[1]);
@@ -119,7 +119,7 @@ window.onload = function() {
 	}
 	
 
-	// Use special methods to use script only when it is loaded
+	// Use special methods to use script only when it is loaded (Doesn't work good on Android 5.1)
 	var waitUntilLoad = setInterval(function() {
 		if (eval('typeof ' + session.currentTranslationString.toLowerCase() + ' !== "undefined"')) {
 			if (session.devmode) {
@@ -144,9 +144,9 @@ window.onload = function() {
 	// Background loop - executes every 5 seconds
 	connectStatus();
 	setInterval(function() {
-		connectStatus();
+		connectStatus(); 
 		updateLanguage();
-	},5000)
+	}, 5000)
 
 	// Use for easily debugging thingies
 	// setInterval(function() {
@@ -159,7 +159,7 @@ window.onload = function() {
 	connectStatus();
 	updateLanguage();
 
-	// Detect keys
+	// Detect keypresses
 	document.body.onkeydown = function(event) {
 		if (event.key == "ArrowRight") {
 			update("next")
@@ -267,6 +267,7 @@ function load(book, chapter, verse) {
 		netjson.id = "netjson";
 		document.getElementById('loadedScripts').appendChild(netjson);
 
+		// Format JSON into readable text
 		netjson.onload = function() {
 			var finaldata = "";
 			if (isNaN(verse)) {
@@ -346,7 +347,6 @@ function random() {
 
 // Function to handle page updates (runs after load)
 function update(option) {
-	//console.log("update called")
 	var book = document.getElementById('book').value;
 	var chapter = Number(document.getElementById('chapter').value);
 
@@ -481,6 +481,7 @@ function search(thing) {
 	window.open("https://www.google.nl/search?q=" + thing);
 }
 
+// JSONP Return function
 function getNET(data) {
 	session.netjsondata = data;
 }
@@ -592,7 +593,7 @@ function updateSearch(searching) {
 
 	// If user is searching something
 	if (searching == "visit") {
-		if (!term == "") {
+		if (!term == "" && valid[0]) {
 			sidebarAnimation("close");
 			document.getElementById('book').value = valid[1];
 			updateChapters(valid[1]);
@@ -603,6 +604,7 @@ function updateSearch(searching) {
 		}
 	}
 
+	// haha i'm bored
 	switch (term.toLowerCase()) {
 		case "hello":
 		case "hi":
