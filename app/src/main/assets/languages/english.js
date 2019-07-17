@@ -64,7 +64,7 @@ var english = {
 		</div>\
 		<br>\
 		<br>\
-		<p>This will reset all your saved data. When reset the app, it will close so you can re-launch it.</p>\
+		<p>This will reset all your saved data. When you reset the app, it will close so you can re-launch it.</p>\
 		<br>\
 		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
 			Reset\

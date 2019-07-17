@@ -34,11 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Heb12 config file () (the main purpose of the entire file)
         File config = new File(Environment.getExternalStorageDirectory(), "Heb12Config");
+        File translationDir = new File(Environment.getExternalStorageDirectory() +
+                File.separator + "translations");
         try {
 
             // Create config file if it doesn't already exist
             if (!config.exists()) {
                 config.createNewFile();
+                translationDir.mkdirs();
                 firstTime = true;
             }
 
@@ -150,6 +153,28 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
 
+            } else if (type.startsWith("makefile")) {
+
+                // Try to get name
+                String[] separated = type.split(" ");
+                String name = separated[1];
+
+                // Create File
+                File file = new File("/sdcard/translations", name);
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // Write to File
+                try {
+                    FileOutputStream stream = new FileOutputStream(file);
+                    stream.write(data.getBytes());
+                    stream.close();
+                } catch (IOException e) {
+                    Toast.makeText(MainActivity.this, "Configuration file not found", Toast.LENGTH_SHORT).show();
+                }
             }
 
             return type;

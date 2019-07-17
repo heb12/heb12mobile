@@ -23,14 +23,14 @@ function notify(text) {
 		   <h2>Heb12 Mobile v1.0</h2>\
 		   <p>\
 		   Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the \
-		   <a target=\"_blank\" href=\"https://github.com/heb12/heb12-mobile\">Github repository</a>.\
+		   <a target=\"_blank\" href=\"https://github.com/heb12/heb12-mobile\">Github repository</a>. If you would like to donate to the main developer, you can do it here: <a href='http://v.ht/2NpC'>http://v.ht/2NpC</a>\
 		   </p>\
 		</div>\
 		<br>\
 		<p><a style='color: blue; text-decoration: underline;' onclick=\"goToChapter('Hebrews', '4'); popupAnimation('close'); sidebarAnimation('close')\">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>\
 		<br>\
 		<h2>Credits</h2>\
-		<p>Lead Programmer - Pufflegamerz aka Petabyte Studios</p>\
+		<p>Programming - Pufflegamerz aka Petabyte Studios</p>\
 		<p>Openbibles - MasterOfTheTiger</p>\
 		<p>Material icons - Material.io</p>\
 		<p>Formatted NET API - Bible Labs</p>\
