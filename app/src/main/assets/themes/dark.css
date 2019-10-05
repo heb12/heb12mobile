@@ -1,0 +1,71 @@
+body {
+	color: white;
+	background: black;
+}
+
+#sidebar {
+	background: black;
+	border-right: 1px solid white;
+}
+
+#top {
+	background: black;
+}
+
+#bottom {
+	background: black;
+}
+
+select {
+	color: white;
+}
+
+option {
+	background: black;
+}
+
+.icon img {
+	-webkit-filter: invert(1);
+	filter: invert(1);
+}
+
+.popup {
+	background: black;
+	border: 1px solid white;
+	border-bottom: transparent;
+}
+
+.color.close {
+	filter: invert(1);
+}
+
+.popup .close {
+	background: black;
+	color: white;
+	border: 1px solid white;
+}
+
+a {
+	color: white;
+}
+
+a:visited {
+	color: white;
+}
+
+#verseMenu {
+	background-color: black;
+}
+
+.verseColor {
+	color: white;
+}
+
+.translationDownloadButton {
+	border: 1px solid white;
+}
+
+.translationDownloadButton img {
+	-webkit-filter: invert(1);
+	filter: invert(1);
+}

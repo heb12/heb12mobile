@@ -1,0 +1,10 @@
+Heb12 Mobile is an open-sourced app designed to make God's word accessible for all platforms. The app currently features 5+ translations, highlighting, bookmarking, the verse of the day, and more.
+
+Brought to you by the Heb12 Team.
+
+You can find the Github repository here: https://github.com/heb12/heb12-mobile
+
+• 5+ Translations
+• Clean and simple interface
+• Highlighting and bookmarking
+• Verse of the day

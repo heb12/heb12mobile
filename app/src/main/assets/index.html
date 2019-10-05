@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Heb12 Mobile</title>
+	<script type="text/javascript" src="specialfunctions.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="shortcut icon" type="image/png" href="images/logo.png"/>
+	<link rel="apple-touch-icon" href="images/logo.png"/>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- Load language -->
+	<script type="text/javascript" src="languages/english.js"></script>
+	<script type="text/javascript" src="languages/spanish.js"></script>
+	<script type="text/javascript" src="languages/german.js"></script>
+	<script type="text/javascript" src="language.js"></script>
+	
+	<!-- Load other scripts -->
+	<script type="text/javascript" src="bible.js"></script>
+	<script type="text/javascript" src="notify.js"></script>
+	<script type="text/javascript" src="javascript.js"></script>
+	<script type="text/javascript" src="translationDownloader.js"></script>
+	<script type="text/javascript" src="refrenceParser.js"></script>
+</head>
+<body>
+
+<div id="top">
+	<center>
+		<select id="book" onchange="update()"></select>
+		<select id="chapter" onchange="update()"></select>
+		<div id="hamburger" class="icon" onclick='animateIt("sidebar", "show")'>
+			<img src="images/menu.svg" width="45" >
+		</div>
+	</center>
+</div>
+
+<div id="main" onclick='animateIt("sidebar", "close")'>
+	<p id="page" class="fontDivs">
+		Loading...
+	</p>
+</div>
+
+<div id="bottom">
+	<div class="button left" onclick="update('previous')">
+		<span name="previous">Previous</span>
+	</div>
+	<div class="button right" onclick="update('next')">
+		<span name="next">Next</span>
+	</div>
+</div>
+
+<div id="sidebar">
+	<center>
+		<br>
+		<img src="images/logo.png" id="hehe" onclick="notify('hehe')" width="100">
+		<br><br>
+		<input id="search" placeholder="Hebrews 4" onkeyup="updateSearch()">
+		<div class="icon" style="vertical-align: -webkit-baseline-middle;">
+			<img id="bookmark" src="images/notbookmarked.svg" width="33">
+		</div>
+		<div id="searchResults" onclick="updateSearch('visit')">
+			
+		</div>
+		<br><hr>
+		<select id="translation" onchange="update()">
+			<!-- These are default pre-installed translations -->
+			<option selected="selected" val="KJV2000">
+				KJV 2000 (King James Version 2000) (Offline)
+			</option>
+			<option val="NET">
+				NET (New English Translation) (Online)
+			</option>
+			<option val="ASV">
+				ASV (American Standard Version) (Offline)
+			</option>
+			<option val="DBY">
+				DBY (Darby Bible) (Offline)
+			</option>
+			<option>
+				Download more translations
+			</option>
+		</select>
+		<br><hr>
+
+		<div id="iconToolbar">
+			<div class="icon">
+				<img src="images/info.svg" width="45" onclick='notify("info")'>
+			</div>
+			<div class="icon">
+				<img src="images/settings.svg" width="45" onclick="notify('settings')">
+			</div>
+			<div class="icon">
+				<img src="images/random.svg" width="45" onclick='random()'>
+			</div>
+			<div class="icon">
+				<img src="images/bookmarks.svg" width="45" onclick='notify("bookmarks")'>
+			</div>
+		</div>
+
+		<hr>
+
+		<div id="votdBox">
+			<span class="text big" name="VOTDTitle">Verse of the Day</span>
+			<!-- INLINE STYLES NAUGHTY BOY -->
+			<div class="icon" style="width: 20px; height: 20px;">
+				<img src="images/refresh.svg" width="20" onclick='loadVOTD()'>
+			</div>
+			<br>
+			<br>
+			<p class="text" id="votd">Error. Try pressing the refresh button</p>
+		</div>
+	</center>
+</div>
+
+<div class="popup" id="popup">
+	<div id="popupContent">
+		
+	</div>
+	<div class="close"onclick='animateIt("popup", "close"); '>
+		<p name="popupClose"><b>Okay</b></p>
+	</div>
+</div>
+
+<div id="verseMenu">
+	<div id="mainContent">
+		<h2>verse</h2>
+		<span>versetext</span>
+	</div>
+
+	<center>
+		<div class="icon">
+			<img src="images/search.svg" width="40" onclick="search('')">
+		</div>
+		<div class="icon">
+			<img src="images/clipboard.svg" width="40" onclick="interface.exec('copy','')">
+		</div>
+		<div class="icon">
+			<img src="images/share.svg" width="40" onclick="interface.exec('share','')">
+		</div>
+	</center>
+
+	<div id="colors">
+		<div class="color yellow" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color lightgreen" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color lightblue" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color transparent" onclick="highlightVerse(this)">
+			
+		</div>
+		<div class="color close" onclick='animateIt("verseMenu", "close")'>
+			<img src="images/close.svg" width="50">
+		</div>
+	</div>
+</div>
+
+<div id="loadedCSS">
+
+</div>
+<div id="loadedScripts">
+	
+</div>
+</body>
+<!-- Workaround of wierd kindle bug -->
+<script type="text/javascript">
+	document.getElementById("bookmark").addEventListener("click", function() {
+		bookmark()
+	});
+</script>
+</html>

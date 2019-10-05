@@ -1,0 +1,29 @@
+#top {
+	background: darkblue;
+}
+
+#hamburger img {
+	filter: invert(1);
+	-webkit-filter: invert(1);
+}
+
+#book {
+	color: white;
+}
+
+#chapter {
+	color: white;
+}
+
+#book option {
+	background: darkblue;
+}
+#chapter option {
+	background: darkblue;
+}
+
+
+#bottom {
+	background: darkblue;
+	color: white;
+}
