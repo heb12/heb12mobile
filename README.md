@@ -1,3 +1,4 @@
+## Notice: Github decided to do some wierd stuff and all the previous commits dissppeared.
 # Heb12 Mobile
 [![](https://github.com/heb12/heb12.github.io/blob/master/mobile/playstore.png?raw=true)](https://play.google.com/store/apps/details?id=com.heb12.heb12)
 [![](https://heb12.ml/mobile/amazon2.png)](https://www.amazon.com/pufflegamerz-Heb12-Bible/dp/B07SDL9VSR/ref=sr_1_1?keywords=heb12&qid=1558971521&s=gateway&sr=8-1)
