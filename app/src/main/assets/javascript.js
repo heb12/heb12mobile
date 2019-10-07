@@ -119,6 +119,7 @@ window.onload = function() {
 			current.fontSize = Number(configuration.fontSize);
 			current.book = configuration.lastBook;
 			current.chapter = configuration.lastChapter;
+			current.translationString = configuration.currentTranslation;
 			app.highlightedVerses = configuration.highlightedVerses;
 			app.bookmarkedChapters = configuration.bookmarkedChapters;
 
@@ -128,8 +129,8 @@ window.onload = function() {
 			document.getElementById('page').style.fontFamily = current.font;
 			setTheme(configuration.theme);
 
-			document.getElementById('book').value = configuration.lastBook;
-			document.getElementById('chapter').value = configuration.lastChapter;
+			current.book = configuration.lastBook;
+			current.chapter = configuration.lastChapter;
 		} else {
 			// Parse config file into JS
 			if (!data[1] == "") {
@@ -145,9 +146,7 @@ window.onload = function() {
 
 				// Set the translation before everything breaks it
 				current.translationString = configuration[0].split("=")[1];
-				if (current.translationString == "netOnline") {
-					current.translationString = "NET";
-				}
+
 				for (var i = 0; i < document.getElementById("translation").children.length; i++) {
 					if (document.getElementById("translation").children[i].value.startsWith(current.translationString)) {
 						document.getElementById("translation").children[i].selected = true;
@@ -178,9 +177,9 @@ window.onload = function() {
 
 	// Use special methods to use script only when it is loaded (Not accurate on <=5.1)
 	var waitUntilLoad = setInterval(function() {
-		if (eval('typeof ' + current.translationString.toLowerCase() + ' !== "undefined"')) {
+		if (typeof window[current.translationString.toLowerCase()] !== "undefined") {
 			if (app.devmode) {
-				document.getElementById('page').innerHTML = load("Hebrews", 4);
+				document.getElementById('page').innerHTML = load("Hebrews", "4");
 			} else {
 				document.getElementById('page').innerHTML = load(current.book, current.chapter);
 			}
@@ -191,11 +190,9 @@ window.onload = function() {
 	}, 10);
 
 	// Double check the sidebar is closed
-	document.getElementById('sidebar').style.display = "none";
+	//document.getElementById('sidebar').style.display = "none";
 
 	loadVOTD();
-
-	current.language = "english";
 
 	updateTranslation();
 	updateLanguage();
@@ -472,7 +469,7 @@ function updateTranslation() {
 }
 
 function search(thing) {
-	window.open("https://www.google.nl/search?q=" + thing);
+	notify("browserselect", thing)
 }
 
 // Update the configuration file or return the default

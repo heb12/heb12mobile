@@ -1,5 +1,5 @@
 // This mess is all the html for displaying popups
-function notify(text) {
+function notify(text, extra) {
 	animateIt("popup", "show")
 	var popup = document.getElementById('popupContent');
 	
@@ -7,6 +7,8 @@ function notify(text) {
 		popup.innerHTML = '<h2>Welcome to Heb12!</h2>\
 		<p>' + app.language.description + '</p> \
 		<p><strong>Pro Tip: Tap on a bible verse for a list of extra actions.</strong></p>';
+	}if (text == "browserselect") {
+		popup.innerHTML = '<h1>Choose a search engine</h1><div onclick="window.open(\'https://www.google.com/search?q=' + extra + '\')" class="button bg">Google</div><br><br><div onclick="window.open(\'http://duckduckgo.com/?q=' + extra + '\')" class="button bg">DuckDuckGo</div><br>';
 	} else if (text == "settings") {
 		popup.innerHTML = app.language.settings;
 
