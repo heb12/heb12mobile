@@ -125,7 +125,9 @@ window.onload = function() {
 			app.bookmarkedChapters = configuration.bookmarkedChapters;
 
 			// Update UI
-			setFont(current.fontSize)
+			document.getElementById('page').style.fontSize = current.fontSize + "px";
+			document.getElementById('page').style.lineHeight = (current.fontSize + 7) + "px";
+			document.getElementById('page').style.fontFamily = current.font;
 			setTheme(configuration.theme);
 
 			current.book = configuration.lastBook;
