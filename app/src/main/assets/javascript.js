@@ -34,6 +34,7 @@ var app = {
 
 // Current things (loaded from config file)
 var current = {
+	verse:0,
 	font:"Arial",
 	language:"english",
 	bookNumber:57,
@@ -124,9 +125,7 @@ window.onload = function() {
 			app.bookmarkedChapters = configuration.bookmarkedChapters;
 
 			// Update UI
-			document.getElementById('page').style.fontSize = current.fontSize + "px";
-			document.getElementById('page').style.lineHeight = (current.fontSize + 7) + "px";
-			document.getElementById('page').style.fontFamily = current.font;
+			setFont(current.fontSize)
 			setTheme(configuration.theme);
 
 			current.book = configuration.lastBook;
@@ -175,7 +174,7 @@ window.onload = function() {
 	}
 	
 
-	// Use special methods to use script only when it is loaded (Not accurate on <=5.1)
+	// Use method start app when the first bible loads (Not accurate on <=5.1)
 	var waitUntilLoad = setInterval(function() {
 		if (typeof window[current.translationString.toLowerCase()] !== "undefined") {
 			if (app.devmode) {
@@ -188,9 +187,6 @@ window.onload = function() {
 			clearInterval(waitUntilLoad);
 		}
 	}, 10);
-
-	// Double check the sidebar is closed
-	//document.getElementById('sidebar').style.display = "none";
 
 	loadVOTD();
 
@@ -265,7 +261,6 @@ function load(book, chapter, verse) {
 		page = page.replace(/\[/g, "");
 		page = page.replace(/\]/g, "");
 
-		app.done = true;
 		return page;
 	} else if (current.translationString == "netOnline") {
 
@@ -281,6 +276,7 @@ function load(book, chapter, verse) {
 			url = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getScript&&formatting=full";
 		}
 
+		//
 		loadJSONP(url, function(data) {
 			var finaldata = "";
 			if (isNaN(verse)) {
@@ -291,7 +287,7 @@ function load(book, chapter, verse) {
 
 					var modifiedVerse = data[i].text.replace(/<\/?(st)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, "");
 					modifiedVerse = modifiedVerse.replace(/<p class="bodytext">/g, "");
-
+					modifiedVerse = modifiedVerse.replace(/id="verse"/g, 'class="verseStart"');
 					finaldata += modifyVerse(i, modifiedVerse);
 				}
 			} else {
@@ -300,7 +296,6 @@ function load(book, chapter, verse) {
 
 			app.doneLoadingJSON = true;
 			app.netTextData = finaldata;
-			app.done = true;
 		})
 	}
 }
@@ -368,6 +363,7 @@ function update(option) {
 		var int = setInterval(function() {
 			if (app.doneLoadingJSON) {
 				document.getElementById('page').innerHTML = app.netTextData;
+				postLoad(current.verse)
 				app.doneLoadingJSON = false;
 				clearInterval(int);
 			}
@@ -377,6 +373,7 @@ function update(option) {
 			if (eval('typeof ' + current.translationString.toLowerCase() + ' !== "undefined"')) {
 				current.translation = eval(current.translationString.toLowerCase());
 				document.getElementById('page').innerHTML = load(book, chapter);
+				postLoad(current.verse)
 				clearInterval(waitUntilLoad);
 			}
 		},10);
@@ -583,15 +580,8 @@ function updateSearch(searching) {
 			update();
 
 			if (!verse == "") {
-				var elem = document.getElementById("main").children[0].querySelectorAll(".verse")[Number(verse) - 1]; // Times 2 to avoid the <br>s
-				
 				// Wait until page loaded
-				var wait = setInterval(function() {
-					if (app.done) {
-						elem.scrollIntoView();
-						clearInterval(wait);
-					}
-				}, 1)
+				current.verse = verse;
 			}
 		}
 	}
@@ -704,6 +694,7 @@ function modifyVerse(verseNum, verseText) {
 		verseNum--;
 	}
 
+	// Set text colors, not background
 	var item = app.highlightedVerses[book + " " + chapter + " " + (Number(verseNum) + 1)];
 	if (!(!item)) {
 		color = item;
@@ -714,7 +705,7 @@ function modifyVerse(verseNum, verseText) {
 			textcolor = "'";
 		}
 	}
-	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b id='verse'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; " + textColor + " class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(app.breaksAfterVerse);
+	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b class='verseStart'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; " + textColor + " class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(app.breaksAfterVerse);
 }
 
 // Show verse menu
@@ -867,7 +858,7 @@ function returnTranslation(name, translationData) {
 }
 
 function scrollToVerse(verse) {
-	var elem = document.getElementById("main").children[0].querySelectorAll(".verse")[Number(verse) - 1];
+	var elem = document.getElementsByClassName("verse")[Number(verse) - 1];
 	elem.scrollIntoView();
 }
 
@@ -907,6 +898,13 @@ function getBookNumber(book) {
 			current.bookNumber = i;
 			return i
 		}
+	}
+}
+
+function postLoad(verse) {
+	if (!current.verse == 0) {
+		scrollToVerse(verse);
+		current.verse = 0;
 	}
 }
 
