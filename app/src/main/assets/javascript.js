@@ -373,7 +373,7 @@ function update(option) {
 			if (eval('typeof ' + current.translationString.toLowerCase() + ' !== "undefined"')) {
 				current.translation = eval(current.translationString.toLowerCase());
 				document.getElementById('page').innerHTML = load(book, chapter);
-				postLoad(current.verse)
+				postLoad(current.verse);
 				clearInterval(waitUntilLoad);
 			}
 		},10);
@@ -814,10 +814,11 @@ function loadVOTD() {
 		var verse = data.text.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>', "");
 		var chapter = data.chapter;
 		var book = data.bookname;
+		var verseNum = data.verse;
 		book = book.replace(/1/g, "1st");
 		book = book.replace(/2/g, "2nd");
 		book = book.replace(/3/g, "3rd");
-		verse = "<a class='votdVerse' onclick='load(\"" + book + "\", " + chapter + "); update(); animateIt(\"sidebar\", \"close\");'><b>" + book + " " + chapter + ":" + app.loadedScriptData[0].verse + "</b></a> - " + verse;
+		verse = "<a class='votdVerse' onclick='load(\"" + book + "\", " + chapter + "); update(); animateIt(\"sidebar\", \"close\"); current.verse = " + verseNum + "'><b>" + book + " " + chapter + ":" + app.loadedScriptData[0].verse + "</b></a> - " + verse;
 		document.getElementById('votd').innerHTML = verse;
 	});
 }
