@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 reader.close();
             }
 
+            // Ignore Android Studio; this code is good
             String content = new String(bytes);
 
             // Load the files in the webview
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // Update settings --- toasty code: Toast.makeText(MainActivity.this, "foo", Toast.LENGTH_SHORT).show();
+    // Update settings
     private class JavaScriptInterface {
         private String result;
 

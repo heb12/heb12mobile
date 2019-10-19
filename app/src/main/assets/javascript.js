@@ -207,8 +207,6 @@ window.onload = function() {
 
 // Load Bible content to screen
 function load(book, chapter, verse) {
-	app.done = false;
-
 	var breaks = "<br>".repeat(app.breaksAfterVerse);
 
 	current.bookNumber = getBookNumber(book);
@@ -365,7 +363,7 @@ function update(option) {
 		var int = setInterval(function() {
 			if (app.doneLoadingJSON) {
 				document.getElementById('page').innerHTML = app.netTextData;
-				postLoad(current.verse)
+				postLoad(current.verse);
 				app.doneLoadingJSON = false;
 				clearInterval(int);
 			}
@@ -904,6 +902,7 @@ function getBookNumber(book) {
 	}
 }
 
+// Function called after load
 function postLoad(verse) {
 	if (!current.verse == 0) {
 		scrollToVerse(verse);

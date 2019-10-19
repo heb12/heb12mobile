@@ -4,9 +4,9 @@ android {
     signingConfigs {
         config {
             keyAlias 'config'
-            keyPassword 'fartboy29'
+            keyPassword ''
             storeFile file('/home/daniel/Documents/androidKeystore.jks')
-            storePassword 'fartboy29'
+            storePassword ''
         }
     }
     compileSdkVersion 27

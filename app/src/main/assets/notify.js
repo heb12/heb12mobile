@@ -47,11 +47,14 @@ function notify(text, extra) {
 		// Go through the bookmarks and list them
 		for (var i = 0; i < Object.keys(app.bookmarkedChapters).length; i++) {
 			if (app.bookmarkedChapters[Object.keys(app.bookmarkedChapters)[0]]) {
-				var chapter = Object.keys(app.bookmarkedChapters)[i].toString();
+				var bookChapter = Object.keys(app.bookmarkedChapters)[i].toString().split(" ");
+				var chapter = bookChapter[1];
+				var book = bookChapter[0];
+
 				htmlList += "\
 				<hr>\
-				<p style='font-size:21px;'>" + chapter.replace(/_/g, " ") + "</p>\
-				<div class='button bg' onclick='goToChapter(\"" + chapter +"\".split(\"_\")[0], \"" + chapter +"\".split(\"_\")[1]); sidebarAnimation(\"close\"); animateIt(\"sidebar\", \"close\")'>\
+				<p style='font-size:21px;'>" + book + " " + chapter + "</p>\
+				<div class='button bg' onclick='goToChapter(\"" + book + "\", \"" + chapter + "\"); animateIt(\"sidebar\", \"close\"); animateIt(\"popup\", \"close\")'>\
 					Visit\
 				</div>\
 				<br><br>\

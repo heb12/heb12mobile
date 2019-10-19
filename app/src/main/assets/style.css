@@ -461,11 +461,7 @@ select:active {
 
 #votdBox {
 	padding: 10px;
-	position: absolute;
-	bottom: 20px;
-	right: 0;
-	left: 0;
-}
+	margin-top: 50px;
 
 div::-webkit-scrollbar {
 	width: 0 !important
