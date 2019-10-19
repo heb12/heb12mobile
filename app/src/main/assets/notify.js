@@ -47,9 +47,11 @@ function notify(text, extra) {
 		// Go through the bookmarks and list them
 		for (var i = 0; i < Object.keys(app.bookmarkedChapters).length; i++) {
 			if (app.bookmarkedChapters[Object.keys(app.bookmarkedChapters)[0]]) {
-				var bookChapter = Object.keys(app.bookmarkedChapters)[i].toString().split(" ");
-				var chapter = bookChapter[1];
-				var book = bookChapter[0];
+				var bookChapter = Object.keys(app.bookmarkedChapters)[i].toString();
+
+				regex = /([0-9]*[a-zA-Z]*\b {0,1}\b[a-zA-Z ]+) ([0-9])+/gm
+				var book = bookChapter.replace(regex, "$1");
+				var chapter = bookChapter.replace(regex, "$2");;
 
 				htmlList += "\
 				<hr>\
