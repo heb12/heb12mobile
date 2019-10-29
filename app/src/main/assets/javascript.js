@@ -450,7 +450,7 @@ function updateTranslation() {
 		script.onload = function() {
 			current.translation = eval(current.translationString.toLowerCase());
 		}
-	} else if (downloaded == "true") {
+	} else if (typeof window[val] === "undefined" && downloaded == "true") {
 		if (!app.devmode) {
 			var thing = document.getElementById('translation');
 			var name = thing.children[thing.selectedIndex].getAttribute("val");
@@ -459,7 +459,7 @@ function updateTranslation() {
 
 		}
 	} else {
-		if (!current.translationString == "netOnline") {
+		if (current.translationString !== "netOnline") {
 			current.translation = eval(current.translationString.toLowerCase());
 		}
 	}
@@ -493,7 +493,6 @@ function updateConfigFile(def) {
 	for (var i = 0; i < options.length; i++) {
 		config[options[i][0]] = options[i][val];
 	}
-	console.log(config)
 	interface.exec("write", JSON.stringify(config));
 }
 

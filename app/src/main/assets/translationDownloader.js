@@ -47,7 +47,7 @@ function downloadTranslation(language, translation, elem) {
 		// translation already downloaded
 	} else {
 		var script = document.createElement("SCRIPT");
-		script.src = "http://openbiblesapi.duckdns.org/?language=" + language + "&&translation=" + translation + "&&callback=returnTranslation";
+		script.src = "http://heb12api.duckdns.org/?language=" + language + "&&translation=" + translation + "&&callback=returnTranslation";
 		script.type = "text/javascript";
 		document.getElementById('loadedScripts').appendChild(script);
 
