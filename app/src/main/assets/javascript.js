@@ -112,7 +112,7 @@ window.onload = function() {
 			updateConfigFile("def");
 		}
 
-		// Convert old config file
+		// Read config file
 		if (!JSON.stringify(configuration).includes("/*")) {
 
 			current.theme = configuration.theme;
@@ -132,46 +132,6 @@ window.onload = function() {
 
 			current.book = configuration.lastBook;
 			current.chapter = configuration.lastChapter;
-		} else {
-			// Parse config file into JS
-			if (!data[1] == "") {
-				// Remove comments
-				configuration = configuration.replace(/\/\*[A-Za-z0-9 -!.:]+\*\//g, "");
-				configuration = configuration.split(";");
-
-				var configObj = {};
-				for (var i = 0; i < configuration.length; i++) {
-					var item = configuration[i].split("=");
-					configObj[item[0]] = item[1];
-				}
-
-				// Set the translation before everything breaks it
-				current.translationString = configuration[0].split("=")[1];
-
-				for (var i = 0; i < document.getElementById("translation").children.length; i++) {
-					if (document.getElementById("translation").children[i].value.startsWith(current.translationString)) {
-						document.getElementById("translation").children[i].selected = true;
-						i = 100;
-					}
-				}
-				update();
-
-				// Update Variables
-				current.theme = configuration[3].split("=")[1];
-				current.font = configuration[4].split("=")[1];
-				current.fontSize = Number(configuration[6].split("=")[1]);
-				app.highlightedVerses = JSON.parse(configObj.highlightedVerses.replace(/_/g, " "));
-				app.bookmarkedChapters = JSON.parse(configuration[7].split("=")[1]);
-
-				// Update Elements
-				document.getElementById('page').style.fontSize = current.fontSize + "px";
-				document.getElementById('book').value = configuration[1].split("=")[1];
-				document.getElementById('chapter').value = configuration[2].split("=")[1];
-				document.getElementById('page').style.lineHeight = (current.fontSize + 7) + "px";
-				document.getElementById('page').style.fontFamily = current.font;
-				setTheme(configuration[3].split("=")[1]);
-
-			}
 		}
 	}
 	
@@ -285,8 +245,10 @@ function load(book, chapter, verse) {
 						finaldata += "<h3>" + data[i].title + "</h3>";
 					}
 
+
 					var modifiedVerse = data[i].text.replace(/<\/?(st)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, "");
 					modifiedVerse = modifiedVerse.replace(/<p class="bodytext">/g, "");
+					modifiedVerse = modifiedVerse.replace(/<p class="otpoetry">/g, "<br>");
 					modifiedVerse = modifiedVerse.replace(/id="verse"/g, 'class="verseStart"');
 					finaldata += modifyVerse(i, modifiedVerse);
 				}
@@ -704,7 +666,7 @@ function modifyVerse(verseNum, verseText) {
 			textcolor = "'";
 		}
 	}
-	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b class='verseStart'>" + (verseNum + 1) + "</b> <span style='background: " + color + "; " + textColor + " class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(app.breaksAfterVerse);
+	return "<span class='verse' onclick='versePopup(" + verseNum + ")'><b class='verseStart'>" + (verseNum + 1) + "</b> <span style='display: inherit;background: " + color + "; " + textColor + " class='verseText'>" + verseText + "</span></span>" + "<br>".repeat(app.breaksAfterVerse);
 }
 
 // Show verse menu
