@@ -236,6 +236,7 @@ select:active {
 	background-color: white;
 	border-right: 1px solid black;
 	overflow: scroll;
+	overflow-x: hidden;
 	animation-name: slideIn;
 	display: none;
 	animation-duration: .5s;
@@ -457,6 +458,7 @@ select:active {
 	float: right;
     margin-top: 3px;
     margin-right: 3px;
+    display: block;
 }
 
 #votdBox {

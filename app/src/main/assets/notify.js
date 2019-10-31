@@ -92,7 +92,7 @@ function notify(text, extra) {
 
 					// Change url to close if translation already downloaded
 					var url = "";
-					if (!(!window[filename])) {
+					if (downloadedTranslationsObj[filename] == "true") {
 						url = "images/close.svg"
 					}
 					html += "<span class='translationDownloadButton' onclick='downloadTranslation(\"" + langList[i] + "\", \"" + eval(langList[i])[n] + "\", this)'>" + eval(langList[i])[n].toUpperCase() + "<img class='translationDownloadSpinner' src='" + url + "' onclick='deleteTranslation(this, \"" + filename + "\")'></span><br>";

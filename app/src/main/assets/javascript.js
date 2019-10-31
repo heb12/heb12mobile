@@ -236,7 +236,7 @@ function load(book, chapter, verse) {
 			url = "http://labs.bible.org/api/?passage=" + book + " " + chapter + "&type=json&callback=getScript&&formatting=full";
 		}
 
-		//
+		// Load NET data
 		loadJSONP(url, function(data) {
 			var finaldata = "";
 			if (isNaN(verse)) {
@@ -245,7 +245,7 @@ function load(book, chapter, verse) {
 						finaldata += "<h3>" + data[i].title + "</h3>";
 					}
 
-
+					// Modify NET data for better reading
 					var modifiedVerse = data[i].text.replace(/<\/?(st)("[^"]*"|'[^']*'|[^>])*(>|$)/gm, "");
 					modifiedVerse = modifiedVerse.replace(/<p class="bodytext">/g, "");
 					modifiedVerse = modifiedVerse.replace(/<p class="otpoetry">/g, "<br>");
@@ -422,7 +422,7 @@ function updateTranslation() {
 		}
 	} else {
 		if (current.translationString !== "netOnline") {
-			current.translation = eval(current.translationString.toLowerCase());
+			current.translation = window[current.translationString.toLowerCase()];
 		}
 	}
 }

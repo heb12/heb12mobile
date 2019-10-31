@@ -1,4 +1,6 @@
 // Language Information for Openbibles API
+// Havn't added all the translations/languages yet
+
 var langShort = {
 	"en": "english",
 	"fr": "french",
@@ -43,7 +45,7 @@ var es = [
 function downloadTranslation(language, translation, elem) {
 	var filename = language + "_" + translation;
 
-	if (!(!window[filename])) {
+	if (downloadedTranslationsObj[filename] == "true") {
 		// translation already downloaded
 	} else {
 		var script = document.createElement("SCRIPT");

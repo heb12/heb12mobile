@@ -1,52 +1,54 @@
-// This is OUTDATED
-var spanish = {
-	next: "Siguiente",
-	previous: "Anterior",
-	version: "Versi&oacute;n [version] [connection]",
-	translationTitle: "Traducci&oacute;n actual",
+var english = {
+	next: "Next",
+	previous: "Previous",
+	version: "Version [version] [connection]",
+	translationTitle: "Current Translation",
 	translations: [
-		"BBE (Bible in Basic English) (Desconectado)",
-		"KJV (King James Version) (Desconectado)",
-		"KJV 2000 (King James Version 2000) (Desconectado)",
-		"NET (Nueva Traducci&oacute;n al Ingl&eacute;s) (Online)",
-		"ASV (versi&oacute;n est&aacute;ndar americana) (sin conexi&oacute;n)",
-		"DBY (Biblia de Darby) (Desconectado)"
+		"BBE (Bible in Basic English) (Offline)",
+		"KJV (King James Version) (Offline)",
+		"KJV 2000 (King James Version 2000) (Offline)",
+		"NET (New English Translation) (Online)",
+		"ASV (American Standard Version) (Offline)",
+		"DBY (Darby Bible) (Offline)"
 	],
-	VOTDTitle: "Verso del d&iacute;a",
-	description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto dise&ntilde;ada para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir al <a href='https://github.com/heb12/heb12-mobile'>Github repository</a>.",
+	VOTDTitle: "Verse of the Day",
+	description: "Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the <a href='https://github.com/heb12/heb12-mobile'>Github repository</a>.",
 	credits: [
-		"Cr&eacute;ditos",
-		"Programador principal - Pufflegamerz aka Petabyte Studios",
+		"Credits",
+		"Lead Programmer - Pufflegamerz aka Petabyte Studios",
 		"Openbibles - MasterOfTheTiger",
-		"Iconos de material - Material.io",
-		"API de NET formateada - Bible Labs",
-		"@thiagobodruk - Archivos JSON de la Biblia sin conexi&oacute;n"
+		"Material icons - Material.io",
+		"Formatted NET API - Bible Labs",
+		"@thiagobodruk - Offline Bible JSON files",
+		"childofgod@theres.life - German Translation"
 	],
 	settings:"\
-		<h2>Configuraci&oacute;n</h2>\
-		<span class='textBesideSelect'>Idioma:</span>\
+		<h2>Settings</h2>\
+		<span class='textBesideSelect'>Language:</span>\
 		<select id='languageSelect' onchange=\"setLanguage(this.options[this.selectedIndex].getAttribute('eng'))\">\
 			<option eng='english'>English</option>\
-			<option eng='spanish'>Spanish</option>\
+			\
 			<option eng='german'>German</option>\
 		</select>\
 		<br>\
-		<span class='textBesideSelect'>El tema:</span>\
+		<span class='textBesideSelect'>Theme:</span>\
 		<select id='themeSelect' onchange=\"setTheme(this.options[this.selectedIndex].getAttribute('eng'))\">\
-			<option>Default</option>\
-			<option>Dark</option>\
-			<option>Dark Blue</option>\
-			<option>Amethyst</option>\
+			<option eng='default'>Default</option>\
+			<option eng='dark'>Dark</option>\
+			<option eng='darkblue'>Dark Blue</option>\
+			<option eng='amethyst'>Amethyst</option>\
 		</select>\
 		<br>\
+		<div id='fontPreviewBox'>\
 		<p id=\"fontPreview\">The big brown fox jumps over the lazy dog.</p>\
-		<span class='textBesideSelect'>Fuente:</span>\
+		</div>\
+		<span class='textBesideSelect'>Font:</span>\
 		<select id='fontSelect' onchange=\"setFont(this.options[this.selectedIndex].getAttribute('eng'))\">\
-			<option>Times New Roman</option>\
-			<option>Arial</option>\
-			<option>Comfortaa</option>\
-			<option>Helvetica</option>\
-			<option>Courier New</option>\
+			<option eng='Times New Roman'>Times New Roman</option>\
+			<option eng='Arial'>Arial</option>\
+			<option eng='Comfortaa'>Comfortaa</option>\
+			<option eng='Helvetica'>Helvetica</option>\
+			<option eng='Courier New'>Courier New</option>\
 		</select>\
 		<br>\
 		<div>\
@@ -64,10 +66,13 @@ var spanish = {
 		</div>\
 		<br>\
 		<br>\
-		<p>Esto restablecer&aacute; todos los datos guardados. Cuando reinicie la aplicaci&oacute;n, se cerrar&aacute; para que pueda volver a iniciarla.</p>\
+		<p>This will reset all your saved data. When you reset the app, it will close so you can re-launch it.</p>\
 		<br>\
 		<div class='button bg' onclick='updateConfigFile(\"def\"); interface.exec(\"other\", \"close\")'>\
-			Reiniciar\
+			Reset\
 		</div>\
-		"
+		",
+		english: "English",
+		french: "French",
+		offline: "To download translations, you must be connected to the internet."
 }
