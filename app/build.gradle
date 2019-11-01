@@ -7,7 +7,7 @@ android {
             keyPassword ''
             storeFile file('/home/daniel/Documents/androidKeystore.jks')
             storePassword ''
-        }
+        
     }
     compileSdkVersion 27
     defaultConfig {

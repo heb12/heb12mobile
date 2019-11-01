@@ -1,18 +1,18 @@
-var english = {
-	next: "Next",
-	previous: "Previous",
-	version: "Version [version] [connection]",
-	translationTitle: "Current Translation",
+var spanish = {
+	next: "Siguiente",
+	previous: "Anterior",
+	version: "Versión [version] [connection]",
+	translationTitle: "Traducción Actual",
 	translations: [
-		"BBE (Bible in Basic English) (Offline)",
-		"KJV (King James Version) (Offline)",
-		"KJV 2000 (King James Version 2000) (Offline)",
-		"NET (New English Translation) (Online)",
-		"ASV (American Standard Version) (Offline)",
-		"DBY (Darby Bible) (Offline)"
+		"BBE (Biblia en Básico Inglés) (Desconectado)",
+		"KJV (King James Versión) (Desconectado)",
+		"KJV 2000 (King James Versión 2000) (Desconectado)",
+		"NET (New English Translation) (En línea)",
+		"ASV (American Standard Version) (Desconectado)",
+		"DBY (Darby Bible) (Desconectado)"
 	],
 	VOTDTitle: "Verse of the Day",
-	description: "Heb12 Mobile is a free open-sourced app designed to make reading the bible easy and hassle-free. Feel free to contribute to the <a href='https://github.com/heb12/heb12-mobile'>Github repository</a>.",
+	description: "Heb12 Mobile es una aplicación gratuita de código abierto creado para hacer que la lectura de la Biblia sea fácil y sin complicaciones. Siéntase libre de contribuir a la  <a href='https://github.com/heb12/heb12-mobile'>repositorio de Github</a>.",
 	credits: [
 		"Credits",
 		"Lead Programmer - Pufflegamerz aka Petabyte Studios",
@@ -24,9 +24,9 @@ var english = {
 	],
 	settings:"\
 		<h2>Settings</h2>\
-		<span class='textBesideSelect'>Language:</span>\
+		<span class='textBesideSelect'>Idioma:</span>\
 		<select id='languageSelect' onchange=\"setLanguage(this.options[this.selectedIndex].getAttribute('eng'))\">\
-			<option eng='english'>English</option>\
+			<option eng='english'>Inglés</option>\
 			\
 			<option eng='german'>German</option>\
 		</select>\

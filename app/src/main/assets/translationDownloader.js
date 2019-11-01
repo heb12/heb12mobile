@@ -1,11 +1,11 @@
 // Language Information for Openbibles API
-// Havn't added all the translations/languages yet
+// Contributors, feel free to add translations
 
 var langShort = {
-	"en": "english",
-	"fr": "french",
-	"de": "german",
-	"es": "spanish"
+	"en": "English",
+	"fr": "French",
+	"de": "German",
+	"es": "Spanish"
 };
 
 var langList = [
@@ -24,7 +24,8 @@ var en = [
 	"rsv",
 	"wbt",
 	"web",
-	"ylt"
+	"ylt",
+	"rwebster"
 ];
 
 var fr = [
@@ -46,7 +47,8 @@ function downloadTranslation(language, translation, elem) {
 	var filename = language + "_" + translation;
 
 	if (downloadedTranslationsObj[filename] == "true") {
-		// translation already downloaded
+		// translation already downloaded, delete it (toggle)
+		deleteTranslation(elem.childNodes[1], filename);
 	} else {
 		var script = document.createElement("SCRIPT");
 		script.src = "http://heb12api.duckdns.org/?language=" + language + "&&translation=" + translation + "&&callback=returnTranslation";
@@ -66,8 +68,12 @@ function downloadTranslation(language, translation, elem) {
 				interface.exec("makefile " + filename + ".js", JSON.stringify(window[filename]));
 			}
 
+			// Add it to the list
+			downloadedTranslationsObj[filename] = "true";
+
 			// Stop animation
 			elem.childNodes[1].style.animationName = "stop";
+			elem.childNodes[1].className = ""
 			createTranslation(language, translation);
 		}
 	}
@@ -92,6 +98,8 @@ function deleteTranslation(elem, name) {
 		}
 
 		elem.setAttribute("src", "");
+
+		delete downloadedTranslationsObj[name]
 
 		// Remove translation from list
 		var translation = document.getElementById("translation").children;

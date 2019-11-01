@@ -390,9 +390,8 @@ function updateTranslation() {
 	} else {
 		// Add space between letters and numbers (KJV2000) > (KJV 2000)
 		var formatted = val.match(/[0-9]+/g);
-		if (formatted === null) {
-			val = val.replace(formatted, " " + formatted);
-		}
+		val = val.replace(formatted, " " + formatted);
+		
 		current.translationStringHuman = val;
 	}
 
