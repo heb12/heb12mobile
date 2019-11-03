@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 // Should we show an explanation? No
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // Show an explanation to the user *jiofjiofr* -- don't block
+                    // Show an explanation to the user *jimmybob200* -- don't block
                     // this thread waiting for the user's response! After the user
                     // sees the explanation, try again to request the permission.
                 } else {
@@ -261,4 +261,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
-// lol fart
+// I wonder if anybody will see this... oh well

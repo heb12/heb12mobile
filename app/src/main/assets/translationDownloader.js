@@ -1,5 +1,5 @@
 // Language Information for Openbibles API
-// Contributors, feel free to add translations
+// Contributors, feel free to add translations that work
 
 var langShort = {
 	"en": "English",
@@ -47,7 +47,6 @@ function downloadTranslation(language, translation, elem) {
 	var filename = language + "_" + translation;
 
 	if (downloadedTranslationsObj[filename] == "true") {
-		// translation already downloaded, delete it (toggle)
 		deleteTranslation(elem.childNodes[1], filename);
 	} else {
 		var script = document.createElement("SCRIPT");
@@ -55,9 +54,12 @@ function downloadTranslation(language, translation, elem) {
 		script.type = "text/javascript";
 		document.getElementById('loadedScripts').appendChild(script);
 
-		// Change image + trigger animation
-		elem.childNodes[1].src = "images/loading.svg";
+		// Show loading icon
 		elem.childNodes[1].style.display = "block";
+
+		// Change image + change animation
+		elem.childNodes[1].style.animationName = "spin";
+		elem.childNodes[1].src = "images/loading.svg";
 
 		// Create the file and option in menu
 		script.onload = function() {
@@ -73,7 +75,6 @@ function downloadTranslation(language, translation, elem) {
 
 			// Stop animation
 			elem.childNodes[1].style.animationName = "stop";
-			elem.childNodes[1].className = ""
 			createTranslation(language, translation);
 		}
 	}
@@ -91,17 +92,17 @@ function createTranslation(language, translation) {
 
 // I know this is the translation downloader file.. but why not add a translation deleter?
 function deleteTranslation(elem, name) {
-	if (elem.getAttribute("src") == "images/close.svg") {
-		// Remove the translation, and set the image back to normal
+	if (typeof downloadedTranslationsObj[name] !== "undefined") {
+		// Remove the translation from folder
 		if (!app.devmode) {
 			interface.exec("deletetranslation", name + ".js");
 		}
 
-		elem.setAttribute("src", "");
-
+		// Hide image and remove from translation list
+		elem.style.display = "none";
 		delete downloadedTranslationsObj[name]
 
-		// Remove translation from list
+		// Remove translation from options menu
 		var translation = document.getElementById("translation").children;
 		for (var i = 0; i < translation.length; i++) {
 			if (translation[i].getAttribute("val") == name) {
