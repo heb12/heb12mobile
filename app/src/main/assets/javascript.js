@@ -486,7 +486,7 @@ function updateSearch(searching) {
 		result.style.display = "block";
 	}
 
-	// Regexp to recongnise books and chapters
+	// REGEXP to recongnise books and chapters
 	var validateChapter = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[ ]*/gm;
 	var validateChapterAndVerse = /[ ]*([a-zA-z0-9 ]+)[: ;-]+([0-9]+)[: ;-]+([0-9]+)*[ ]*/gm;
 	var book;
@@ -540,8 +540,7 @@ function updateSearch(searching) {
 			update();
 
 			if (!verse == "") {
-				// Wait until page loaded
-				current.verse = verse;
+				current.verse = verse; // Wait until page loaded
 			}
 		}
 	}
@@ -570,15 +569,6 @@ function validChapter(book, chapter) {
 	return [false]
 }
 
-// Unfinished?
-function validVerse(thing) {
-	var thingies = thing.split("-");
-	if (validChapter(thingies[0] + "-" + thingies[1])) {
-
-	}
-
-}
-
 // Make Books easier to search
 function editBook(book, part) {
 
@@ -596,7 +586,7 @@ function editBook(book, part) {
 	["Dan", "Daniel"],
 	["Esra", "Ezra"],
 	["Thesolionions", "Thessalonians"],
-	["Psalmss", "Psalms"] // Another strange thing...
+	["Psalmss", "Psalms"]
 	];
 
 	for (var i = 0; i < correct.length; i++) {
@@ -619,7 +609,7 @@ function isOpenbibles() {
 	}
 }
 
-// Hacky offline JSONP loading
+// Load JSONP from IFRAME (works offline)
 function loadJSONP(url, returnCode) {
 	app.loadedScript = false;
 	app.jsonpReturnFunction = returnCode;
@@ -767,7 +757,7 @@ function updateChapters(book) {
 	}
 }
 
-// A function that loads the votd
+// A function that loads the VOTD, and puts it in the span
 function loadVOTD() {
 	loadJSONP("http://labs.bible.org/api/?passage=votd&type=json&callback=getScript", function(data) {
 		data = data[0];
@@ -815,7 +805,7 @@ function setLanguage(string) {
 
 // Function to return downloaded translation
 function returnTranslation(name, translationData) {
-	window[name] = translationData;
+	window[name] = translationData; // Create global variable
 }
 
 function scrollToVerse(verse) {
@@ -824,9 +814,7 @@ function scrollToVerse(verse) {
 }
 
 function compareInsensitive(string1, string2) {
-	string1 = string1.toUpperCase();
-	string2 = string2.toUpperCase();
-	if (string1 == string2) {
+	if (string1.toUpperCase() == string2.toUpperCase()) {
 		return true
 	} else {
 		return false

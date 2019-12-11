@@ -50,7 +50,8 @@ function downloadTranslation(language, translation, elem) {
 		deleteTranslation(elem.childNodes[1], filename);
 	} else {
 		var script = document.createElement("SCRIPT");
-		script.src = "http://heb12api.duckdns.org/?language=" + language + "&&translation=" + translation + "&&callback=returnTranslation";
+		script.src = "http://heb12api.duckdns.org/download.php?language=" + language + "&&translation=" + translation + "&&callback=returnTranslation";
+		console.log(script.src)
 		script.type = "text/javascript";
 		document.getElementById('loadedScripts').appendChild(script);
 
