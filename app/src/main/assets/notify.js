@@ -49,7 +49,8 @@ function notify(text, extra) {
 			if (app.bookmarkedChapters[Object.keys(app.bookmarkedChapters)[0]]) {
 				var bookChapter = Object.keys(app.bookmarkedChapters)[i].toString();
 
-				regex = /([0-9]*[a-zA-Z]*\b {0,1}\b[a-zA-Z ]+) ([0-9])+/gm
+				// Get book and chapter from string
+				var regex = /([a-zA-Z0-9 ]+) ([0-9]*)/g;
 				var book = bookChapter.replace(regex, "$1");
 				var chapter = bookChapter.replace(regex, "$2");;
 
@@ -60,7 +61,7 @@ function notify(text, extra) {
 					Visit\
 				</div>\
 				<br><br>\
-				"
+				";
 			}
 		}
 		popup.innerHTML = "\

@@ -1,4 +1,5 @@
 // Main Variables
+// Changing these might not work with older config files, so be aware
 var app = {
 	version:"0.1.1", 
 	mouseDown:false, // When pointer is down on page
@@ -21,13 +22,13 @@ var app = {
 	done:false, // When everthing is done with bible data.
 	usingDownloadedTranslation:"false", // If using downloaded translation
 	highlightedVerses:{
-		"John 3 16":"yellow",
-		"Hebrews 4 12":"lightgreen",
-		"Luke 9 23":"lightgreen"
+		"John 3 16": "yellow",
+		"Hebrews 4 12": "lightgreen",
+		"Luke 9 23": "lightgreen"
 	},
 	bookmarkedChapters:{
-		"Hebrews 4":true,
-		"John 3":true
+		"Hebrews 4": true,
+		"John 3": true
 	},
 	jsonpReturnFunction:""
 };
@@ -417,7 +418,6 @@ function updateTranslation() {
 			var name = thing.children[thing.selectedIndex].getAttribute("val");
 			window[name] = JSON.parse(interface.exec("gettranslationdata", name + ".js"));
 			current.translation = window[name];
-
 		}
 	} else {
 		if (current.translationString !== "netOnline") {
@@ -427,7 +427,7 @@ function updateTranslation() {
 }
 
 function search(thing) {
-	notify("browserselect", thing)
+	notify("browserselect", thing);
 }
 
 // Update the configuration file or return the default
@@ -471,8 +471,8 @@ function setTheme(theme) {
 function setFont(font) {
 	document.getElementById('page').style.fontFamily = font;
 	document.getElementById('fontPreview').style.fontFamily = font;
-
 	current.font = font;
+	
 	update();
 }
 
