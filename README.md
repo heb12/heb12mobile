@@ -1,4 +1,3 @@
-## Notice: GitHub decided to do some weird stuff and all the previous commits disappeared.
 # Heb12 Mobile
 [![](https://github.com/heb12/heb12.github.io/blob/master/mobile/playstore.png?raw=true)](https://play.google.com/store/apps/details?id=com.heb12.heb12)
 [![](https://heb12.ml/mobile/amazon2.png)](https://www.amazon.com/pufflegamerz-Heb12-Bible/dp/B07SDL9VSR/ref=sr_1_1?keywords=heb12&qid=1558971521&s=gateway&sr=8-1)
@@ -17,3 +16,6 @@ Any Android device running Android 6.0 and later should be able to run Heb12 Mob
 
 # Bug Reporting
 You can report bugs in the issues directory. If that's not your thing, you can also put something in the Heb12 subreddit (r/heb12)
+
+# Translate
+Heb12 currently has English and German translations, but feel free to help out! The translations folder is here: https://github.com/heb12/heb12-mobile/tree/master/app/src/main/assets/languages
