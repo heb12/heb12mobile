@@ -4,7 +4,7 @@ function updateLanguage() {
 	app.language = translation;
 	for (var i = 0; i < Object.keys(translation).length; i++) {
 		var thing = Object.keys(translation)[i];
-		var dontTranslate = ["description", "settings", "french", "german", "english", "offline", "version" , "translationTitle"];
+		var dontTranslate = ["description", "settings", "french", "german", "english", "offline", "version" , "translationTitle"]; // Elements to NOT update
 
 		// Don't replace strings with arrays
 		if (!Array.isArray(eval("translation." + Object.keys(translation)[i]))) {
