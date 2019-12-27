@@ -11,11 +11,11 @@ translations: [
 "ASV (American Standard Versi&oacute;n) (Desconectado)",
 "DBY (Darby Biblia) (Desconectado)"
 ],
-VOTDTitle: "Verse of the Day",
-description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto creado para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir a la <a href='https://github.com/heb12/heb12-mobile'>repositorio de Github</a>.",
+VOTDTitle: "Verso de la D&iacute;a",
+description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto creado para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir a la <a href='#' onclick='javascript:interface.exec(\"browser\", \"https://github.com/heb12/heb12-mobile\")'>repositorio de Github</a>.",
 credits: [
-"Credits",
-"Lead Programmer - Pufflegamerz / Petabyte Studios",
+"Cr&eacute;ditos",
+"Programadora - Pufflegamerz / Petabyte Studios",
 "Openbibles - MasterOfTheTiger",
 "Iconos materiales - Material.io",
 "NET API formateada - Bible Labs",
@@ -27,8 +27,8 @@ settings:"\
 <span class='textBesideSelect'>Idioma:</span>\
 <select id='languageSelect' onchange=\"setLanguage(this.options[this.selectedIndex].getAttribute('eng'))\">\
 <option eng='english'>Ingl&eacute;s</option>\
-\
 <option eng='german'>Alem&aacute;n</option>\
+<option eng='spanish'>Espanol</option>\
 </select>\
 <br>\
 <span class='textBesideSelect'>Tema:</span>\

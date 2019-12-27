@@ -1,4 +1,4 @@
-// This mess is all the html for displaying popups
+// This is a bunch of text HTML garbage for displaying popup contents
 function notify(text, extra) {
 	animateIt("popup", "show")
 	var popup = document.getElementById('popupContent');
@@ -6,7 +6,7 @@ function notify(text, extra) {
 	if (text == "firsttime") {
 		popup.innerHTML = '<h2>Welcome to Heb12!</h2>\
 		<p>' + app.language.description + '</p> \
-		<p><strong>Pro Tip: Tap on a bible verse for a list of extra actions.</strong></p>';
+		<p><strong>Tip: Tap on a bible verse for a list of extra actions.</strong></p>';
 	}if (text == "browserselect") {
 		popup.innerHTML = '<h1>Choose a search engine</h1><div onclick="window.open(\'https://www.google.com/search?q=' + extra + '\')" class="button bg">Google</div><br><br><div onclick="window.open(\'http://duckduckgo.com/?q=' + extra + '\')" class="button bg">DuckDuckGo</div><br>';
 	} else if (text == "settings") {
@@ -34,26 +34,28 @@ function notify(text, extra) {
 		<br>\
 		<p><a style='color: blue; text-decoration: underline;' onclick=\"goToChapter('Hebrews', '4'); animateIt('popup', 'close'); animateIt('sidebar', 'close')\">Hebrews 4:12</a> - For the word of God is living, and powerful, and sharper than any two-edged sword, piercing even to the dividing asunder of soul and spirit, and of the joints and marrow, and is a discerner of the thoughts and intents of the heart.</p>\
 		<br>\
-		<h2>Credits</h2>\
-		<p>Programming - Pufflegamerz aka Petabyte Studios</p>\
-		<p>Openbibles - MasterOfTheTiger</p>\
-		<p>Material icons - Material.io</p>\
-		<p>Formatted NET API - Bible Labs</p>\
-		<p>childofgod@theres.life - German Translation</p>\
+		<h2>" + app.language.credits[0] + "</h2>\
+		<p>" + app.language.credits[1] + "</p>\
+		<p>" + app.language.credits[2] + "r</p>\
+		<p>" + app.language.credits[3] + "</p>\
+		<p>" + app.language.credits[4] + "</p>\
+		<p>" + app.language.credits[5] + "</p>\
 		";
+		// Hmm... Is that bad practice? ^
 	} else if (text == "bookmarks") {
 		var htmlList = "";
-
-		// Go through the bookmarks and list them
-		for (var i = 0; i < Object.keys(app.bookmarkedChapters).length; i++) {
-			if (app.bookmarkedChapters[Object.keys(app.bookmarkedChapters)[0]]) {
-				var bookChapter = Object.keys(app.bookmarkedChapters)[i].toString();
+		var bookmarks = Object.keys(app.bookmarkedChapters); // Bookmarks in list format
+		// Go through the boookmarks and list them
+		for (var i = 0; i < bookmarks.length; i++) {
+			if (app.bookmarkedChapters[bookmarks[i]]) {
+				var bookChapter = bookmarks[i].toString();
 
 				// Get book and chapter from string
 				var regex = /([a-zA-Z0-9 ]+) ([0-9]*)/g;
 				var book = bookChapter.replace(regex, "$1");
 				var chapter = bookChapter.replace(regex, "$2");;
 
+				// Add HTML code for each bookmarked element
 				htmlList += "\
 				<hr>\
 				<p style='font-size:21px;'>" + book + " " + chapter + "</p>\

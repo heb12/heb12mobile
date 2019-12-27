@@ -1,6 +1,7 @@
 package com.heb12.heb12;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +26,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.os.Environment;
+import java.net.URI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             String content = new String(bytes);
 
             // Load the files in the webview
-            WebView view = (WebView) findViewById(R.id.WebView);
+            WebView view = findViewById(R.id.WebView);
 
             // Make sure nothing will explode
             WebSettings webSettings = view.getSettings();
@@ -79,9 +80,10 @@ public class MainActivity extends AppCompatActivity {
             webSettings.setDomStorageEnabled(true);
             webSettings.setLoadWithOverviewMode(true);
             webSettings.setDefaultTextEncodingName("utf-8");
-            view.setWebContentsDebuggingEnabled(true);
+            WebView.setWebContentsDebuggingEnabled(true);
             view.setWebViewClient(new WebViewClient());
 
+            // Send data through url... Bad practice? Good practice?
             view.loadUrl("file:///android_asset/index.html?[\"" + firstTime + "\"," + content + "]");
             getSupportActionBar().hide();
 
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
 
             // Turn on storage
-            WebView view = (WebView) findViewById(R.id.WebView);
+            WebView view = findViewById(R.id.WebView);
             view.getSettings().setJavaScriptEnabled(true);
 
             view.loadUrl("file:///android_asset/enableStorage.html");
@@ -132,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
     // Update settings
     private class JavaScriptInterface {
         private String result;
+
+        // This is the Javascript-Java interface. This is where the JavaScript code
+        // can communicate with the Java stuff, such as file management.
 
         @JavascriptInterface
         public String exec(String type, String data) throws IOException {
@@ -220,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else if (type.equals("test")) {
                 try {
-                    final WebView view = (WebView) findViewById(R.id.WebView);
+                    final WebView view = findViewById(R.id.WebView);
                     view.post(new Runnable() {
                         @Override
                         public void run() {
@@ -255,6 +260,9 @@ public class MainActivity extends AppCompatActivity {
             } else if (type.equals("deletetranslation")) {
                 File file = new File("/sdcard/translations", data);
                 file.delete();
+            } else if (type.equals("browser")) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
+                startActivity(browserIntent);
             }
 
             return type;

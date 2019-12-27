@@ -12,7 +12,7 @@ translations: [
 "DBY (Darby Bible) (Offline)"
 ],
 VOTDTitle: "Vers des Tages",
-description: "Heb12 Mobile ist eine kostenlose Open-Source-App, die das Lesen der Bibel einfach und unkompliziert macht.. Du kannst gerne zum <a href='https://github.com/heb12/heb12-mobile'>Github-Repository beitragen.</a>.",
+description: "Heb12 Mobile ist eine kostenlose Open-Source-App, die das Lesen der Bibel einfach und unkompliziert macht.. Du kannst gerne zum <a href='#' onclick='javascript:interface.exec(\"browser\", \"https://github.com/heb12/heb12-mobile\")'>Github-Repository beitragen.</a>.",
 credits: [
 "Credits",
 "Hauptprogrammierer - Pufflegamerz aka Petabyte Studios",

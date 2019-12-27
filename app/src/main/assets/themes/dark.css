@@ -55,6 +55,11 @@ a:visited {
 
 #verseMenu {
 	background-color: black;
+	border: 1px solid white;
+}
+
+#colors {
+	border-top: 1px solid white;
 }
 
 .verseColor {

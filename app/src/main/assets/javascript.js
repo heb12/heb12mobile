@@ -1,3 +1,7 @@
+/*
+Notice unbookmarking breaks the entire bookmarking system
+*/
+
 // Main Variables
 // Changing these might not work with older config files, so be aware
 var app = {
@@ -26,6 +30,7 @@ var app = {
 		"Hebrews 4 12": "lightgreen",
 		"Luke 9 23": "lightgreen"
 	},
+	// This method of bookmarking is inneficient, but It will have to do.
 	bookmarkedChapters:{
 		"Hebrews 4": true,
 		"John 3": true

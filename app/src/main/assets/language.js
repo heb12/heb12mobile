@@ -1,4 +1,4 @@
-// Go through all the Html elements and update them with the language
+// Go through all the Html elements and update them with the current language
 function updateLanguage() {
 	var translation = eval(current.language.toLowerCase());
 	app.language = translation;
