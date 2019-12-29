@@ -1,9 +1,4 @@
-/*
-Notice unbookmarking breaks the entire bookmarking system
-*/
-
 // Main Variables
-// Changing these might not work with older config files, so be aware
 var app = {
 	version:"0.1.1", 
 	mouseDown:false, // When pointer is down on page
@@ -31,10 +26,10 @@ var app = {
 		"Luke 9 23": "lightgreen"
 	},
 	// This method of bookmarking is inneficient, but It will have to do.
-	bookmarkedChapters:{
-		"Hebrews 4": true,
-		"John 3": true
-	},
+	bookmarkedChapters:[
+		"Hebrews 4",
+		"John 3"
+	],
 	jsonpReturnFunction:""
 };
 
@@ -105,39 +100,39 @@ window.onload = function() {
 			}
 		}, 1);
 
-		// Open data and parse it (bad method)
+		// Open data and parse it (yes, through the URL)
 		data = window.location.href.split("?")[1];
 		data = data.replace(/%22/g, '"');
 		data = data.replace(/%20/g, " ");
 		data = eval(data);
 		var configuration = data[1];
 
+		// Convert configuration contents. convert() must be used in string form
+		configuration = convert(JSON.stringify(data[1]));
+
+		// Parse Data
+		current.theme = configuration.theme;
+		current.font = configuration.font;
+		current.fontSize = Number(configuration.fontSize);
+		current.book = configuration.lastBook;
+		current.chapter = configuration.lastChapter;
+		current.translationString = configuration.currentTranslation;
+		app.highlightedVerses = configuration.highlightedVerses;
+		app.bookmarkedChapters = configuration.bookmarkedChapters;
+
+		// Update UI
+		document.getElementById('page').style.fontSize = current.fontSize + "px";
+		document.getElementById('page').style.lineHeight = (current.fontSize + 7) + "px";
+		document.getElementById('page').style.fontFamily = current.font;
+		setTheme(configuration.theme);
+
+		current.book = configuration.lastBook;
+		current.chapter = configuration.lastChapter;
+
 		// If loading the app for the first time.
 		if (data[0] == "true") {
 			notify("firsttime");
 			updateConfigFile("def");
-		}
-
-		// Read config file
-		if (!JSON.stringify(configuration).includes("/*")) {
-
-			current.theme = configuration.theme;
-			current.font = configuration.font;
-			current.fontSize = Number(configuration.fontSize);
-			current.book = configuration.lastBook;
-			current.chapter = configuration.lastChapter;
-			current.translationString = configuration.currentTranslation;
-			app.highlightedVerses = configuration.highlightedVerses;
-			app.bookmarkedChapters = configuration.bookmarkedChapters;
-
-			// Update UI
-			document.getElementById('page').style.fontSize = current.fontSize + "px";
-			document.getElementById('page').style.lineHeight = (current.fontSize + 7) + "px";
-			document.getElementById('page').style.fontFamily = current.font;
-			setTheme(configuration.theme);
-
-			current.book = configuration.lastBook;
-			current.chapter = configuration.lastChapter;
 		}
 	}
 	
@@ -175,7 +170,7 @@ window.onload = function() {
 function load(book, chapter, verse) {
 	var breaks = "<br>".repeat(app.breaksAfterVerse);
 
-	current.bookNumber = getBookNumber(book);
+	updateBookNumber(book);
 
 	// Prevent chapter being smaller than
 	if (bible[current.bookNumber][1] < chapter) {
@@ -353,12 +348,14 @@ function update(option) {
 	}
 
 	// Update book number
-	getBookNumber(book);
+	updateBookNumber(book);
 
+	// Set current book and chapter to the calculated one
 	current.book = book;
 	current.chapter = chapter;
 
-	var marked = app.bookmarkedChapters[book + " " + chapter];
+	// If bookmarkedChapters includes the current chapter, then set the icon to filled
+	var marked = app.bookmarkedChapters.includes(book + " " + chapter);
 	if (marked == true || !(!marked)) {
 		document.getElementById('bookmark').src = "images/bookmarked.svg";
 	} else {
@@ -448,7 +445,7 @@ function updateConfigFile(def) {
 		["font", current.font, "arial"],
 		["highlightedVerses", app.highlightedVerses, {"John 3 16": "yellow", "Hebrews 4 12": "lightgreen", "Luke 9 23": "lightgreen"}],
 		["fontSize", current.fontSize, "18"],
-		["bookmarkedChapters", app.bookmarkedChapters, {"Hebrews 4":true, "John 3":true}]
+		["bookmarkedChapters", app.bookmarkedChapters, ["Hebrews 4", "John 3"]]
 	];
 
 	// Create OBJ (or return default)
@@ -846,7 +843,8 @@ function animateIt(elementStr, visi) {
 	}
 }
 
-function getBookNumber(book) {
+// Update current book (and return it)
+function updateBookNumber(book) {
 	for (var i = 0; i < books.length; i++) {
 		if (books[i] == book) {
 			current.bookNumber = i;

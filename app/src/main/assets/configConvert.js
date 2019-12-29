@@ -66,7 +66,19 @@ function convert(config) {
 		   "highlightedVerses": highlighted,
 		   "bookmarkedChapters": bookmarked
 		}
+	} else {
+		// It is the newer JSON version, but changes can still be made
+		config = JSON.parse(config);
+
+
+		// Convert {"John 3 16": true} to simply ["John 3 16"]
+		if (typeof config.bookmarkedChapters == "object") {
+			config.bookmarkedChapters = Object.keys(config.bookmarkedChapters);
+		}
+
+		return config
 	}
 }
 
-console.log(convert(`/* Heb12 Configuration File - Edit at your own risk! */currentTranslation=KJV2000;lastBook=Genesis;lastChapter=1;theme=Default;font=Arial;highlightedVerses=John 3 16 yellow, Hebrews 4 12 lightgreen, Luke 9 23 lightgreen;fontSize=18;bookmarkedChapters={"Hebrews_4":true,"John_3":true};`));
+// Example
+//console.log(convert(`/* Heb12 Configuration File - Edit at your own risk! */currentTranslation=KJV2000;lastBook=Genesis;lastChapter=1;theme=Default;font=Arial;highlightedVerses=John 3 16 yellow, Hebrews 4 12 lightgreen, Luke 9 23 lightgreen;fontSize=18;bookmarkedChapters={"Hebrews_4":true,"John_3":true};`));

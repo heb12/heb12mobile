@@ -15,6 +15,7 @@ var langList = [
 	"es"
 ];
 
+// English
 var en = [
 	"acv",
 	"jub2000",
@@ -28,14 +29,18 @@ var en = [
 	"rwebster"
 ];
 
+// French
 var fr = [
 	"bdc"
 ];
 
+// German
 var de = [
-	"gerneue"
+	"gerneue",
+	"vaness"
 ];
 
+// Spanish
 var es = [
 	"rva",
 	"sev",
