@@ -25,7 +25,6 @@ var app = {
 		"Hebrews 4 12": "lightgreen",
 		"Luke 9 23": "lightgreen"
 	},
-	// This method of bookmarking is inneficient, but It will have to do.
 	bookmarkedChapters:[
 		"Hebrews 4",
 		"John 3"
@@ -107,8 +106,18 @@ window.onload = function() {
 		data = eval(data);
 		var configuration = data[1];
 
+		// If loading the app for the first time.
+		// Create default configuration file. if else, try to convert old one
+		if (data[0] == "true") {
+			notify("firsttime");
+			configuration = JSON.parse(updateConfigFile("def")) // set config to default
+			console.log(configuration);
+		} else {
+			configuration = convert(JSON.stringify(configuration));
+		}
+
 		// Convert configuration contents. convert() must be used in string form
-		configuration = convert(JSON.stringify(data[1]));
+		console.log(configuration);
 
 		// Parse Data
 		current.theme = configuration.theme;
@@ -128,12 +137,6 @@ window.onload = function() {
 
 		current.book = configuration.lastBook;
 		current.chapter = configuration.lastChapter;
-
-		// If loading the app for the first time.
-		if (data[0] == "true") {
-			notify("firsttime");
-			updateConfigFile("def");
-		}
 	}
 	
 
@@ -448,15 +451,20 @@ function updateConfigFile(def) {
 		["bookmarkedChapters", app.bookmarkedChapters, ["Hebrews 4", "John 3"]]
 	];
 
-	// Create OBJ (or return default)
+	// Determine which part to use, the current app var (1), or the default (2)
 	var val = 1;
 	if (def) {
 		val = 2;
 	}
+
 	for (var i = 0; i < options.length; i++) {
 		config[options[i][0]] = options[i][val];
 	}
-	interface.exec("write", JSON.stringify(config));
+
+	var result = JSON.stringify(config);
+
+	interface.exec("write", result);
+	return result
 }
 
 // Set current theme
@@ -662,68 +670,81 @@ function modifyVerse(verseNum, verseText) {
 
 // Show verse menu
 function versePopup(verse) {
-	if (document.getElementById('sidebar').style.display == "none") {
-		var book = document.getElementById('book').value;
-		var chapter = document.getElementById('chapter').value;
-		var theVerseText = book + " " + chapter + ":" + (verse + 1) + " (" + current.translationStringHuman + ")"; // Title of Popup
-		document.getElementById('verseMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1)); // Set handy attributes
+	var book = document.getElementById('book').value;
+	var chapter = document.getElementById('chapter').value;
+	var theVerseText = book + " " + chapter + ":" + (verse + 1) + " (" + current.translationStringHuman + ")"; // Title of Popup
+	document.getElementById('verseMenu').setAttribute("verse", book + " " + chapter + " " + (verse + 1)); // Set handy attributes
 
-		animateIt("verseMenu", "show");
+	animateIt("verseMenu", "show");
 
-		var mainContent = document.getElementById("mainContent");
-		mainContent.getElementsByTagName("H2")[0].innerHTML = theVerseText;
+	// Change verse popup contents
+	var mainContent = document.getElementById("mainContent");
+	mainContent.getElementsByTagName("H2")[0].innerHTML = theVerseText;
 
-		var theVerse;
-		var done = false;
+	var theVerse;
+	var done = false;
 
-		// Get bible verse
-		if (current.translationString == "netOnline") {
-			load(book, chapter, verse + 1);
-			var int = setInterval(function() {
-				if (app.doneLoadingJSON) {
-					theVerse = app.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
-					done = true;
-					clearInterval(int);
-				}
-			},1);
-		} else if (isOpenbibles()) {
-			theVerse = load(book, chapter, verse);
-			app.doneLoadingJSON = true;
-			done = true;
-		} else {
-			theVerse = load(book, chapter, verse + 1);
-			app.doneLoadingJSON = true;
-			done = true;
-		}
-
-		var entire;
-		var wait = setInterval(function() {
-			if (app.doneLoadingJSON && done) {
-				current.verse = entire;
-
-				mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
-				var verseMenu = document.getElementById("verseMenu").children[1];
-				
-				verseMenu.children[0].children[0].setAttribute("onclick", 'search("' + theVerseText + '")');
-				verseMenu.children[1].children[0].setAttribute("onclick", "interface.exec('copy','" + theVerseText + " - " + theVerse + "')");
-				verseMenu.children[2].children[0].setAttribute("onclick", "interface.exec('share','" + theVerseText + " - " + theVerse + "')");
-
-				app.doneLoadingJSON = false;
-				clearInterval(wait);
+	// Get bible verse
+	if (current.translationString == "netOnline") {
+		load(book, chapter, verse + 1);
+		var int = setInterval(function() {
+			if (app.doneLoadingJSON) {
+				theVerse = app.netTextData.replace('<a style="" target="_blank" href="http://netbible.com/net-bible-preface">&copy;NET</a>',"");
+				done = true;
+				clearInterval(int);
 			}
-		}, 10);
+		},1);
+	} else if (isOpenbibles()) {
+		theVerse = load(book, chapter, verse);
+		app.doneLoadingJSON = true;
+		done = true;
+	} else {
+		theVerse = load(book, chapter, verse + 1);
+		app.doneLoadingJSON = true;
+		done = true;
 	}
+
+	var entire;
+	var wait = setInterval(function() {
+		if (app.doneLoadingJSON && done) {
+			current.verse = entire;
+
+			mainContent.getElementsByTagName("SPAN")[0].innerHTML = theVerse;
+			var verseMenu = document.getElementById("verseMenu").children[1];
+			
+			verseMenu.children[0].children[0].setAttribute("onclick", 'search("' + theVerseText + '")');
+			verseMenu.children[1].children[0].setAttribute("onclick", "interface.exec('copy','" + theVerseText + " - " + theVerse + "')");
+			verseMenu.children[2].children[0].setAttribute("onclick", "interface.exec('share','" + theVerseText + " - " + theVerse + "')");
+
+			app.doneLoadingJSON = false;
+			clearInterval(wait);
+		}
+	}, 10);
 }
 
 // Highlight a verse (called from HTML element)
 function highlightVerse(elem) {
-	var verse = elem.parentElement.parentElement.getAttribute("verse");
-	var color = elem.getAttribute("class").split(" ")[1];
+	var verse = elem.parentElement.parentElement.getAttribute("verse"); // Get current verse in popup
+	var color = elem.getAttribute("class").split(" ")[1]; // Assigned color from CSS class
 
-	app.highlightedVerses[verse.replace(/_/g, " ")] = color;
-	update();
+	// Make a custom color input
+	if (color == "custom") {
+		var color = document.createElement("INPUT");
+		color.type = "color";
+		color.value = "#FF0000";
+		color.onchange = function() {
+			app.highlightedVerses[verse.replace(/_/g, " ")] = color.value;
 
-	animateIt("verseMenu", "close");
+			update();
+			animateIt("verseMenu", "close");
+		}
+		color.click();
+	} else {
+		app.highlightedVerses[verse.replace(/_/g, " ")] = color;
+
+		update();
+		animateIt("verseMenu", "close");
+	}
 }
 
 function setFontSize(action) {
@@ -785,14 +806,15 @@ function goToChapter(book, chapter, verse) {
 
 function bookmark() {
 	var button = document.getElementById('bookmark');
-	var chapter = app.bookmarkedChapters[current.book + " " + current.chapter];
+	var ref = current.book + " " + current.chapter;
+	var chapter = app.bookmarkedChapters.indexOf(ref);
 
-	if (chapter) {
-		app.bookmarkedChapters[current.book + " " + current.chapter] = false;
-		button.src = "images/notbookmarked.svg";
-	} else {
-		app.bookmarkedChapters[current.book + " " + current.chapter] = true;
+	if (chapter == -1) { // Doesn't exist, yet, add it
+		app.bookmarkedChapters.push(ref);
 		button.src = "images/bookmarked.svg";
+	} else {
+		app.bookmarkedChapters.splice(chapter, 1); // Remove the ref
+		button.src = "images/notbookmarked.svg";
 	}
 
 	update();

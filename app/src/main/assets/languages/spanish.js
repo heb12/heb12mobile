@@ -15,7 +15,7 @@ VOTDTitle: "Verso de la D&iacute;a",
 description: "Heb12 Mobile es una aplicaci&oacute;n gratuita de c&oacute;digo abierto creado para hacer que la lectura de la Biblia sea f&aacute;cil y sin complicaciones. Si&eacute;ntase libre de contribuir a la <a href='#' onclick='javascript:interface.exec(\"browser\", \"https://github.com/heb12/heb12-mobile\")'>repositorio de Github</a>.",
 credits: [
 "Cr&eacute;ditos",
-"Programadora - Pufflegamerz / Petabyte Studios",
+"Programador - Pufflegamerz / Petabyte Studios",
 "Openbibles - MasterOfTheTiger",
 "Iconos materiales - Material.io",
 "NET API formateada - Bible Labs",

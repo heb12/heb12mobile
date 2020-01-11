@@ -9,9 +9,9 @@ function convert(config) {
 	var isJSON = true;
 
 	try {
-		JSON.parse(config) 
+		JSON.parse(config);
 	} catch (e) {
-		isJSON = false
+		isJSON = false;
 	}
 
 	// It is the old version, from 2018

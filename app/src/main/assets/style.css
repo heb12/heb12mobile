@@ -367,6 +367,7 @@ select:active {
 	height: 50px;
 	border-right: 1px solid black;
 	display: table-cell;
+	overflow: all;
 }
 
 .color.yellow {
@@ -383,6 +384,10 @@ select:active {
 
 .color.transparent {
 	background: white;
+}
+
+.color.custom img {
+	height: 46px;
 }
 
 .color.close {

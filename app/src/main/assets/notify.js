@@ -40,31 +40,30 @@ function notify(text, extra) {
 		<p>" + app.language.credits[3] + "</p>\
 		<p>" + app.language.credits[4] + "</p>\
 		<p>" + app.language.credits[5] + "</p>\
+		<p>" + app.language.credits[6] + "</p>\
 		";
 		// Hmm... Is that bad practice? ^
 	} else if (text == "bookmarks") {
 		var htmlList = "";
-		var bookmarks = Object.keys(app.bookmarkedChapters); // Bookmarks in list format
+		var bookmarks = app.bookmarkedChapters; // Bookmarks in list format
 		// Go through the boookmarks and list them
 		for (var i = 0; i < bookmarks.length; i++) {
-			if (app.bookmarkedChapters[bookmarks[i]]) {
-				var bookChapter = bookmarks[i].toString();
+			var bookChapter = bookmarks[i].toString();
 
-				// Get book and chapter from string
-				var regex = /([a-zA-Z0-9 ]+) ([0-9]*)/g;
-				var book = bookChapter.replace(regex, "$1");
-				var chapter = bookChapter.replace(regex, "$2");;
+			// Get book and chapter from string
+			var regex = /([a-zA-Z0-9 ]+) ([0-9]*)/g;
+			var book = bookChapter.replace(regex, "$1");
+			var chapter = bookChapter.replace(regex, "$2");;
 
-				// Add HTML code for each bookmarked element
-				htmlList += "\
-				<hr>\
-				<p style='font-size:21px;'>" + book + " " + chapter + "</p>\
-				<div class='button bg' onclick='goToChapter(\"" + book + "\", \"" + chapter + "\"); animateIt(\"sidebar\", \"close\"); animateIt(\"popup\", \"close\")'>\
-					Visit\
-				</div>\
-				<br><br>\
-				";
-			}
+			// Add HTML code for each bookmarked element
+			htmlList += "\
+			<hr>\
+			<p style='font-size:21px;'>" + book + " " + chapter + "</p>\
+			<div class='button bg' onclick='goToChapter(\"" + book + "\", \"" + chapter + "\"); animateIt(\"sidebar\", \"close\"); animateIt(\"popup\", \"close\")'>\
+				Visit\
+			</div>\
+			<br><br>\
+			";
 		}
 		popup.innerHTML = "\
 		<h2>Bookmarks</h2>\

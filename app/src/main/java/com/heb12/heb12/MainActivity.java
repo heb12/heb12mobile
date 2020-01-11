@@ -83,8 +83,12 @@ public class MainActivity extends AppCompatActivity {
             WebView.setWebContentsDebuggingEnabled(true);
             view.setWebViewClient(new WebViewClient());
 
-            // Send data through url... Bad practice? Good practice?
-            view.loadUrl("file:///android_asset/index.html?[\"" + firstTime + "\"," + content + "]");
+            // Send data through URL (send differently according if firstTime or not)
+            if (firstTime) {
+                view.loadUrl("file:///android_asset/index.html?[\"" + firstTime + "\"]");
+            } else {
+                view.loadUrl("file:///android_asset/index.html?[\"" + firstTime + "\"," + content + "]");
+            }
             getSupportActionBar().hide();
 
             // Add a Javascript interface
