@@ -72,7 +72,7 @@ function convert(config) {
 
 
 		// Convert {"John 3 16": true} to simply ["John 3 16"]
-		if (typeof config.bookmarkedChapters == "object") {
+		if (!Array.isArray(config.bookmarkedChapters)) {
 			config.bookmarkedChapters = Object.keys(config.bookmarkedChapters);
 		}
 

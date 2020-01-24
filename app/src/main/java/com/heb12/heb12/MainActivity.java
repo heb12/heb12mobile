@@ -42,9 +42,72 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         boolean firstTime = false;
 
+        // Directory and config file change (Jan 2019)
+        // Detect if /Heb12 exists and Heb12config exists at the same time. If not, create it, and move files
+        File heb12 = new File(Environment.getExternalStorageDirectory() + "/Heb12");
+        File configCheck = new File(Environment.getExternalStorageDirectory(), "/Heb12Config");
+        if (!heb12.isDirectory() && configCheck.exists()) {
+            heb12.mkdir();
+
+            // Make heb12/translations folder
+            File heb12translations = new File(Environment.getExternalStorageDirectory() + "/Heb12/translations");
+            heb12translations.mkdir();
+
+            // Move config file
+            File configNew = new File(Environment.getExternalStorageDirectory(), "Heb12/Heb12Config");
+            configCheck.renameTo(configNew);
+
+            // Android studio can't move entire directories, so we will move each translation file
+            String path = Environment.getExternalStorageDirectory().toString() + "/translations";
+            File directory = new File(path);
+            File[] files = directory.listFiles();
+
+            for (int i = 0; i < files.length; i++) {
+                File translation = new File(Environment.getExternalStorageDirectory(), "/translations/" + files[i].getName());
+
+                // Read file
+                int length = (int) translation.length();
+                byte[] bytes = new byte[length];
+
+                try {
+                    FileInputStream ready = new FileInputStream(translation);
+                    try {
+                        ready.read(bytes);
+                    } finally {
+                        ready.close();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "1Error: " + e, Toast.LENGTH_SHORT).show();
+                }
+
+                // Get final read result
+                String translationData = new String(bytes);
+
+                // Create identical file in /heb12/translations
+                File newTranslation = new File(Environment.getExternalStorageDirectory(), "/Heb12/translations/" + files[i].getName());
+                try {
+                    newTranslation.createNewFile();
+                } catch (IOException e) {
+                    Toast.makeText(MainActivity.this, "2Error: " + e, Toast.LENGTH_SHORT).show();
+                }
+
+                // Attempt to write to file
+                try {
+                    FileOutputStream stream = new FileOutputStream(newTranslation);
+                    stream.write(translationData.getBytes());
+                    stream.close();
+                } catch (IOException e) {
+                    Toast.makeText(MainActivity.this, "2Error: " + e, Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            // If new user
+            heb12.mkdir();
+        }
+
         // Create Heb12 config file
-        File config = new File(Environment.getExternalStorageDirectory(), "Heb12Config");
-        File translationDir = new File(Environment.getExternalStorageDirectory() + File.separator + "translations");
+        File config = new File(Environment.getExternalStorageDirectory(), "/Heb12/Heb12Config");
+        File translationDir = new File(Environment.getExternalStorageDirectory() + "/Heb12/translations");
         try {
 
             setContentView(R.layout.activity_main);
@@ -160,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (type.equals("write")) {
 
                 // Function to update the config file
-                File config = new File(Environment.getExternalStorageDirectory(), "Heb12Config");
+                File config = new File(Environment.getExternalStorageDirectory(), "/Heb12/Heb12Config");
                 try {
                     FileOutputStream stream = new FileOutputStream(config);
                     stream.write(data.getBytes());
@@ -188,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 String name = separated[1];
 
                 // Create File
-                File file = new File("/sdcard/translations", name);
+                File file = new File("/sdcard/Heb12/translations", name);
                 try {
                     file.createNewFile();
                 } catch (IOException e) {
@@ -204,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Configuration file not found", Toast.LENGTH_SHORT).show();
                 }
             } else if (type.equals("gettranslations")) {
-                String path = Environment.getExternalStorageDirectory().toString() + "/translations";
+                String path = Environment.getExternalStorageDirectory().toString() + "/Heb12/translations";
                 File directory = new File(path);
                 File[] files = directory.listFiles();
 
@@ -240,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Error 2" + e, Toast.LENGTH_SHORT).show();
                 }
             } else if (type.equals("gettranslationdata")) {
-                File file = new File("/sdcard/translations", data);
+                File file = new File("/sdcard/Heb12/translations", data);
 
                 // Read file
                 int length = (int) file.length();
@@ -262,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return translation;
             } else if (type.equals("deletetranslation")) {
-                File file = new File("/sdcard/translations", data);
+                File file = new File("/sdcard/Heb12/translations", data);
                 file.delete();
             } else if (type.equals("browser")) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));

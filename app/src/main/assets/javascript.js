@@ -1,6 +1,6 @@
 // Main Variables
 var app = {
-	version:"0.1.1", 
+	version:"0.2.0", 
 	mouseDown:false, // When pointer is down on page
 	titleClicks:0,
 	devmode:false, // On PC, true, on android device, false
@@ -54,6 +54,8 @@ var data; // Config file data
 // When the page loads
 window.onload = function() {
 
+	console.log("Welcome to Heb12 Mobile v" + app.version + ". Type help() for some cool stuff.")
+
 	// Fill the selects
 	for (var i = 0; i < books.length; i++) {
 		document.getElementById('book').innerHTML += "<option eng='" + books[i] + "'>" + books[i] + "</option>";
@@ -103,21 +105,35 @@ window.onload = function() {
 		data = window.location.href.split("?")[1];
 		data = data.replace(/%22/g, '"');
 		data = data.replace(/%20/g, " ");
-		data = eval(data);
-		var configuration = data[1];
+		
+		// This handy Regex parses the JS object without executing it (older versions didn't have pure json)
+		var regex = /\[\"(false|true)\"[,]((.)+)[\]]/gm;
+		newData = regex.exec(data);
+
+		// It is split into 4 parts, but [1] and 2 are only needed
+		var firstTime;
+		var configuration;
+
+		// Detect if new user (avoid parsing object)
+		if (data == '["true"]') {
+			firstTime = "true";
+		} else {
+			var firstTime = newData[1];
+			var configuration = newData[2];
+		}
+
 
 		// If loading the app for the first time.
 		// Create default configuration file. if else, try to convert old one
-		if (data[0] == "true") {
-			notify("firsttime");
+		if (firstTime == "true") {
 			configuration = JSON.parse(updateConfigFile("def")) // set config to default
-			console.log(configuration);
+			setTimeout(function() {
+				// Wait for whatever to load before showing popup... Not sure why it does this
+				notify("firsttime");
+			}, 1000)
 		} else {
-			configuration = convert(JSON.stringify(configuration));
+			configuration = convert(configuration);
 		}
-
-		// Convert configuration contents. convert() must be used in string form
-		console.log(configuration);
 
 		// Parse Data
 		current.theme = configuration.theme;
@@ -138,7 +154,6 @@ window.onload = function() {
 		current.book = configuration.lastBook;
 		current.chapter = configuration.lastChapter;
 	}
-	
 
 	// Use method start app when the first bible loads (Not accurate on <=5.1)
 	var waitUntilLoad = setInterval(function() {
@@ -881,6 +896,12 @@ function postLoad(verse) {
 		scrollToVerse(verse);
 		current.verse = 0;
 	}
+}
+
+// Fun stuff
+function help() {
+	console.log('Example> goToChapter("John", "3", "16")');
+	console.log("Why am I making this.");
 }
 
 // So long and thanks for all the fish

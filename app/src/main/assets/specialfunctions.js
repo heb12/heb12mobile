@@ -1,4 +1,5 @@
 // Replace simple functions with older methods
+// This helps to support older device webviews
 String.prototype.includes = function (string) {
     return this.indexOf(string) > -1;
 };
