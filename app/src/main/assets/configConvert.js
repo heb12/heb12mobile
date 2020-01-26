@@ -56,6 +56,18 @@ function convert(config) {
 			highlighted = newHighlighted;
 		}
 
+		try {
+			bookmarked = bookmarked.replace(/_/g, " ");
+			bookmarked = JSON.parse(bookmarked);
+		} catch (e) {
+			console.log("Error while trying to convert bookmarked chapters");
+		}
+
+		// Convert {Heb 12: true} to ["Heb 12"]
+		if (!Array.isArray(bookmarked)) {
+			bookmarked = Object.keys(bookmarked);
+		}
+
 		return { 
 		   "currentTranslation": translation,
 		   "lastBook": book,
