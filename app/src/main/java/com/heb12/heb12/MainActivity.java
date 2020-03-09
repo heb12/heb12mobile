@@ -51,11 +51,30 @@ public class MainActivity extends AppCompatActivity {
 
             // Make heb12/translations folder
             File heb12translations = new File(Environment.getExternalStorageDirectory() + "/Heb12/translations");
-            heb12translations.mkdir();
+            configCheck.renameTo(heb12translations);
+            //heb12translations.mkdir();
 
-            // Move config file
+            // Read old config file
+            int clength = (int) configCheck.length();
+            byte[] cbytes = new byte[clength];
+
+            try {
+                FileInputStream ready = new FileInputStream(configCheck);
+                try {
+                    ready.read(cbytes);
+                } finally {
+                    ready.close();
+                }
+            } catch (Exception e) {
+                Toast.makeText(MainActivity.this, "1Error: " + e, Toast.LENGTH_SHORT).show();
+            }
+
+            // Get final read result
+            String configCheckData = new String(cbytes);
+
+            // Declare new config file
             File configNew = new File(Environment.getExternalStorageDirectory(), "Heb12/Heb12Config");
-            configCheck.renameTo(configNew);
+
 
             // Android studio can't move entire directories, so we will move each translation file
             String path = Environment.getExternalStorageDirectory().toString() + "/translations";

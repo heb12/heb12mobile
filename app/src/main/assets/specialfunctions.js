@@ -1,5 +1,6 @@
 // Replace simple functions with older methods
 // This helps to support older device webviews
+
 String.prototype.includes = function (string) {
     return this.indexOf(string) > -1;
 };
@@ -23,3 +24,13 @@ String.prototype.repeat = function (num) {
     }
     return it;
 };
+
+function cssEscape(text) {
+	text = text.replace(/ /gm, "\ ");
+	
+	text = text.replace(/1/gm, "\31 ");
+	text = text.replace(/2/gm, "\32 ");
+	text = text.replace(/3/gm, "\33 ");
+
+	return text
+}

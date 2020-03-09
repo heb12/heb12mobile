@@ -18,7 +18,7 @@ var langList = [
 // English
 var en = [
 	"acv",
-	"jub2000",
+	"jubl2000",
 	"kjv",
 	"nheb",
 	"rhe",

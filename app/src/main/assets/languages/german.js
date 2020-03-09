@@ -44,7 +44,6 @@ settings:"\
 </div>\
 <span class='textBesideSelect'>Schriftart:</span>\
 <select id='fontSelect' onchange=\"setFont(this.options[this.selectedIndex].getAttribute('eng'))\">\
-<option>Times New Roman</option>\
 <option eng='Times New Roman'>Times New Roman</option>\
 <option eng='Arial'>Arial</option>\
 <option eng='Comfortaa'>Comfortaa</option>\

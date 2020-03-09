@@ -204,7 +204,7 @@ function load(book, chapter, verse) {
 
 	// Set the select elements
 	updateChapters(book);
-	document.getElementById('book').querySelector("option[eng=" + CSS.escape(book) + "]").selected = true;
+	document.getElementById('book').children[current.bookNumber].selected = true;
 	document.getElementById('chapter').value = chapter;
 
 	// Openbibles Parser
