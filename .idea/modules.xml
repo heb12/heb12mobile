@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/heb12-mobile.iml" filepath="$PROJECT_DIR$/heb12-mobile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="heb12-mobile/app" />
+      <module fileurl="file://$PROJECT_DIR$/heb12-mobile.iml" filepath="$PROJECT_DIR$/heb12-mobile.iml" group="heb12-mobile" />
     </modules>
   </component>
 </project>
