@@ -6,7 +6,7 @@ var langShort = {
 	"fr": "French",
 	"de": "German",
 	"es": "Spanish",
-	"pt": "Portugese"
+	"pt": "Portuguese"
 };
 
 var langList = [
