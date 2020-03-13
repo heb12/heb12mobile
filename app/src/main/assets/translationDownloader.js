@@ -5,14 +5,16 @@ var langShort = {
 	"en": "English",
 	"fr": "French",
 	"de": "German",
-	"es": "Spanish"
+	"es": "Spanish",
+	"pt": "Portugese"
 };
 
 var langList = [
 	"en",
 	"fr",
 	"de",
-	"es"
+	"es",
+	"pt"
 ];
 
 // English
@@ -45,6 +47,12 @@ var es = [
 	"rva",
 	"sev",
 	"sparv"
+]
+
+// Portugese
+var pt = [
+	"acf",
+	"port"
 ]
 
 // Download trnslation, load it, and do cool animation stuff
