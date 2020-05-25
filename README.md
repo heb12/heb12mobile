@@ -1,9 +1,19 @@
+Heb12 Mobile has officially recieved its last update as of March 13th, 2020.  
+After almost a full year of constant development, it is now legacy code and will  
+no longer recieve major updates.  
+
+But don't worry, we are working on a new Bible app, and it will start  
+development in the comming months. Find our progress here: https://code.heb12.com/
+
+Thanks for understanding,
+- Petabyte (@pufflegamerz) https://code.heb12.com/P
+
 # Heb12 Mobile
 [![](https://github.com/heb12/heb12.github.io/blob/master/mobile/playstore.png?raw=true)](https://play.google.com/store/apps/details?id=com.heb12.heb12)
 [![](https://heb12.ml/mobile/amazon2.png)](https://www.amazon.com/pufflegamerz-Heb12-Bible/dp/B07SDL9VSR/ref=sr_1_1?keywords=heb12&qid=1558971521&s=gateway&sr=8-1)
 [![](https://gitlab.com/fdroid/artwork/raw/c0896bd7ac2b4c1578fba4a943dd90c12d0d5426/fdroid-logo-2015/available-on-fdroid.svg)](https://f-droid.org/packages/com.heb12.heb12/)
 
-Heb12 Mobile is a free mobile open-sourced app for reading the Bible. It currently features 5 translations (soon to be more) and a clean, simple, and efficient GUI.
+Heb12 Mobile is a free mobile open-sourced app for reading the Bible. It currently features 5 translations (soon to be more) and a clean, simple, and efficient UI.
 
 The app originally started on May 2nd, 2018 as a simple demo in MIT's App Inventor. It was later re-written in HTML5 so it could be faster and easier to modify.
 
