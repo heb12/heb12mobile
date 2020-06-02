@@ -3,7 +3,7 @@ After almost a full year of constant development, it is now legacy code and will
 no longer recieve major updates.  
 
 But don't worry, we are working on a new Bible app, and it will start  
-development in the comming months. Find our progress here: https://code.heb12.com/
+development in the coming months. Find our progress here: https://code.heb12.com/
 
 Thanks for understanding,
 - Petabyte (@pufflegamerz) https://code.heb12.com/P
