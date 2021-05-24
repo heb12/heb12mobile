@@ -2,11 +2,11 @@ Heb12 Mobile has officially recieved its last update as of March 13th, 2020.
 After over a full year of constant development, it is now legacy code and will  
 no longer recieve major updates.  
 
-But don't worry, we are working on a new Bible app, and it will start  
-development in the coming months. Find our progress here: https://code.heb12.com/
+But don't worry, we are working on a new Bible app.
+See our progress here: https://code.heb12.com/Heb12/heb12android
 
 Thanks for understanding,
-- Petabyte (@pufflegamerz) https://code.heb12.com/P
+- Petabyte (@pufflegamerz)
 
 # Heb12 Mobile
 [![](https://github.com/heb12/heb12.github.io/blob/master/mobile/playstore.png?raw=true)](https://play.google.com/store/apps/details?id=com.heb12.heb12)
