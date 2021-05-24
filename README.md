@@ -1,5 +1,5 @@
 Heb12 Mobile has officially recieved its last update as of March 13th, 2020.  
-After almost a full year of constant development, it is now legacy code and will  
+After over a full year of constant development, it is now legacy code and will  
 no longer recieve major updates.  
 
 But don't worry, we are working on a new Bible app, and it will start  
@@ -15,7 +15,7 @@ Thanks for understanding,
 
 Heb12 Mobile is a free mobile open-sourced app for reading the Bible. It currently features 5 translations (soon to be more) and a clean, simple, and efficient UI.
 
-The app originally started on May 2nd, 2018 as a simple demo in MIT's App Inventor. It was later re-written in HTML5 so it could be faster and easier to modify.
+The app originally started on May 2nd, 2018 as a simple demo in MIT's App Inventor. It was later re-written in HTML5 so it could be portable and easier to modify.
 
 Heb12 Mobile is licensed under the GNU General Public License V3.0+.
 
