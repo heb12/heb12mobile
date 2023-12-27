@@ -1,6 +1,6 @@
 // Main Variables
 var app = {
-	version:"0.2.0", 
+	version:"0.3.0",
 	mouseDown:false, // When pointer is down on page
 	titleClicks:0,
 	devmode:false, // On PC, true, on android device, false
@@ -869,11 +869,16 @@ function animateIt(elementStr, visi) {
 		verseMenu: ["down", "up"]
 	}
 
+    // Hack to prevent verse popup from showing if sidebar is out
+    if (elementStr == "verseMenu" && document.getElementById("sidebar").style.display == "block") {
+        return;
+    }
+
 	if (visi == "close") {
 		element.WebkitAnimationName = animations[elementStr][0];
 		setTimeout(function() {
 			element.display = "none";
-		},485);
+		},475);
 	} else if (visi == "show") {
 		element.WebkitAnimationName = animations[elementStr][1];
 		element.display = "block";

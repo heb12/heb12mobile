@@ -196,25 +196,13 @@ public class MainActivity extends AppCompatActivity {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
 
-                // Permission is not granted
-                // Should we show an explanation? No
-                if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // Show an explanation to the user *jimmybob200* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                } else {
-                    // No explanation needed; request the permission
-                    ActivityCompat.requestPermissions(MainActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
-                }
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
             } else {
                 // Permission has already been granted, all of that crap was useless
             }
         }
-
-
     }
 
     // Update settings
@@ -255,8 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent myIntent = new Intent(Intent.ACTION_SEND);
                 myIntent.setType("text/plain");
-                String shareBody = data;
-                myIntent.putExtra(Intent.EXTRA_TEXT,shareBody);
+                myIntent.putExtra(Intent.EXTRA_TEXT, data);
                 startActivity(Intent.createChooser(myIntent, "Share using"));
 
             } else if (type.equals("toast")) {
@@ -289,6 +276,9 @@ public class MainActivity extends AppCompatActivity {
                 String path = Environment.getExternalStorageDirectory().toString() + "/Heb12/translations";
                 File directory = new File(path);
                 File[] files = directory.listFiles();
+                if (files == null) {
+                    return "[]";
+                }
 
                 String back = "";
 
@@ -349,6 +339,8 @@ public class MainActivity extends AppCompatActivity {
             } else if (type.equals("browser")) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
                 startActivity(browserIntent);
+            } else if (type.equals("close_app")) {
+                System.exit(0);
             }
 
             return type;
